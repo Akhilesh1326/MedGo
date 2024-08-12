@@ -1,11 +1,11 @@
 // import React from 'react'
-import { Link } from 'react-router-dom'
-
-const Doctor_Login_Cred = () => {
+import { Link } from "react-router-dom"
+const Paitent_Login_Cred = () => {
   return (
     <div>
+      <div> 
       <div className="flex flex-col justify-center items-center">
-      <h1>Doctor{"'"}s Sign in page - page2</h1>
+      <h1>Patient{"'"}s Sign in page - page2</h1>
 
         <div className="flex border-black border-2 mt-20 ">
           <div className="border-black border-2">
@@ -23,12 +23,13 @@ const Doctor_Login_Cred = () => {
             <label htmlFor="gender">Get OTP</label>
             <input className="border-emerald-500 border-2" type="text" />
             
-            <Link to="/user/doctor/personal-information"> <button className="border-emerald-300 border-2 content-center">Next</button></Link>
+            <Link to="/user/patient/personal-information"> <button className="border-emerald-300 border-2 content-center">Next</button></Link>
           </div>
         </div>
       </div>
     </div>
+    </div>
   )
 }
 
-export default Doctor_Login_Cred
+export default Paitent_Login_Cred

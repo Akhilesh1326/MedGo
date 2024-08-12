@@ -1,11 +1,11 @@
-import React from 'react'
+// import React from 'react'
 
-const Patient_Dashboard = () => {
+const Paitent_Dashboard = () => {
   return (
     <div>
-      
+      <h1>This is Patient{"'"}s Dashboard</h1>
     </div>
   )
 }
 
-export default Patient_Dashboard
+export default Paitent_Dashboard

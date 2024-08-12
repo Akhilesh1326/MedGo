@@ -1,11 +1,13 @@
-// import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom"
 
-const Doctor_Login_Cred = () => {
+// import React from 'react'
+Link
+const Patient_Validation = () => {
   return (
     <div>
+      <div>
       <div className="flex flex-col justify-center items-center">
-      <h1>Doctor{"'"}s Sign in page - page2</h1>
+      <h1>Patient{"'"}s Sign in page - page4</h1>
 
         <div className="flex border-black border-2 mt-20 ">
           <div className="border-black border-2">
@@ -14,21 +16,22 @@ const Doctor_Login_Cred = () => {
             </div>
           </div>
           <div className="border-black border-2 flex flex-col">
-            <label htmlFor="first name">Username</label>
+            <label htmlFor="first name">Upload Proof of Medical License</label>
             <input className="border-emerald-500 border-2" type="text" />
-            <label htmlFor="last name">Email</label>
+            <label htmlFor="last name">Government-issued ID</label>
             <input className="border-emerald-500 border-2" type="text" />
-            <label htmlFor="email">Password</label>
+            <label htmlFor="email">Phone number</label>
             <input className="border-emerald-500 border-2" type="text" />
             <label htmlFor="gender">Get OTP</label>
             <input className="border-emerald-500 border-2" type="text" />
             
-            <Link to="/user/doctor/personal-information"> <button className="border-emerald-300 border-2 content-center">Next</button></Link>
+            <Link to="/user/patient/dashboard"> <button className="border-emerald-300 border-2 content-center">Next</button></Link>
           </div>
         </div>
       </div>
     </div>
+    </div>
   )
 }
 
-export default Doctor_Login_Cred
+export default Patient_Validation

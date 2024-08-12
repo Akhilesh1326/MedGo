@@ -6,6 +6,8 @@ const Doctor_Validation = () => {
   return (
 <div>
       <div className="flex flex-col justify-center items-center">
+      <h1>Doctor{"'"}s Sign in page - page4</h1>
+
         <div className="flex border-black border-2 mt-20 ">
           <div className="border-black border-2">
             <div className="border-blue-400 mx-4 my-4">
@@ -22,7 +24,7 @@ const Doctor_Validation = () => {
             <label htmlFor="gender">Get OTP</label>
             <input className="border-emerald-500 border-2" type="text" />
             
-            <Link to=""> <button className="border-emerald-300 border-2 content-center">Next</button></Link>
+            <Link to="/user/doctor/dashboard"> <button className="border-emerald-300 border-2 content-center">Next</button></Link>
           </div>
         </div>
       </div>
