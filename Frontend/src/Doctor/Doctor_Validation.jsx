@@ -6,7 +6,8 @@ const Doctor_Validation = () => {
   return (
 <div>
       <div className="flex flex-col justify-center items-center">
-      <h1>Doctor{"'"}s Sign in page - page4</h1>
+      <h1>Doctor{"'"}s Sign in page - page4 </h1>
+      <h1>Not going to work until prototype is developed</h1>
 
         <div className="flex border-black border-2 mt-20 ">
           <div className="border-black border-2">
@@ -19,9 +20,7 @@ const Doctor_Validation = () => {
             <input className="border-emerald-500 border-2" type="text" />
             <label htmlFor="last name">Government-issued ID</label>
             <input className="border-emerald-500 border-2" type="text" />
-            <label htmlFor="email">Phone number</label>
-            <input className="border-emerald-500 border-2" type="text" />
-            <label htmlFor="gender">Get OTP</label>
+            <label htmlFor="email">Certifications</label>
             <input className="border-emerald-500 border-2" type="text" />
             
             <Link to="/user/doctor/dashboard"> <button className="border-emerald-300 border-2 content-center">Next</button></Link>
