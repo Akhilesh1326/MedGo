@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://127.0.0.1:27017/MedicalAppDataBase")
-.then(()=>console.log("Database Connnected"))
-.catch((err)=>console.log("Database having problmes"));
+    // mongoose.connect("mongodb://127.0.0.1:27017/MedicalAppDataBase")
+    // .then(()=>console.log("Database Connnected"))
+    // .catch((err)=>console.log("Database having problmes"));
 
 //Basic Information for Doctor, Table-1
 const DoctorBasicInfo = new mongoose.Schema({
@@ -54,7 +54,7 @@ const DoctorProfessionalInfo = new mongoose.Schema({
     },
 },{timestamps:true});
 
-const doctorProfessionalInfo = mongoose.Model('doctorUserProfessionalInfo', DoctorProfessionalInfo);
+const doctorProfessionalInfo = mongoose.model('doctorUserProfessionalInfo', DoctorProfessionalInfo);
 
 const DoctorIdentificationInfo = new mongoose.Schema({
     proofOfMedicalLicense:{
@@ -86,7 +86,7 @@ const DoctorloginInfo = new mongoose.Schema({
 
 const doctorloginInfo = mongoose.model("doctorUserLoginInfo", DoctorloginInfo);
 
-const DoctorAgreementInfo = mongoose.Schema({
+const DoctorAgreementInfo = new mongoose.Schema({
     termsAndServices:{
         type: String,
         required: true,
@@ -101,6 +101,12 @@ const DoctorAgreementInfo = mongoose.Schema({
     },
 })
 
-const doctorAgreementInfo = mongoose.Model("doctorUserAgreementInfo", DoctorAgreementInfo);
+const doctorAgreementInfo = mongoose.model("doctorUserAgreementInfo", DoctorAgreementInfo);
 
+module.exports = 
+    doctorloginInfo,
+    doctorProfessionalInfo,
+    doctorIdentificationInfo,
+    doctorBasicInfo,
+    doctorAgreementInfo
 
