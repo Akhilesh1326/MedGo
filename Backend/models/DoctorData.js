@@ -1,112 +1,112 @@
 const mongoose = require("mongoose");
 
-    // mongoose.connect("mongodb://127.0.0.1:27017/MedicalAppDataBase")
-    // .then(()=>console.log("Database Connnected"))
-    // .catch((err)=>console.log("Database having problmes"));
-
-//Basic Information for Doctor, Table-1
+// Basic Information for Doctor, Table-1
 const DoctorBasicInfo = new mongoose.Schema({
-    fullName:{
+    fullName: {
         type: String,
         required: true,
     },
-    phone:{
+    phone: {
         type: Number,
-        required: false
+        required: false,
     },
-    dateOfBirth:{
+    dateOfBirth: {
         type: String,
         required: true,
     },
-    gender:{
+    gender: {
         type: String,
-        required: true
+        required: true,
     }
-},{timestamps:true});
+}, { timestamps: true });
 
 const doctorBasicInfo = mongoose.model('doctorUserBasicInfo', DoctorBasicInfo);
 
 // Professional Information for Doctor, Table-2
 const DoctorProfessionalInfo = new mongoose.Schema({
-    medicalLicenseNumber:{
+    medicalLicenseNumber: {
         type: String,
         required: true,
     },
-    specialization:{
+    specialization: {
         type: String,
         required: true,
     },
-    yearsofExperience:{
+    yearsOfExperience: {
         type: String,
         required: true,
     },
-    medicalSchool:{
+    medicalSchool: {
         type: String,
         required: true,
     },
-    hospitalOrClinic:{
+    hospitalOrClinic: {
         type: String,
         required: true,
     },
-    Certifications:{
-        type: String,
-        required: true,
-    },
-},{timestamps:true});
+
+}, { timestamps: true });
 
 const doctorProfessionalInfo = mongoose.model('doctorUserProfessionalInfo', DoctorProfessionalInfo);
 
 const DoctorIdentificationInfo = new mongoose.Schema({
-    proofOfMedicalLicense:{
+    proofOfMedicalLicense: {
         type: String,
         required: true,
     },
-    proofOfIdentity:{
+    proofOfIdentity: {
         type: String,
         required: true,
     },
-},{timestamps:true});
+    Certifications: {
+        type: String,
+        required: true,
+    },
+}, { timestamps: true });
 
 const doctorIdentificationInfo = mongoose.model("doctorUserIdentificationInfo", DoctorIdentificationInfo);
 
-const DoctorloginInfo = new mongoose.Schema({
-    userName:{
+const DoctorLoginInfo = new mongoose.Schema({
+    userName: {
         type: String,
         required: true,
+        unique: true,
     },
-    email:{
+    email: {
         type: String,
         required: true,
+        unique: true,
     },
-    password:{
+    password: {
         type: String,
         required: true,
-    },
-},{timestamps:true})
+    }
+}, { timestamps: true });
 
-const doctorloginInfo = mongoose.model("doctorUserLoginInfo", DoctorloginInfo);
+const doctorloginInfo = mongoose.model("doctorUserLoginInfo", DoctorLoginInfo);
 
 const DoctorAgreementInfo = new mongoose.Schema({
-    termsAndServices:{
+    termsAndServices: {
         type: String,
         required: true,
     },
-    privacyAndPolicy:{
+    privacyAndPolicy: {
         type: String,
         required: true,
     },
-    consentOfDataSharing:{
+    consentOfDataSharing: {
         type: String,
         required: true,
-    },
-})
+    }
+}, { timestamps: true });
 
 const doctorAgreementInfo = mongoose.model("doctorUserAgreementInfo", DoctorAgreementInfo);
 
-module.exports = 
+// Exporting models
+module.exports = {
     doctorloginInfo,
     doctorProfessionalInfo,
     doctorIdentificationInfo,
     doctorBasicInfo,
     doctorAgreementInfo
-
+};
