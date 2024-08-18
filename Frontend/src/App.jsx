@@ -14,6 +14,7 @@ import DoctorDashboard from './Doctor/Doctor_Dashboard';
 
 import CheckUser from './Components/CheckUser';
 import Home from './Components/Home';
+import CommonArea from "./Components/CommonArea";
 
 const router = createBrowserRouter([
     { path: "/", element: <Home /> },
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
     { path: "/user/patient/validation", element: <PatientValidation /> },
     { path: "/user/patient/dashboard", element: <PatientDashboard /> },
     { path: "/user/checkuser", element: <CheckUser /> },
+    { path: "/user/commonarea", element: <CommonArea />},
 ]);
 
 function App() {

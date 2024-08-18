@@ -1,7 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {io} from "socket.io-client";
+import { v4 as uuid } from 'uuid';
 
 const Doctor_Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [socketMsg, setSocketMsg] = useState("");
+  const [sendMsg, setSendMsg] = useState("");
+
+
+
+  useEffect(() => {
+    const socket = io("http://localhost:8000");
+
+    socket.on('connect',()=>{
+      console.log("Socke is connected");
+    })
+    return () => {
+      socket.disconnect();
+  };
+
+  }, [])
+
+  const handleSendMsg = (e) =>{
+    setSendMsg(e.target.value);
+  }
+
+  // send message to server
+  const sendMessage = () =>{
+    const socket = io("http://localhost:8000");
+    
+    const msg = [
+    {
+      id: uuid(),
+      main: sendMsg,
+      date: "18-aug-2024",
+      name: "Dr. Akhilesh"
+    }
+  ]
+    socket.emit('client-message', msg);
+    console.log("Message Sent");
+  }
+  
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -27,7 +66,8 @@ const Doctor_Dashboard = () => {
 
       {/* Header */}
       <div className="bg-gray-700 text-white p-4 rounded-xl flex justify-between items-center sm:hidden md:flex lg:flex xl:flex">
-        <div className="border-2 border-blue-400 px-4 py-2 rounded-lg">search</div>
+        <input type="text" className="border-2 border-blue-400 px-4 py-2 rounded-lg"/>
+        
         <div className="flex space-x-4">
           <div className="border-2 border-blue-400 px-4 py-2 rounded-lg">prof</div>
           <div className="border-2 border-blue-400 px-4 py-2 rounded-lg">name</div>
