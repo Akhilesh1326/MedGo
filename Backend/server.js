@@ -3,6 +3,45 @@ const connectDB = require('./connectDB');
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cors = require('cors');
+const { Server } = require("socket.io");
+const http = require("http");
+
+const app = express();
+// HTTP server 
+const server = http.createServer(app);
+
+// Socket server
+const io = new Server(server, {
+    cors: {
+        origin: 'http://localhost:5173', // Allow only your React app's origin
+        methods: ['GET', 'POST'],
+        credentials: true                // Allow cookies and other credentials
+    }
+});
+
+// WebSocket initialization
+io.on("connection", (socket) => {
+    // Receive message from client
+    socket.on("client-message", (message) => {
+        console.log("Message from client:", message);
+        
+        // Send a response back to the client
+        io.emit("message", message);
+    });
+
+    // Handle client disconnection
+    socket.on("disconnect", () => {
+        console.log("Socket.io client disconnected");
+    });
+});
+
+// For REST API calls
+app.use(cors({
+    origin: 'http://localhost:5173', // Allow only your React app's origin
+    methods: ['GET', 'POST'],        // Allow specific HTTP methods
+    credentials: true                // Allow cookies and other credentials
+}));
+
 
 // DB Module imports
 const { 
@@ -12,10 +51,8 @@ const {
     handleDoctorProfessionalInfo,
 } = require("./controllers/doctor");
 
-const app = express();
 
 // Middleware
-app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
@@ -81,6 +118,6 @@ app.post('/api/user/doctor/agreementInfo', async(req, res) => {
     }
 });
 
-// Local Port
-const PORT = 8000;
-app.listen(PORT, () => console.log("Server Running at LocalHost:", PORT));
+server.listen(8000, () => {
+    console.log('Server is running on http://localhost:8000');
+});
