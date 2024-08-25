@@ -13,6 +13,7 @@ import DoctorValidation from './Doctor/Doctor_Validation';
 import DoctorDashboard from './Doctor/Doctor_Dashboard';
 import DoctorProfile from "./Doctor/Doctor_Profile";
 import ManageAppoinment from "./Doctor/Dashboard/ManageAppoinment";
+import PatientManagment from "./Doctor/Dashboard/PatientManagement"
 
 import CheckUser from './Components/CheckUser';
 import Home from './Components/Home';
@@ -26,12 +27,15 @@ const router = createBrowserRouter([
     { path: "/user/doctor/validation", element: <DoctorValidation /> },
     { path: "/user/doctor/dashboard", element: <DoctorDashboard /> },
     { path: "/user/doctor/profile", element: <DoctorProfile />},
-    { path: "user/doctor/dashboard/manage-appoinment", element: <ManageAppoinment />},
+    { path: "/user/doctor/dashboard/manage-appoinment", element: <ManageAppoinment />},
+    { path: "/user/doctor/dashboard/manage-patients", element: <PatientManagment />},
+
     { path: "/user/patient/signin", element: <PatientSignIn /> },
     { path: "/user/patient/login-credentials", element: <PatientLoginCred /> },
     { path: "/user/patient/personal-information", element: <PatientPI /> },
     { path: "/user/patient/validation", element: <PatientValidation /> },
     { path: "/user/patient/dashboard", element: <PatientDashboard /> },
+    
     { path: "/user/checkuser", element: <CheckUser /> },
     { path: "/user/commonarea", element: <CommonArea />},
 ]);
