@@ -44,13 +44,19 @@ const Doctor_SignIn = () => {
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}>
-        <h1 className='font-bold text-2xl text-[#034458] mt-10'>Sign In</h1>
+        <h1 className='font-bold text-2xl text-[#034458] mt-10'>Sign Up</h1>
 
         <div className="flex lg:border-[#35b5dc] lg:border-4 rounded-xl mt-5 mb-20 md:w-[80%]">
-          <div className="hidden lg:block  lg:w-[70%] text-center">
-            <div className="">
+          <div className="hidden flex-row lg:block  lg:w-[70%] text-center font-raleway">
+            <div className=" bg-green-300 mb-20">
               logo
             </div>
+            <div className='text-3xl font-extrabold text-[#181f20] mb-10'>Welcom To MedLinea</div>
+            <div className='text-xl font-light m-1 mb-20'>
+            Empower your healthcare experience! Join us to manage appointments effortlessly and access personalized care. <span className='text-blue-700 '>Know More</span>
+            </div>
+            <div>Already a have an Account</div>
+            <button className='border-2 border-[#287e98] font-light rounded-full px-4 py-2 mt-2 hover:shadow-lg hover:shadow-[#034458] duration-300 hover:-translate-y-1'>Sign In</button>
           </div>
           <div className="flex flex-col w-screen lg:bg-[#034458] opacity-90 lg:rounded- rounded-bl-3xl rounded-tl-3xl rounded-r-lg ">
             <label htmlFor="full name" className='font-bold text-[#03627f] pt-3 pb-1 pl-4 sm:ml-5 md:ml-9 text-sm opacity-100 lg:font-light  lg:text-xl  lg:text-white lg:ml-20 lg:mt-5 '>Full Name</label>
@@ -67,10 +73,11 @@ const Doctor_SignIn = () => {
               <option className='text-white w-10' value="female">Female</option>
               <option className='text-white w-10' value="other">Other</option>
             </select>
-            <button className="font-light text-lg text-white py-2 mt-5 rounded-lg bg-black w-[50%] self-center opacity-100 hover:shadow-md hover:shadow-[#0688b0] duration-500"  onClick={handleAllDataSubmit}>Submit</button>
-            <div className='flex justify-center mb-2'>
-              <label htmlFor="login question" className='self-center text-sm mt-4 font-semibold text-white'>Already have an account?</label>
-              <label htmlFor="signup" className='self-center text-sm mt-4 font-bold text-[#8ed8ef] ml-2'>Sign Up</label>
+            <button className="font-light text-lg text-white py-2 mt-7 rounded-lg bg-black w-[50%] self-center opacity-100 hover:shadow-lg hover:shadow-[#0688b0] hover:-translate-y-1 duration-500 mb-8 "  onClick={handleAllDataSubmit}>Submit</button>
+            <Link to="/user/doctor/login-credentials"><button className="font-light text-lg text-white py-2 mt-5 rounded-lg bg-black w-[50%] self-center opacity-100 hover:shadow-md hover:shadow-[#0688b0] duration-500" >Submit</button></Link>
+            <div className='lg:hidden flex justify-center mb-2'>
+              <label htmlFor="login question" className='self-center text-sm mt-4 font-semibold text-[#034458]'>Already have an account?</label>
+              <label htmlFor="signup" className='self-center text-sm mt-4 font-bold text-black ml-2'>Sign In</label>
             </div>
           </div>
         </div>
