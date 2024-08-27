@@ -43,13 +43,21 @@ app.use(cors({
 }));
 
 
-// DB Module imports
+// DB Module imports for Doctors
 const { 
     handleDoctorBasicInfo,
     handleDoctorAgreementInfo,
     handleDoctorLoginInfo,
     handleDoctorProfessionalInfo,
 } = require("./controllers/doctor");
+// DB Module imports for Patients
+
+const {
+    handlePatientBasic,
+    handlePatientIdentification,
+    handlePatientLoginCredentials,
+    handlePatientMedicalInformation,
+} = require("./controllers/patient")
 
 
 // Middleware
@@ -117,6 +125,65 @@ app.post('/api/user/doctor/agreementInfo', async(req, res) => {
         res.status(500).json({ msg: "Error Occured", error: err.message });
     }
 });
+
+app.post('/api/user/patient/basicInfo', async(req,res)=>{
+    try{
+        const {fullName, phone, dateOfBirth, gender} = req.body;
+        console.log(fullName, phone, dateOfBirth, gender);
+
+        const result = handlePatientBasic(fullName, phone, dateOfBirth, gender);
+        console.log(result);
+
+        res.json({msg:"Data sent", result});
+    } catch(error){
+        console.log("Error occured while saving basic info of patient: ", error);
+        res.status(500).json({msg: "Error Occured", error: error.message});
+    }
+});
+
+app.post('/api/user/patient/medicalInfo', async(req,res) =>{
+    try{
+        const {currentMedicatioins, knowAllergies, medicalHistory, insuranceInformation} = req.body;
+        console.log(currentMedicatioins, knowAllergies, medicalHistory, insuranceInformation);
+
+        const result = handlePatientMedicalInformation(currentMedicatioins, knowAllergies, medicalHistory, insuranceInformation);
+        console.log(result);
+
+        res.json({msg:"Data sent", result});
+    } catch(error){
+        console.log("Error occured while saving medical info of patient: ", error);
+        res.status(500).json({msg: "Error Occured", error: error.message});
+    }
+});
+app.post('/api/user/patient/Identification', async(req,res) =>{
+    try{
+        const {governmentIssuedId, adharNumber} = req.body;
+        console.log( governmentIssuedId, adharNumber);
+
+        const result = handlePatientIdentification(governmentIssuedId, adharNumber);
+        console.log(result);
+
+        res.json({msg:"Data sent", result});
+    } catch(error){
+        console.log("Error occured while saving medical info of patient: ", error);
+        res.status(500).json({msg: "Error Occured", error: error.message});
+    }
+});
+app.post('/api/user/patient/loginInfo', async(req,res) =>{
+    try{
+        const {username, email, password} = req.body;
+        console.log(username, email, password);
+
+        const result = handlePatientMedicalInformation(username, email, password);
+        console.log(result);
+
+        res.json({msg:"Data sent", result});
+    } catch(error){
+        console.log("Error occured while saving login info of patient: ", error);
+        res.status(500).json({msg: "Error Occured", error: error.message});
+    }
+});
+
 
 server.listen(8000, () => {
     console.log('Server is running on http://localhost:8000');
