@@ -1,9 +1,14 @@
 const OfflinePatientSchema = require("../models/OfflinePatientData");
 
-async function handleOfflinePatientEntry({ fullName, dob, gender, contactNumber, email, completeAddress, emergencyContactNumber, emergencyContactName, allergies, chronicConditions, pastSurgeries, familyMedicalHistory, currentMedications, bloodType, socialHistory, insuranceProvider, policyNumber, heightAndWeight, occupation, maritalStatus, preferredPharmacy, dobWithAge, ongoingTreatmentPlans, assignedHealthcareProviders, upcomingAppointments, pastAppointments, labResults, imagingResults, dischargeSummaries, referralLetters, insuranceAndBillingHistory }) {
+async function handleOfflinePatientEntry({doctorId, doctorName, doctorOtherInformation, fullName, dob, gender, contactNumber, email, completeAddress, emergencyContactNumber, emergencyContactName, allergies, chronicConditions, pastSurgeries, familyMedicalHistory, currentMedications, bloodType, socialHistory, insuranceProvider, policyNumber, heightAndWeight, occupation, maritalStatus, preferredPharmacy, dobWithAge, ongoingTreatmentPlans, assignedHealthcareProviders, upcomingAppointments, pastAppointments, labResults, imagingResults, dischargeSummaries, referralLetters, insuranceAndBillingHistory }) {
     
     // Map the flat object to the nested schema structure
     const mappedPatientData = {
+        doctorInformation:{
+            doctorId,
+            doctorName,
+            doctorOtherInformation,
+        },
         personalInformation: {
             fullName,
             dob,

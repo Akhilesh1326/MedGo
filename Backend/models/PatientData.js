@@ -41,7 +41,7 @@ const patientMedicalInformation = mongoose.model("patientUserMedicalInformation"
 
 const PatientIdentification = new mongoose.Schema({
     governmentIssuedId: {
-        type: Image,
+        type: String,
         required: true,
     },
     adharNumber: {

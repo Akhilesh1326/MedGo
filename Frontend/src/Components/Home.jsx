@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom'
 
 const Home = () => {
   return (
-    <div>
+    <div className='flex flex-col'>
       <h1>medGo HomePage</h1>
       <Link to="/user/checkuser"><button>Go to checkuser</button></Link>
+      <Link to="/user/login"><button>Log in user</button></Link>
     </div>
   )
 }
