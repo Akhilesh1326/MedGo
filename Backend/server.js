@@ -24,7 +24,7 @@ io.on("connection", (socket) => {
     // Receive message from client
     socket.on("client-message", (message) => {
         console.log("Message from client:", message);
-        
+
         // Send a response back to the client
         io.emit("message", message);
     });
@@ -44,11 +44,12 @@ app.use(cors({
 
 
 // DB Module imports for Doctors
-const { 
+const {
     handleDoctorBasicInfo,
     handleDoctorAgreementInfo,
     handleDoctorLoginInfo,
     handleDoctorProfessionalInfo,
+    handleLoginUser,
 } = require("./controllers/doctor");
 // DB Module imports for Patients
 
@@ -58,6 +59,10 @@ const {
     handlePatientLoginCredentials,
     handlePatientMedicalInformation,
 } = require("./controllers/patient")
+
+// offline patient registration
+
+const handleOfflinePatientEntry = require("./controllers/OfflinePatient");
 
 
 // Middleware
@@ -104,7 +109,7 @@ app.post('/api/user/doctor/loginInfo', async (req, res) => {
 
 app.post('/api/user/doctor/professionalInfo', async (req, res) => {
     try {
-        const { medicalLicenseNumber, specialization, yearsOfExperience, medicalSchool, hospitalOrClinic} = req.body;
+        const { medicalLicenseNumber, specialization, yearsOfExperience, medicalSchool, hospitalOrClinic } = req.body;
         console.log(medicalLicenseNumber, specialization, yearsOfExperience, medicalSchool, hospitalOrClinic);
         const result = await handleDoctorProfessionalInfo(medicalLicenseNumber, specialization, yearsOfExperience, medicalSchool, hospitalOrClinic);
         res.json({ msg: "Data Sent", result });
@@ -114,75 +119,110 @@ app.post('/api/user/doctor/professionalInfo', async (req, res) => {
     }
 });
 
-app.post('/api/user/doctor/agreementInfo', async(req, res) => {
+app.post('/api/user/doctor/agreementInfo', async (req, res) => {
     try {
         const { termsAndServices, privacyAndPolicy, consentOfDataSharing } = req.body;
         console.log(termsAndServices, privacyAndPolicy, consentOfDataSharing);
         const result = await handleDoctorAgreementInfo(termsAndServices, privacyAndPolicy, consentOfDataSharing);
         res.json({ msg: "Data Sent", result });
-    } catch(err) {
+    } catch (err) {
         console.error("Error Occured while post of Agreement = ", err);
         res.status(500).json({ msg: "Error Occured", error: err.message });
     }
 });
 
-app.post('/api/user/patient/basicInfo', async(req,res)=>{
+// Login Check for Doctor User
+app.post('/api/user/check/login-credentials', async(req, res)=>{
     try{
-        const {fullName, phone, dateOfBirth, gender} = req.body;
+        const logCred = req.body;
+        console.log("logCred = ",logCred);
+        const result = await handleLoginUser(logCred)
+        console.log("Server Result = ",result);
+        if(result.userName===logCred.userName){
+
+            res.json({ msg: "UserFound", result });
+        }
+        else{
+            res.json({ msg: "UserNotFound", result });
+
+        }
+
+    }catch(err){
+        console.error("Error Occured while Login Validation = ", err);
+        res.status(500).json({ msg: "Error Occured", error: err.message });
+    }
+})
+
+app.post('/api/user/doctor/offline-Patient-Regiter/', async (req, res) => {
+    try {
+        const offlinePatientRegistration = req.body;
+        console.log(offlinePatientRegistration);
+        // const result = await handleOfflinePatientEntry(offlinePatientRegistration);
+        res.json({ msg: "Data sent", result });
+    } catch (err) {
+        console.log("Error Occured While registering the offline patinet form", err);
+        res.status(500).json({ msg: "Error Occured", error: err.message });
+    }
+})
+
+app.post('/api/user/patient/basicInfo', async (req, res) => {
+    try {
+        const { fullName, phone, dateOfBirth, gender } = req.body;
         console.log(fullName, phone, dateOfBirth, gender);
 
         const result = handlePatientBasic(fullName, phone, dateOfBirth, gender);
         console.log(result);
 
-        res.json({msg:"Data sent", result});
-    } catch(error){
+        res.json({ msg: "Data sent", result });
+    } catch (error) {
         console.log("Error occured while saving basic info of patient: ", error);
-        res.status(500).json({msg: "Error Occured", error: error.message});
+        res.status(500).json({ msg: "Error Occured", error: error.message });
     }
 });
 
-app.post('/api/user/patient/medicalInfo', async(req,res) =>{
-    try{
-        const {currentMedicatioins, knowAllergies, medicalHistory, insuranceInformation} = req.body;
+app.post('/api/user/patient/medicalInfo', async (req, res) => {
+    try {
+        const { currentMedicatioins, knowAllergies, medicalHistory, insuranceInformation } = req.body;
         console.log(currentMedicatioins, knowAllergies, medicalHistory, insuranceInformation);
 
         const result = handlePatientMedicalInformation(currentMedicatioins, knowAllergies, medicalHistory, insuranceInformation);
         console.log(result);
 
-        res.json({msg:"Data sent", result});
-    } catch(error){
+        res.json({ msg: "Data sent", result });
+    } catch (error) {
         console.log("Error occured while saving medical info of patient: ", error);
-        res.status(500).json({msg: "Error Occured", error: error.message});
+        res.status(500).json({ msg: "Error Occured", error: error.message });
     }
 });
-app.post('/api/user/patient/Identification', async(req,res) =>{
-    try{
-        const {governmentIssuedId, adharNumber} = req.body;
-        console.log( governmentIssuedId, adharNumber);
+app.post('/api/user/patient/Identification', async (req, res) => {
+    try {
+        const { governmentIssuedId, adharNumber } = req.body;
+        console.log(governmentIssuedId, adharNumber);
 
         const result = handlePatientIdentification(governmentIssuedId, adharNumber);
         console.log(result);
 
-        res.json({msg:"Data sent", result});
-    } catch(error){
+        res.json({ msg: "Data sent", result });
+    } catch (error) {
         console.log("Error occured while saving medical info of patient: ", error);
-        res.status(500).json({msg: "Error Occured", error: error.message});
+        res.status(500).json({ msg: "Error Occured", error: error.message });
     }
 });
-app.post('/api/user/patient/loginInfo', async(req,res) =>{
-    try{
-        const {username, email, password} = req.body;
+app.post('/api/user/patient/loginInfo', async (req, res) => {
+    try {
+        const { username, email, password } = req.body;
         console.log(username, email, password);
 
         const result = handlePatientMedicalInformation(username, email, password);
         console.log(result);
 
-        res.json({msg:"Data sent", result});
-    } catch(error){
+        res.json({ msg: "Data sent", result });
+    } catch (error) {
         console.log("Error occured while saving login info of patient: ", error);
-        res.status(500).json({msg: "Error Occured", error: error.message});
+        res.status(500).json({ msg: "Error Occured", error: error.message });
     }
 });
+
 
 
 server.listen(8000, () => {
