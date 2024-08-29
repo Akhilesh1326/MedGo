@@ -18,6 +18,7 @@ import PatientManagment from "./Doctor/Dashboard/PatientManagement"
 import CheckUser from './Components/CheckUser';
 import Home from './Components/Home';
 import CommonArea from "./Components/CommonArea";
+import CommonLogin from "./Components/CommonLogin";
 
 const router = createBrowserRouter([
     { path: "/", element: <Home /> },
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
     
     { path: "/user/checkuser", element: <CheckUser /> },
     { path: "/user/commonarea", element: <CommonArea />},
+    { path: "/user/login", element: <CommonLogin />},
 ]);
 
 function App() {

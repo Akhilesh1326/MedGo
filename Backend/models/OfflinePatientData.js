@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const OfflinePatientSchema = new mongoose.Schema({
+    doctorInformation:{
+        doctorId:{type:String, required: true},
+        doctorName:{type:String, required: true},
+        doctorOtherInformation:{type:String}
+    },
     personalInformation: {
         fullName: { type: String, required: true },
         dob: { type: Date, required: true },
