@@ -37,9 +37,9 @@ const ManageAppoinment = () => {
     <div>
       <HeaderForDashboardComponent/>
       <button className='border-2 border-blue-700 rounded-xl' onClick={handleAppointmentPop}>
-  {appointmentPop ? "Make Appointment" : "Exit Edit"}</button>
+  {appointmentPop ? "Exit Edit" : "Make Appoinment"}</button>
 
-<div className={`z-10 absolute bg-blue-900 border-4 border-blue-800 rounded-xl w-[60%] ${appointmentPop ? "hidden" : "flex flex-col"} transition-all duration-300`}>
+<div className={`z-10 absolute bg-blue-900 border-4 border-blue-800 rounded-xl w-[60%] ${appointmentPop ? "flex flex-col" : "hidden"} transition-all duration-300`}>
   <input 
     type="text" 
     placeholder='Title' 

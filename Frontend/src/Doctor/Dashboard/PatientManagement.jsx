@@ -54,46 +54,52 @@ const PatientManagement = () => {
                 <input type="text" placeholder="Preferred Pharmacy" />
             </div>
             <div>Patient History</div>
-            <div className="flex flex-col border-2 border-black rounded-lg w-fit items-center py-0 px-4">
-                <img src="" alt="img" className="h-16 w-16 border-2 border-black rounded-full mt-2" />
-                <div>Patient Name</div>
-                <div>contact</div>
-                <div>age</div>
-                <button className={`bg-slate-800 text-white border-2 border-black rounded-full `} onClick={handlePatientHistoryPanel}>Check Patient</button>
-                <div className={`bg-slate-700 absolute z-40 flex flex-col border-2 border-black rounded-lg ml-[400px] w-[450px] ${PatientHistoryPanel ? "" : "hidden"}`}>
-                    <div>Full Name</div>
-                    <div>Date of Birth (with Age calculation)</div>
-                    <div>Gender</div>
-                    <div>Contact Information (Phone, Email)</div>
-                    <div>Address</div>
-                    <div>Emergency Contact Information</div>
-                    <div className="text-xl">Medical History Section</div>
-                    <div>Allergies: List of known allergies with severity levels if applicable</div>
-                    <div>Chronic Conditions: Detailed list of chronic conditions (e.g., diabetes, hypertension)</div>
-                    <div>Past Surgeries: Description and dates of any surgeries</div>
-                    <div>Family Medical History: Information on hereditary conditions</div>
-                    <div className="text-xl">Ongoing Treatments</div>
-                    <div>Current Medications</div>
-                    <div>Treatment Plans</div>
-                    <div>Assigned Healthcare Providers</div>
-                    <div className="text-xl">Appointment Records</div>
-                    <div>Upcoming Appointments</div>
-                    <div>Past Appointments</div>
-                    <div className="text-xl"> Medical Documents</div>
-                    <div>Lab Results</div>
-                    <div>Imaging Results</div>
-                    <div>Discharge Summaries</div>
-                    <div>Referral Letters:</div>
-                    <div className="text-xl"> Insurance and Billing</div>
-                    <div>Insurance Information</div>
-                    <div>Billing History</div>
-                    <div className="text-xl"> Insurance and Billing</div>
+            <div className="grid grid-cols-4 gap-4 mx-10 place-items-center">
 
-                    <button className="bg-slate-800 text-white border-2 border-black rounded-full w-fit" onClick={handlePatientHistoryPanel}>Exit Details</button>
-                    <button className="bg-slate-800 text-white border-2 border-black rounded-full w-fit">Edit Details</button>
+                <div className="flex flex-col border-2 border-black rounded-lg w-fit items-center py-0 px-4">
+                    <div className="text-sm">type</div>
+                    <img src="" alt="img" className="h-16 w-16 border-2 border-black rounded-full mt-2" />
+                    <div>Patient Name</div>
+                    <div>contact</div>
+                    <div>age</div>
+                    <button className={`bg-slate-800 text-white border-2 border-black rounded-full `} onClick={handlePatientHistoryPanel}>Check Patient</button>
+                    <div className={`bg-slate-700 absolute z-40 flex flex-col border-2 border-black rounded-lg ml-[400px] w-[450px] ${PatientHistoryPanel ? "" : "hidden"}`}>
+                        <div>Full Name</div>
+                        <div>Date of Birth (with Age calculation)</div>
+                        <div>Gender</div>
+                        <div>Contact Information (Phone, Email)</div>
+                        <div>Address</div>
+                        <div>Emergency Contact Information</div>
+                        <div className="text-xl">Medical History Section</div>
+                        <div>Allergies: List of known allergies with severity levels if applicable</div>
+                        <div>Chronic Conditions: Detailed list of chronic conditions (e.g., diabetes, hypertension)</div>
+                        <div>Past Surgeries: Description and dates of any surgeries</div>
+                        <div>Family Medical History: Information on hereditary conditions</div>
+                        <div className="text-xl">Ongoing Treatments</div>
+                        <div>Current Medications</div>
+                        <div>Treatment Plans</div>
+                        <div>Assigned Healthcare Providers</div>
+                        <div className="text-xl">Appointment Records</div>
+                        <div>Upcoming Appointments</div>
+                        <div>Past Appointments</div>
+                        <div className="text-xl"> Medical Documents</div>
+                        <div>Lab Results</div>
+                        <div>Imaging Results</div>
+                        <div>Discharge Summaries</div>
+                        <div>Referral Letters:</div>
+                        <div className="text-xl"> Insurance and Billing</div>
+                        <div>Insurance Information</div>
+                        <div>Billing History</div>
+                        <div className="text-xl"> Insurance and Billing</div>
 
+                        <button className="bg-slate-800 text-white border-2 border-black rounded-full w-fit" onClick={handlePatientHistoryPanel}>Exit Details</button>
+                        <button className="bg-slate-800 text-white border-2 border-black rounded-full w-fit">Edit Details</button>
+
+                    </div>
                 </div>
+                
             </div>
+
 
         </div>
     )
