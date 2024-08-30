@@ -10,11 +10,11 @@ const {
 // const createResponse = (DBmsg) => ({ DBmsg });
 async function handleLoginUser({userName, email, password}){
     try{
-        console.log("Received userName:", userName); // Should log 'akhilesh'
-        console.log("Type of userName:", typeof userName); // Should log 'string'
+        // console.log("Received userName:", userName); // Should log 'akhilesh'
+        // console.log("Type of userName:", typeof userName); // Should log 'string'
     
         const result = await doctorloginInfo.findOne({ userName: userName });
-        console.log("result - ", result);
+        // console.log("result - ", result);
         if(result === null){
             return {userName:"NotFound"}
         }
