@@ -1,11 +1,49 @@
 import { Link } from "react-router-dom";
 import { useState } from 'react'
+import axios from "axios"; 
 import HeaderForDashboardComponent from "./HeaderForDashboardComponent"
 
 
 const PatientManagement = () => {
     const [PatientEditPanel, setPatientEditPanel] = useState(false);
     const [PatientHistoryPanel, setPatientHistoryPanel] = useState(false);
+
+    
+    const [fullName, setFullName] = useState("")
+    const [dob, setDob] = useState("")
+    const [gender, setGender] = useState("")
+    const [contactNumber, setContactNumber] = useState("")
+    const [email, setEmail] = useState("")
+    const [address, setAddress] = useState("")
+    const [emergencyContactNumber, setEmergencyContactNumber] = useState("")
+    const [emergencyContactName, setEmergencyContactName] = useState("")
+
+    const handleOfflinePatientFormSubmit = async() =>{
+        try{
+            const resp = await axios.post("/api/user/doctor/offline-registeration-form",{
+                fullName,
+                dob,
+                gender,
+                contactNumber,
+                email,
+                address,
+                emergencyContactNumber,
+                emergencyContactName
+            })
+            console.log(resp)
+            setFullName("")
+            setDob("")
+            setGender("")
+            setContactNumber("")
+            setEmail("")
+            setAddress("")
+            setEmergencyContactNumber("")
+            setEmergencyContactName("")
+
+        } catch(err){
+            console.log("Error", err)
+        }
+    }
 
     const handlePatientEditPanel = () => {
         setPatientEditPanel(!PatientEditPanel);
@@ -18,40 +56,44 @@ const PatientManagement = () => {
         <div className="bg-slate-800 text-white">
             <HeaderForDashboardComponent />
             <button className="border-2 border-black rounded-xl py-2 px-4 " onClick={handlePatientEditPanel}>Add new Patient</button>
-            <div className={`border-2 border-black rounded-xl w-fit scrollbar scrollbar-thumb-gray-900 scrollbar-track-gray-100 z-50 absolute bg-white ${PatientEditPanel ? "" : "hidden"} `}>
-                <div>Personal Information</div>
-                <input type="text" placeholder="Full name" />
-                <input type="text" placeholder="DOB" />
-                <input type="text" placeholder="Gender" />
-                <div>Contact Information:</div>
-                <input type="text" placeholder="Contact Number" />
-                <input type="text" placeholder="Email if Available" />
-                <div>Address</div>
-                <input type="text" placeholder="complete Address" />
-                <div>Emergency Contact</div>
-                <input type="text" placeholder="Emeregency Contact" />
-                <input type="text" placeholder="Emeregency ContactName" />
-                <div>Medical Information</div>
-                <div>Medical History</div>
-                <input type="text" name="" id="" placeholder="Known Allergies (e.g., medications, foods, etc.)" />
-                <input type="text" name="" id="" placeholder="Chronic Conditions (e.g., diabetes, hypertension)" />
-                <input type="text" name="" id="" placeholder="Past Surgeries" />
-                <input type="text" name="" id="" placeholder="Family Medical History (e.g., hereditary diseases)" />
-                <div>Current Medications</div>
-                <input type="text" placeholder="List of medications currently being taken" />
-                <div>Insurance Information</div>
-                <input type="text" placeholder="Insurance Provider" />
-                <input type="text" placeholder="Policy Number" />
-                <div>Blood Type</div>
-                <input type="text" placeholder="blood type" />
-                <div>Smoking/Alcohol/Drug Use</div>
-                <input type="text" name="" id="" placeholder="Social history" />
-                <div>Height and Weight</div>
-                <input type="text" placeholder="For baseline measurements" />
-                <div>Optional but useful Information</div>
-                <input type="text" placeholder="Occupation" />
-                <input type="text" placeholder="Marital Status" />
-                <input type="text" placeholder="Preferred Pharmacy" />
+            <div className={`flex flex-col ml-10  border-2 border-black rounded-xl w-fit scrollbar scrollbar-thumb-gray-900 scrollbar-track-gray-100 z-50 absolute bg-white ${PatientEditPanel ? "" : "hidden"} `}>
+                <div className="text-lg font-light my-2 mx-2 text-slate-900 ">Personal Information
+                    <button onClick={handleOfflinePatientFormSubmit}>Submit Form</button>
+                </div>
+                <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="Full name" value={fullName} onChange={(e) => setFullName(e.target.value)}/>
+                <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="DOB" value={dob} onChange={(e)=>setDob(e.target.value)}/>
+                <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="Gender" value={gender} onChange={(e)=>setGender(e.target.value)}/>
+                <div className="text-lg font-light my-2 mx-2 text-slate-900 ">Contact Information:</div>
+                <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="Contact Number" value={contactNumber} onChange={(e)=>setContactNumber(e.target.value)}/>
+                <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="Email if Available" value={email} onChange={(e)=>setEmail(e.target.value)}/>
+                <div className="text-lg font-light my-2 mx-2 text-slate-900 ">Address</div>
+                <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="complete Address" value={address} onChange={(e)=>setAddress(e.target.value)}/>
+                <div className="text-lg font-light my-2 mx-2 text-slate-900 ">Emergency Contact</div>
+                <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="Emeregency Contact" value={emergencyContactNumber} onChange={(e)=>setEmergencyContactNumber(e.target.value)}/>
+                <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="Emeregency ContactName" value={emergencyContactName} onChange={(e)=>setEmergencyContactName(e.target.value)}/>
+                <div className="text-lg font-light my-2 mx-2 text-slate-900 ">Medical Information</div>
+                <div className="text-lg font-light my-2 mx-2 text-slate-900 ">Medical History</div>
+                <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" name="" id="" placeholder="Known Allergies (e.g., medications, foods, etc.)" />
+                <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" name="" id="" placeholder="Chronic Conditions (e.g., diabetes, hypertension)" />
+                <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" name="" id="" placeholder="Past Surgeries" />
+                <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" name="" id="" placeholder="Family Medical History (e.g., hereditary diseases)" />
+                <div className="text-lg font-light my-2 mx-2 text-slate-900 ">Current Medications</div>
+                <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="List of medications currently being taken" />
+                <div className="text-lg font-light my-2 mx-2 text-slate-900 ">Blood Type</div>
+                <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="blood type" />
+                <div className="text-lg font-light my-2 mx-2 text-slate-900 ">Smoking/Alcohol/Drug Use</div>
+                <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" name="" id="" placeholder="Social history" />
+                <div className="text-lg font-light my-2 mx-2 text-slate-900 ">Height</div>
+                <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="For baseline measurements" />
+                <div className="text-lg font-light my-2 mx-2 text-slate-900 ">Height and Weight</div>
+                <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="For baseline measurements" />
+                <div className="text-lg font-light my-2 mx-2 text-slate-900 ">Insurance Information</div>
+                <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="Insurance Provider" />
+                <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="Policy Number" />
+                <div className="text-lg font-light my-2 mx-2 text-slate-900 ">Optional but useful Information</div>
+                <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="Occupation" />
+                <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="Marital Status" />
+                <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="Preferred Pharmacy" />
             </div>
             <div>Patient History</div>
             <div className="grid grid-cols-4 gap-4 mx-10 place-items-center">
