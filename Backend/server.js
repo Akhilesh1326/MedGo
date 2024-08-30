@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 const cors = require('cors');
 const { Server } = require("socket.io");
 const http = require("http");
+const jwt = require('jsonwebtoken');
+require('dotenv').config()
 
 const app = express();
 // HTTP server 
@@ -131,27 +133,37 @@ app.post('/api/user/doctor/agreementInfo', async (req, res) => {
     }
 });
 
-// Login Check for Doctor User
+const secret = "akhilesh";
+
+// API Call Login Check for Doctor User
 app.post('/api/user/check/login-credentials', async(req, res)=>{
     try{
         const logCred = req.body;
         console.log("logCred = ",logCred);
         const result = await handleLoginUser(logCred)
         console.log("Server Result = ",result);
+        const Id = result._id;
+        const UId = Id.toString();
+        console.log("User Id = ",Id.toString());
         if(result.userName===logCred.userName){
-
+            const token = jwt.sign({
+                UserId: UId,
+                name:result.userName,
+                email:result.email,
+                password:result.password,
+            },process.env.JWT_SECRET);
+            res.cookie("userCookie", token) 
             res.json({ msg: "UserFound", result });
         }
         else{
             res.json({ msg: "UserNotFound", result });
-
         }
 
     }catch(err){
-        console.error("Error Occured while Login Validation = ", err);
+        console.error("Error Occured while Login Validation = ",err.message);
         res.status(500).json({ msg: "Error Occured", error: err.message });
     }
-})
+});
 
 app.post('/api/user/doctor/offline-Patient-Regiter/', async (req, res) => {
     try {
@@ -223,6 +235,50 @@ app.post('/api/user/patient/loginInfo', async (req, res) => {
     }
 });
 
+// Offline Patient Form Registeration through App API Calls
+
+app.post("/api/user/doctor/offline-registeration-form",async(req,res)=>{
+    console.log(req.body);
+    // console.log(req.cookies.userCookie);
+    const token = req.cookies.userCookie;
+    if(!token){
+        res.json({msg:"Token Not Found"});
+    }
+    res.json({msg:"got data"});
+    try{
+        let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        delete varifyData.iat;
+        console.log(varifyData);
+        const formData = req.body;
+        let combo = {...varifyData,...formData}
+        console.log(combo);
+    } catch(err){
+
+    }
+});
+
+
+// JWT token verify code
+// app.post("/user/login", async(req,res)=>{
+//     const token = req.cookies.uid;
+//     if(!token){
+//         return res.json({msg:"Token not found"});
+//     }
+//     try{
+//         const ver = jwt.verify(token, secret);
+//         console.log("token = ",ver);
+//         console.log("name = ",req.body.value);
+//         if(ver.name === req.body.value){
+//             res.json({msg:"User Found"})
+//         }
+//         else{
+//             res.json({msg:"User Not found"})
+//         }
+//     }catch(err){
+//         console.log("Error occured in the token");
+//         res.json({ msg: "Token verification failed" });
+//     }
+// })
 
 
 server.listen(8000, () => {
