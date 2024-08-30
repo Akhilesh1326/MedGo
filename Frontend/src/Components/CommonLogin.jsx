@@ -1,10 +1,11 @@
 import axios from 'axios';
 import {useState} from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import bgOne from "../assets/upscale1.jpeg";
 
 
 const CommonLogin = () => {
+  const navigate = useNavigate();
   const [userName, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,6 +28,11 @@ const handleAllDataSubmit = async()=>{
       password
     })
     console.log(response.data);
+    const userCheck = response.data.msg;
+    if(userCheck == "UserFound"){
+      console.log("Hello")
+      navigate("/user/doctor/dashboard");
+    }
   }catch(err){
     console.log("Error occured = ",err);
   }
