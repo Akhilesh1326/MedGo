@@ -64,7 +64,7 @@ const {
 
 // offline patient registration
 
-const handleOfflinePatientEntry = require("./controllers/OfflinePatient");
+const {handleOfflinePatientEntry, handleAllDataOfOneDoctorOfOfflinePatient} = require("./controllers/OfflinePatient");
 
 
 // Middleware
@@ -182,7 +182,7 @@ app.post('/api/user/patient/basicInfo', async (req, res) => {
         const { fullName, phone, dateOfBirth, gender } = req.body;
         console.log(fullName, phone, dateOfBirth, gender);
 
-        const result = handlePatientBasic(fullName, phone, dateOfBirth, gender);
+        const result = await handlePatientBasic(fullName, phone, dateOfBirth, gender);
         console.log(result);
 
         res.json({ msg: "Data sent", result });
@@ -197,7 +197,7 @@ app.post('/api/user/patient/medicalInfo', async (req, res) => {
         const { currentMedicatioins, knowAllergies, medicalHistory, insuranceInformation } = req.body;
         console.log(currentMedicatioins, knowAllergies, medicalHistory, insuranceInformation);
 
-        const result = handlePatientMedicalInformation(currentMedicatioins, knowAllergies, medicalHistory, insuranceInformation);
+        const result = await handlePatientMedicalInformation(currentMedicatioins, knowAllergies, medicalHistory, insuranceInformation);
         console.log(result);
 
         res.json({ msg: "Data sent", result });
@@ -211,7 +211,7 @@ app.post('/api/user/patient/Identification', async (req, res) => {
         const { governmentIssuedId, adharNumber } = req.body;
         console.log(governmentIssuedId, adharNumber);
 
-        const result = handlePatientIdentification(governmentIssuedId, adharNumber);
+        const result = await handlePatientIdentification(governmentIssuedId, adharNumber);
         console.log(result);
 
         res.json({ msg: "Data sent", result });
@@ -225,7 +225,7 @@ app.post('/api/user/patient/loginInfo', async (req, res) => {
         const { username, email, password } = req.body;
         console.log(username, email, password);
 
-        const result = handlePatientMedicalInformation(username, email, password);
+        const result = await handlePatientMedicalInformation(username, email, password);
         console.log(result);
 
         res.json({ msg: "Data sent", result });
@@ -238,7 +238,7 @@ app.post('/api/user/patient/loginInfo', async (req, res) => {
 // Offline Patient Form Registeration through App API Calls
 
 app.post("/api/user/doctor/offline-registeration-form",async(req,res)=>{
-    console.log(req.body);
+    // console.log(req.body);
     // console.log(req.cookies.userCookie);
     const token = req.cookies.userCookie;
     if(!token){
@@ -247,17 +247,28 @@ app.post("/api/user/doctor/offline-registeration-form",async(req,res)=>{
     res.json({msg:"got data"});
     try{
         let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        varifyData.doctorId = varifyData.UserId;
+        varifyData.doctorName = varifyData.name;
+        varifyData.doctorOtherInformation = varifyData.email;
+        delete varifyData.password;
+        delete varifyData.name;
+        delete varifyData.UserId;
         delete varifyData.iat;
-        console.log(varifyData);
+        delete varifyData.email;
+        console.log("vairy daa = ", varifyData);
         const formData = req.body;
         let combo = {...varifyData,...formData}
         console.log(combo);
+        console.log("Hi")
+        const result = await handleOfflinePatientEntry(combo);
+        console.log("hello")
+        console.log(result);
     } catch(err){
-
+        console.log("error occured = ", err)
     }
 });
 
-
+// syntatic data
 // JWT token verify code
 // app.post("/user/login", async(req,res)=>{
 //     const token = req.cookies.uid;
@@ -280,6 +291,20 @@ app.post("/api/user/doctor/offline-registeration-form",async(req,res)=>{
 //     }
 // })
 
+// Get API calls for Card data
+app.get("/api/user/patient-show/", async(req, res)=>{
+    const token = req.cookies.userCookie;
+    if(!token){
+        // res.json({msg:"Token Not Found"});
+    }
+    let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+    // console.log("vairy daa = ", varifyData);
+
+    const result = await handleAllDataOfOneDoctorOfOfflinePatient(varifyData.UserId)
+    // console.log("THIS  = ",result);
+    console.log("GOOOOOOOOOOOD");
+    res.json({data:result});
+})
 
 server.listen(8000, () => {
     console.log('Server is running on http://localhost:8000');
