@@ -1,59 +1,48 @@
 const mongoose = require('mongoose');
 
 const OfflinePatientSchema = new mongoose.Schema({
-    doctorInformation:{
-        doctorId:{type:String, required: true},
-        doctorName:{type:String, required: true},
-        doctorOtherInformation:{type:String}
-    },
-    patientType:{
-        type:String,
+
+    doctorId: { type: String, required: true },
+    doctorName: { type: String, required: true },
+    doctorOtherInformation: { type: String },
+    patientType: {
+        type: String,
         required: true,
     },
-    personalInformation: {
-        fullName: { type: String, required: true },
-        dob: { type: Date, required: true },
-        gender: { type: String, required: true },
-    },
-    contactInformation: {
-        contactNumber: { type: String, required: true },
-        email: { type: String },
-    },
-    address: {
-        completeAddress: { type: String, required: true },
-    },
-    emergencyContact: {
-        contactNumber: { type: String, required: true },
-        contactName: { type: String, required: true },
-    },
-    medicalHistory: {
-        allergies: { type: String },
-        chronicConditions: { type: String },
-        pastSurgeries: { type: String },
-        familyMedicalHistory: { type: String },
-    },
-    medicalInformation: {
-        currentMedications: { type: String },
-        bloodType: { type: String },
-        socialHistory: { type: String },
-    },
+    fullName: { type: String, required: true },
+    dob: { type: Date, required: true },
+    gender: { type: String, required: true },
+
+    contactNumber: { type: String, required: true },
+    email: { type: String },
+
+    address: { type: String, required: true },
+
+    emergencyContactNumber: { type: String, required: true },
+    emergencyContactName: { type: String, required: true },
+
+    allergies: { type: String },
+    chronicConditions: { type: String },
+    pastSurgeries: { type: String },
+    familyMedicalHistory: { type: String },
+
+    currentMedications: { type: String },
+    bloodType: { type: String },
+    socialHistory: { type: String },
+
     height: {
         type: String,
     },
-    Weight:{
+    Weight: {
         type: String,
     },
-    insuranceInformation: {
-        provider: { type: String },
-        policyNumber: { type: String },
-    },
-    optionalInformation: {
-        occupation: { type: String },
-        maritalStatus: { type: String },
-        preferredPharmacy: { type: String },
-    },
+    provider: { type: String },
+    policyNumber: { type: String },
+    occupation: { type: String },
+    maritalStatus: { type: String },
+    preferredPharmacy: { type: String },
 }, { timestamps: true });
 
-const Patient = mongoose.model('Patient', OfflinePatientSchema);
+const offlinePatientRegisteration = mongoose.model('offlinePatientRegsteration', OfflinePatientSchema);
 
-module.exports = Patient;
+module.exports = { offlinePatientRegisteration };
