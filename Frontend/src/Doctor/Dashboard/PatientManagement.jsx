@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from "axios"; 
 import HeaderForDashboardComponent from "./HeaderForDashboardComponent"
 
@@ -18,9 +18,13 @@ const PatientManagement = () => {
     const [emergencyContactNumber, setEmergencyContactNumber] = useState("")
     const [emergencyContactName, setEmergencyContactName] = useState("")
 
+    const [OfflinePatientData, setOfflinePatientData] = useState([])
+
     const handleOfflinePatientFormSubmit = async() =>{
+        const patientType = "offlineEntry";
         try{
             const resp = await axios.post("/api/user/doctor/offline-registeration-form",{
+                patientType,
                 fullName,
                 dob,
                 gender,
@@ -44,6 +48,23 @@ const PatientManagement = () => {
             console.log("Error", err)
         }
     }
+    
+    useEffect(() =>{
+        const handleOfflinePatientCardInfo = async() =>{
+            try{
+                const resp = await axios.get("/api/user/patient-show/")
+                console.log("resp = ",resp.data)
+                console.log("resp = ",resp)
+                console.log("resp = ",resp.data.data)
+                setOfflinePatientData(resp.data.data);
+
+            } catch(err){
+                console.log(err)
+            }
+        }
+        handleOfflinePatientCardInfo();
+    }, [PatientEditPanel])
+    
 
     const handlePatientEditPanel = () => {
         setPatientEditPanel(!PatientEditPanel);
@@ -52,7 +73,7 @@ const PatientManagement = () => {
         setPatientHistoryPanel(!PatientHistoryPanel);
     }
 
-    return (
+    return ( 
         <div className="bg-slate-800 text-white">
             <HeaderForDashboardComponent />
             <button className="border-2 border-black rounded-xl py-2 px-4 " onClick={handlePatientEditPanel}>Add new Patient</button>
@@ -97,13 +118,13 @@ const PatientManagement = () => {
             </div>
             <div>Patient History</div>
             <div className="grid grid-cols-4 gap-4 mx-10 place-items-center">
-
-                <div className="flex flex-col border-2 border-black rounded-lg w-fit items-center py-0 px-4">
-                    <div className="text-sm">type</div>
+                {OfflinePatientData.map((item) =>(
+                    <div key={item._id} className="flex flex-col border-2 border-black rounded-lg w-fit items-center py-0 px-4">
+                    <div className="text-sm">{item.patientType}</div>
                     <img src="" alt="img" className="h-16 w-16 border-2 border-black rounded-full mt-2" />
-                    <div>Patient Name</div>
-                    <div>contact</div>
-                    <div>age</div>
+                    <div>{item.fullName}</div>
+                    <div>{item.contactNumber}</div>
+                    <div>{item.dob}</div>
                     <button className={`bg-slate-800 text-white border-2 border-black rounded-full `} onClick={handlePatientHistoryPanel}>Check Patient</button>
                     <div className={`bg-slate-700 absolute z-40 flex flex-col border-2 border-black rounded-lg ml-[400px] w-[450px] ${PatientHistoryPanel ? "" : "hidden"}`}>
                         <div>Full Name</div>
@@ -139,6 +160,8 @@ const PatientManagement = () => {
 
                     </div>
                 </div>
+                ))}
+                
                 
             </div>
 
