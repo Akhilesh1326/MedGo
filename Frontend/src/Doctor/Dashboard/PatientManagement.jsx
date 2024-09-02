@@ -63,7 +63,7 @@ const PatientManagement = () => {
             }
         }
         handleOfflinePatientCardInfo();
-    }, [PatientEditPanel])
+    }, [PatientEditPanel],[])
     
 
     const handlePatientEditPanel = () => {
