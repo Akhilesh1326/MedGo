@@ -23,19 +23,23 @@ const io = new Server(server, {
 
 // WebSocket initialization
 io.on("connection", (socket) => {
+    console.log("Socket.io client connected:", socket.id);
+
     // Receive message from client
     socket.on("client-message", (message) => {
         console.log("Message from client:", message);
 
-        // Send a response back to the client
-        io.emit("message", message);
+        // Ensure message is sent as an array or in the expected format
+        // Here we're emitting the message as an array to ensure compatibility
+        io.emit("message", message); // Wrap in an array if it's not one
     });
 
     // Handle client disconnection
     socket.on("disconnect", () => {
-        console.log("Socket.io client disconnected");
+        console.log("Socket.io client disconnected:", socket.id);
     });
 });
+
 
 // For REST API calls
 app.use(cors({
@@ -65,7 +69,8 @@ const {
 // offline patient registration
 
 const {handleOfflinePatientEntry, handleAllDataOfOneDoctorOfOfflinePatient} = require("./controllers/OfflinePatient");
-
+// Online Patient function 
+const {handleOnlineAppointment,handleAllDataOfOneDoctorOnlineAppointment, handleAllOnlineAppointment} = require("./controllers/onlineApointment");
 
 // Middleware
 app.use(express.json());
@@ -243,8 +248,9 @@ app.post("/api/user/doctor/offline-registeration-form",async(req,res)=>{
     const token = req.cookies.userCookie;
     if(!token){
         res.json({msg:"Token Not Found"});
+    }else{
+        res.json({msg:"Data Sent"})
     }
-    res.json({msg:"got data"});
     try{
         let varifyData = jwt.verify(token, process.env.JWT_SECRET);
         varifyData.doctorId = varifyData.UserId;
@@ -267,6 +273,37 @@ app.post("/api/user/doctor/offline-registeration-form",async(req,res)=>{
         console.log("error occured = ", err)
     }
 });
+
+// Online Appointment data from frontend
+app.post("/api/user/docotor-create-online-appointment", async(req,res)=>{
+    try{
+        const token = req.cookies.userCookie;
+        if(!token){
+            res.json({msg:"Token Not Found"});
+        }else{
+            res.json({msg:"Data Sent"})
+        }
+        let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        varifyData.doctorId = varifyData.UserId;
+        varifyData.doctorName = varifyData.name;
+        varifyData.doctorOtherInformation = varifyData.email;
+        delete varifyData.password;
+        delete varifyData.name;
+        delete varifyData.UserId;
+        delete varifyData.iat;
+        delete varifyData.email;
+
+        console.log("Varify daa = ", varifyData);
+        const formData = req.body;
+        console.log("Body = ",formData);
+        let combo = {...varifyData,...formData}
+        console.log(combo);
+        const result = await handleOnlineAppointment(combo);
+        console.log("Result = ", result)
+    } catch(err){
+        console.log("Error occured = ",err);
+    }
+})
 
 // syntatic data
 // JWT token verify code
@@ -291,11 +328,11 @@ app.post("/api/user/doctor/offline-registeration-form",async(req,res)=>{
 //     }
 // })
 
-// Get API calls for Card data
+// Get API calls for Card data of offline patient apointment data 
 app.get("/api/user/patient-show/", async(req, res)=>{
     const token = req.cookies.userCookie;
     if(!token){
-        // res.json({msg:"Token Not Found"});
+        return res.json({msg:"Token Not Found"});
     }
     let varifyData = jwt.verify(token, process.env.JWT_SECRET);
     // console.log("vairy daa = ", varifyData);
@@ -306,6 +343,33 @@ app.get("/api/user/patient-show/", async(req, res)=>{
     res.json({data:result});
 })
 
+//  API call for data request for online appointment data card.
+
+app.get("/api/user/appointment-show/", async(req,res)=>{
+    try{
+        const token = req.cookies.userCookie;
+        if(!token){
+            return res.json({msg:"Token Not Found"});
+        }
+        const varifyData = jwt.verify(token, process.env.JWT_SECRET);
+
+        const result = await handleAllDataOfOneDoctorOnlineAppointment(varifyData.UserId);
+        res.json({data:result});
+    }catch(err){
+        console.log("Error while getting info of online appointment = ",err);
+    }
+})
+
+// Api call for common area
+app.get("/api/user/all-appointment-data", async(req,res)=>{
+    try{
+        const result = await handleAllOnlineAppointment();
+
+        res.json({result:result})
+    } catch(err){
+        console.log("Error with getting all appointment data = ",err)
+    }
+})
 server.listen(8000, () => {
     console.log('Server is running on http://localhost:8000');
 });
