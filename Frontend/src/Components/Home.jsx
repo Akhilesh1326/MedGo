@@ -6,7 +6,7 @@ const Home = () => {
     <div className='flex flex-col'>
       <h1>MedLinea HomePage</h1>
       <Link to="/user/checkuser"><button>Go to checkuser</button></Link>
-      <Link to="/user/login"><button>Log in user</button></Link>
+      <Link to="/user/check/login"><button>Log in user</button></Link>
     </div>
   )
 }
