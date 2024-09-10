@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const PatientBasic = new mongoose.Schema({
+    patientIdOfLogCred:{
+        type:String,
+        required: true,
+    },
     fullName:{
         type: String,
         required: true,
@@ -21,10 +25,32 @@ const PatientBasic = new mongoose.Schema({
 
 const patientBasic  = mongoose.model("patientUserBasic", PatientBasic);
 
+const PatientPersonalInformation = new mongoose.Schema({
+    patientIdOfLogCred:{
+        type:String,
+        required: true,
+    },
+    martialStatus:{
+        type: String,
+    },
+    occupation:{
+        type:String,
+    },
+    languagePreference:{
+        type:String,
+    },
+},{timestamps:true});
+
+const patientPersonalInformation = mongoose.model("patientUserPersonalInformation", PatientPersonalInformation);
+
+
 const PatientMedicalInformation = new mongoose.Schema({
+    patientIdOfLogCred:{
+        type:String,
+        required: true,
+    },
     currentMedications:{
         type: String,
-        
     },
     knowAllergies:{
         type: String,
@@ -32,7 +58,10 @@ const PatientMedicalInformation = new mongoose.Schema({
     medicalHistory:{
         type: String,
     },
-    insuranceInformation:{
+    pastSurgeries:{
+        type: String,
+    },
+    familyMedicalHistory:{
         type: String,
     },
 }, {timestamps: true});
@@ -40,6 +69,10 @@ const PatientMedicalInformation = new mongoose.Schema({
 const patientMedicalInformation = mongoose.model("patientUserMedicalInformation", PatientMedicalInformation);
 
 const PatientIdentification = new mongoose.Schema({
+    patientIdOfLogCred:{
+        type:String,
+        required: true,
+    },
     governmentIssuedId: {
         type: String,
         required: true,
@@ -75,4 +108,5 @@ module.exports ={
     patientIdentification,
     patientMedicalInformation,
     patientloginCredentials,
+    patientPersonalInformation,
 };
