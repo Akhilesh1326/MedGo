@@ -74,7 +74,7 @@ const Doctor_SignIn = () => {
               <option className='text-white w-10' value="other">Other</option>
             </select>
             <button className="font-light text-lg text-white py-2 mt-7 rounded-lg bg-black w-[50%] self-center opacity-100 hover:shadow-lg hover:shadow-[#0688b0] hover:-translate-y-1 duration-500 mb-8 "  onClick={handleAllDataSubmit}>Submit</button>
-            <Link to="/user/doctor/login-credentials"><button className="font-light text-lg text-white py-2 mt-5 rounded-lg bg-black w-[50%] self-center opacity-100 hover:shadow-md hover:shadow-[#0688b0] duration-500" >Submit</button></Link>
+            <Link to="/user/doctor/personal-information"><button className="font-light text-lg text-white py-2 mt-5 rounded-lg bg-black w-[50%] self-center opacity-100 hover:shadow-md hover:shadow-[#0688b0] duration-500" >Submit</button></Link>
             <div className='lg:hidden flex justify-center mb-2'>
               <label htmlFor="login question" className='self-center text-sm mt-4 font-semibold text-[#034458]'>Already have an account?</label>
               <label htmlFor="signup" className='self-center text-sm mt-4 font-bold text-black ml-2'>Sign In</label>
