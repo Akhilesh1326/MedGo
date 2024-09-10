@@ -56,6 +56,9 @@ const {
     handleDoctorLoginInfo,
     handleDoctorProfessionalInfo,
     handleLoginUser,
+    handleLoginUserWithId,
+    handleDoctorAllProfileData,
+    handleDoctorIdentificationInfo,
 } = require("./controllers/doctor");
 // DB Module imports for Patients
 
@@ -64,6 +67,9 @@ const {
     handlePatientIdentification,
     handlePatientLoginCredentials,
     handlePatientMedicalInformation,
+    handlePatientPersonalInformation,
+    handleAllPatientProfileData,
+    handleLoginPatientUser,
 } = require("./controllers/patient")
 
 // offline patient registration
@@ -89,8 +95,12 @@ app.post("/api/user/doctor/basicInfo", async (req, res) => {
     try {
         const { fullName, phone, dateOfBirth, gender } = req.body;
         console.log(fullName, phone, dateOfBirth, gender);
+        const token = req.cookies.userCookie;
+        let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        const data = varifyData.UserId;
+        console.log(data);
 
-        const result = await handleDoctorBasicInfo(fullName, phone, dateOfBirth, gender);
+        const result = await handleDoctorBasicInfo(data, fullName, phone, dateOfBirth, gender);
         console.log(result);
 
         res.json({ msg: "Data sent", result });
@@ -106,6 +116,12 @@ app.post('/api/user/doctor/loginInfo', async (req, res) => {
         console.log(userName, email, password);
 
         const result = await handleDoctorLoginInfo(userName, email, password);
+        const Id = result._id;
+        const UId = Id.toString();
+        const token = jwt.sign({
+            UserId: UId
+        },process.env.JWT_SECRET);
+        res.cookie("userCookie", token) 
         res.json({ msg: "Data sent", result });
     }
     catch (err) {
@@ -118,7 +134,11 @@ app.post('/api/user/doctor/professionalInfo', async (req, res) => {
     try {
         const { medicalLicenseNumber, specialization, yearsOfExperience, medicalSchool, hospitalOrClinic } = req.body;
         console.log(medicalLicenseNumber, specialization, yearsOfExperience, medicalSchool, hospitalOrClinic);
-        const result = await handleDoctorProfessionalInfo(medicalLicenseNumber, specialization, yearsOfExperience, medicalSchool, hospitalOrClinic);
+        const token = req.cookies.userCookie;
+        let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        const data = varifyData.UserId;
+        console.log(data);
+        const result = await handleDoctorProfessionalInfo(data, medicalLicenseNumber, specialization, yearsOfExperience, medicalSchool, hospitalOrClinic);
         res.json({ msg: "Data Sent", result });
     } catch (err) {
         console.error("Error occured = ", err);
@@ -130,7 +150,11 @@ app.post('/api/user/doctor/agreementInfo', async (req, res) => {
     try {
         const { termsAndServices, privacyAndPolicy, consentOfDataSharing } = req.body;
         console.log(termsAndServices, privacyAndPolicy, consentOfDataSharing);
-        const result = await handleDoctorAgreementInfo(termsAndServices, privacyAndPolicy, consentOfDataSharing);
+        const token = req.cookies.userCookie;
+        let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        const data = varifyData.UserId;
+        console.log(data);
+        const result = await handleDoctorAgreementInfo(data, termsAndServices, privacyAndPolicy, consentOfDataSharing);
         res.json({ msg: "Data Sent", result });
     } catch (err) {
         console.error("Error Occured while post of Agreement = ", err);
@@ -138,9 +162,23 @@ app.post('/api/user/doctor/agreementInfo', async (req, res) => {
     }
 });
 
-const secret = "akhilesh";
+app.post('/api/user/doctor/',async(req,res)=>{
+    try {
+        const {proofOfMedicalLicense, proofOfIdentity, Certifications} = req.body;
+        console.log(proofOfMedicalLicense, proofOfIdentity, Certifications);
+        const token = req.cookies.userCookie;
+        let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        const data = varifyData.UserId;
+        console.log(data);
+        const result = await handleDoctorIdentificationInfo(data, proofOfMedicalLicense, proofOfIdentity, Certifications);
+        res.json({ msg: "Data Sent", result });
 
-// API Call Login Check for Doctor User
+    } catch (error) {
+        console.log("Error while getting indentification infomation = ", error);
+    }
+})
+
+// Doctor Login verification
 app.post('/api/user/check/login-credentials', async(req, res)=>{
     try{
         const logCred = req.body;
@@ -152,10 +190,7 @@ app.post('/api/user/check/login-credentials', async(req, res)=>{
         console.log("User Id = ",Id.toString());
         if(result.userName===logCred.userName){
             const token = jwt.sign({
-                UserId: UId,
-                name:result.userName,
-                email:result.email,
-                password:result.password,
+                UserId: UId
             },process.env.JWT_SECRET);
             res.cookie("userCookie", token) 
             res.json({ msg: "UserFound", result });
@@ -170,15 +205,18 @@ app.post('/api/user/check/login-credentials', async(req, res)=>{
     }
 });
 
-app.post('/api/user/doctor/offline-Patient-Regiter/', async (req, res) => {
+// API call for All Doctor data for Profile
+
+app.get("/api/user/doctor/all-profile-data", async(req,res)=>{
     try {
-        const offlinePatientRegistration = req.body;
-        console.log(offlinePatientRegistration);
-        // const result = await handleOfflinePatientEntry(offlinePatientRegistration);
-        res.json({ msg: "Data sent", result });
-    } catch (err) {
-        console.log("Error Occured While registering the offline patinet form", err);
-        res.status(500).json({ msg: "Error Occured", error: err.message });
+        const token = req.cookies.userCookie;
+        let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        const data = varifyData.UserId;
+        console.log(data);
+        const result = await handleDoctorAllProfileData(data);
+        res.json({ProfileData:result})
+    } catch (error) {
+        console.log("Error while getting all data of doctor ",error);
     }
 })
 
@@ -186,8 +224,14 @@ app.post('/api/user/patient/basicInfo', async (req, res) => {
     try {
         const { fullName, phone, dateOfBirth, gender } = req.body;
         console.log(fullName, phone, dateOfBirth, gender);
+        // console.log(req.cookies.userCookie)
+        const token = req.cookies.userCookie;
+        let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        const data = varifyData.UserId;
+        console.log(data);
 
-        const result = await handlePatientBasic(fullName, phone, dateOfBirth, gender);
+
+        const result = await handlePatientBasic(data, fullName, phone, dateOfBirth, gender);
         console.log(result);
 
         res.json({ msg: "Data sent", result });
@@ -197,12 +241,34 @@ app.post('/api/user/patient/basicInfo', async (req, res) => {
     }
 });
 
+app.post('/api/user/patient/personalInformation', async(req,res)=>{
+    try {
+        const userData = req.body;
+        const {martialStatus,occupation,languagePreference} = req.body;
+        console.log(userData);
+        const token = req.cookies.userCookie;
+        let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        const data = varifyData.UserId;
+        console.log("Data = ",data);
+        
+        const result = await handlePatientPersonalInformation(data,martialStatus,occupation,languagePreference);
+        console.log(result);
+        res.json({ msg: "Data sent", result });
+        
+    } catch (error) {
+        
+    }
+})
 app.post('/api/user/patient/medicalInfo', async (req, res) => {
     try {
-        const { currentMedicatioins, knowAllergies, medicalHistory, insuranceInformation } = req.body;
-        console.log(currentMedicatioins, knowAllergies, medicalHistory, insuranceInformation);
+        const { currentMedications, knowAllergies, medicalHistory, pastSurgeries, familyMedicalHistory } = req.body;
+        console.log( currentMedications, knowAllergies, medicalHistory,pastSurgeries, familyMedicalHistory );
+        const token = req.cookies.userCookie;
+        let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        const data = varifyData.UserId;
+        console.log("Data = ",data);
 
-        const result = await handlePatientMedicalInformation(currentMedicatioins, knowAllergies, medicalHistory, insuranceInformation);
+        const result = await handlePatientMedicalInformation(data, currentMedications, knowAllergies, medicalHistory,pastSurgeries, familyMedicalHistory);
         console.log(result);
 
         res.json({ msg: "Data sent", result });
@@ -215,8 +281,12 @@ app.post('/api/user/patient/Identification', async (req, res) => {
     try {
         const { governmentIssuedId, adharNumber } = req.body;
         console.log(governmentIssuedId, adharNumber);
+        const token = req.cookies.userCookie;
+        let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        const data = varifyData.UserId;
+        console.log("Data = ",data);
 
-        const result = await handlePatientIdentification(governmentIssuedId, adharNumber);
+        const result = await handlePatientIdentification(data, governmentIssuedId, adharNumber);
         console.log(result);
 
         res.json({ msg: "Data sent", result });
@@ -225,13 +295,20 @@ app.post('/api/user/patient/Identification', async (req, res) => {
         res.status(500).json({ msg: "Error Occured", error: error.message });
     }
 });
+
 app.post('/api/user/patient/loginInfo', async (req, res) => {
     try {
         const { username, email, password } = req.body;
         console.log(username, email, password);
-
-        const result = await handlePatientMedicalInformation(username, email, password);
+        // console.log("cokkie = ",req.cookies)                    
+        const result = await handlePatientLoginCredentials(username, email, password);
         console.log(result);
+        const Id = result._id;
+        const UId = Id.toString();
+        const token = jwt.sign({
+            UserId: UId
+        },process.env.JWT_SECRET);
+        res.cookie("userCookie", token) 
 
         res.json({ msg: "Data sent", result });
     } catch (error) {
@@ -239,6 +316,33 @@ app.post('/api/user/patient/loginInfo', async (req, res) => {
         res.status(500).json({ msg: "Error Occured", error: error.message });
     }
 });
+
+// Login verification for Patient
+
+app.post("/api/user/patient/login-credentials", async(req,res)=>{
+    try{
+        const logCred = req.body;
+        console.log("logCred = ",logCred);
+        const result = await handleLoginPatientUser(logCred)
+        console.log("Server Result = ",result);
+        const Id = result._id;
+        const UId = Id.toString();
+        console.log("User Id = ",Id.toString());
+        if(result.username===logCred.userName){
+            const token = jwt.sign({
+                UserId: UId
+            },process.env.JWT_SECRET);
+            res.cookie("userCookie", token) 
+            res.json({ msg: "UserFound", result });
+        }
+        else{
+            res.json({ msg: "UserNotFound", result });
+        }
+        }catch(err){
+        console.error("Error Occured while Login Validation = ",err.message);
+        res.status(500).json({ msg: "Error Occured", error: err.message });
+    }   
+})
 
 // Offline Patient Form Registeration through App API Calls
 
@@ -254,25 +358,37 @@ app.post("/api/user/doctor/offline-registeration-form",async(req,res)=>{
     try{
         let varifyData = jwt.verify(token, process.env.JWT_SECRET);
         varifyData.doctorId = varifyData.UserId;
-        varifyData.doctorName = varifyData.name;
-        varifyData.doctorOtherInformation = varifyData.email;
-        delete varifyData.password;
-        delete varifyData.name;
-        delete varifyData.UserId;
-        delete varifyData.iat;
-        delete varifyData.email;
+        const Id = varifyData.UserId;
+        const resultForId = await handleLoginUserWithId(Id);
+        console.log("Result = ",resultForId);
+        userDataObj = {
+            doctorName:resultForId.userName,
+            doctorOtherInformation:resultForId.email,
+        }
         console.log("vairy daa = ", varifyData);
         const formData = req.body;
-        let combo = {...varifyData,...formData}
+        let combo = {...varifyData,...userDataObj,...formData}
         console.log(combo);
-        console.log("Hi")
+        // console.log("Hi")
         const result = await handleOfflinePatientEntry(combo);
-        console.log("hello")
+        // console.log("hello")
         console.log(result);
     } catch(err){
         console.log("error occured = ", err)
     }
 });
+
+app.post('/api/user/doctor/offline-Patient-Regiter/', async (req, res) => {
+    try {
+        const offlinePatientRegistration = req.body;
+        console.log(offlinePatientRegistration);
+        // const result = await handleOfflinePatientEntry(offlinePatientRegistration);
+        res.json({ msg: "Data sent", result });
+    } catch (err) {
+        console.log("Error Occured While registering the offline patinet form", err);
+        res.status(500).json({ msg: "Error Occured", error: err.message });
+    }
+})
 
 // Online Appointment data from frontend
 app.post("/api/user/docotor-create-online-appointment", async(req,res)=>{
@@ -285,18 +401,16 @@ app.post("/api/user/docotor-create-online-appointment", async(req,res)=>{
         }
         let varifyData = jwt.verify(token, process.env.JWT_SECRET);
         varifyData.doctorId = varifyData.UserId;
-        varifyData.doctorName = varifyData.name;
-        varifyData.doctorOtherInformation = varifyData.email;
-        delete varifyData.password;
-        delete varifyData.name;
-        delete varifyData.UserId;
-        delete varifyData.iat;
-        delete varifyData.email;
-
-        console.log("Varify daa = ", varifyData);
+        const Id = varifyData.UserId;
+        const resultForId = await handleLoginUserWithId(Id);
+        console.log("Result = ",resultForId);
+        userDataObj = {
+            doctorName:resultForId.userName,
+            doctorOtherInformation:resultForId.email,
+        }
+        console.log("vairy daa = ", varifyData);
         const formData = req.body;
-        console.log("Body = ",formData);
-        let combo = {...varifyData,...formData}
+        let combo = {...varifyData,...userDataObj,...formData}
         console.log(combo);
         const result = await handleOnlineAppointment(combo);
         console.log("Result = ", result)
@@ -328,7 +442,7 @@ app.post("/api/user/docotor-create-online-appointment", async(req,res)=>{
 //     }
 // })
 
-// Get API calls for Card data of offline patient apointment data 
+// Get API calls for Card data of offline patient apointment data card
 app.get("/api/user/patient-show/", async(req, res)=>{
     const token = req.cookies.userCookie;
     if(!token){
@@ -360,15 +474,26 @@ app.get("/api/user/appointment-show/", async(req,res)=>{
     }
 })
 
-// Api call for common area
+// Api call for common area data card
 app.get("/api/user/all-appointment-data", async(req,res)=>{
     try{
         const result = await handleAllOnlineAppointment();
-
+        console.log("All data - ", result)
         res.json({result:result})
     } catch(err){
         console.log("Error with getting all appointment data = ",err)
     }
+})
+
+// API call for getting all profile data 
+app.get("/api/user/patient/all-profile-data", async(req,res)=>{
+    console.log(req.body)
+    const token = req.cookies.userCookie;
+        let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        const data = varifyData.UserId;
+        console.log("Id = ",data);
+        const result = await handleAllPatientProfileData(data);
+    res.json({PatientData:"no"});
 })
 server.listen(8000, () => {
     console.log('Server is running on http://localhost:8000');
