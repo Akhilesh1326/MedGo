@@ -5,10 +5,7 @@ const OfflinePatientSchema = new mongoose.Schema({
     doctorId: { type: String, required: true },
     doctorName: { type: String, required: true },
     doctorOtherInformation: { type: String },
-    patientType: {
-        type: String,
-        required: true,
-    },
+    patientType: { type: String, required: true,},
     fullName: { type: String, required: true },
     dob: { type: Date, required: true },
     gender: { type: String, required: true },
