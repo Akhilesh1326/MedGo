@@ -17,7 +17,7 @@ async function handleOfflinePatientEntry(userData) {
 
 async function handleAllDataOfOneDoctorOfOfflinePatient(userId) {
     const result = await offlinePatientRegisteration.find({doctorId:userId});
-    console.log("Total Data = ", result);
+    // console.log("Total Data = ", result);
     return result;
 }
 
