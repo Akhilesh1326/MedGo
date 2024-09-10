@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 // Basic Information for Doctor, Table-1
 const DoctorBasicInfo = new mongoose.Schema({
+    DoctorLogInId:{
+        type: String,
+        required: true,
+    },
     fullName: {
         type: String,
         required: true,
@@ -24,6 +28,10 @@ const doctorBasicInfo = mongoose.model('doctorUserBasicInfo', DoctorBasicInfo);
 
 // Professional Information for Doctor, Table-2
 const DoctorProfessionalInfo = new mongoose.Schema({
+    DoctorLogInId:{
+        type: String,
+        required: true,
+    },
     medicalLicenseNumber: {
         type: String,
         required: true,
@@ -50,6 +58,10 @@ const DoctorProfessionalInfo = new mongoose.Schema({
 const doctorProfessionalInfo = mongoose.model('doctorUserProfessionalInfo', DoctorProfessionalInfo);
 
 const DoctorIdentificationInfo = new mongoose.Schema({
+    DoctorLogInId:{
+        type: String,
+        required: true,
+    },
     proofOfMedicalLicense: {
         type: String,
         required: true,
@@ -86,6 +98,10 @@ const DoctorLoginInfo = new mongoose.Schema({
 const doctorloginInfo = mongoose.model("doctorUserLoginInfo", DoctorLoginInfo);
 
 const DoctorAgreementInfo = new mongoose.Schema({
+    DoctorLogInId:{
+        type: String,
+        required: true,
+    },
     termsAndServices: {
         type: String,
         required: true,
