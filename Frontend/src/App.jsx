@@ -8,6 +8,7 @@ import PatientMedcialInformation from "./Patient/Patient_Medical_Information"
 import PatientDashboard from "./Patient/Patient_Dashboard";
 import Profile from "./Patient/Dashboard/Profile";
 import LogInPatient from "./Patient/LogInPatient"
+import ManageAppointmentForPatient from "./Patient/Dashboard/ManageAppointment";
 
 import DoctorSignIn from "./Doctor/Doctor_SignIn";
 import DoctorLoginCred from './Doctor/Doctor_Login_Cred';
@@ -16,7 +17,8 @@ import DoctorValidation from './Doctor/Doctor_Validation';
 import DoctorDashboard from './Doctor/Doctor_Dashboard';
 import DoctorProfile from "./Doctor/Doctor_Profile";
 import ManageAppoinment from "./Doctor/Dashboard/ManageAppoinment";
-import PatientManagment from "./Doctor/Dashboard/PatientManagement"
+import PatientManagment from "./Doctor/Dashboard/PatientManagement";
+import PriscriptionManagement from "./Doctor/Dashboard/PriscriptionManagement";
 
 
 import CheckUser from './Components/CheckUser';
@@ -35,6 +37,7 @@ const router = createBrowserRouter([
     { path: "/user/doctor/profile", element: <DoctorProfile />},
     { path: "/user/doctor/dashboard/manage-appoinment", element: <ManageAppoinment />},
     { path: "/user/doctor/dashboard/manage-patients", element: <PatientManagment />},
+    { path: "/user/doctor/dashboard/manage-prescription", element: <PriscriptionManagement />},
     
     { path: "/user/patient/signin", element: <PatientSignIn /> },
     { path: "/user/patient/login-credentials", element: <PatientLoginCred /> },
@@ -44,6 +47,7 @@ const router = createBrowserRouter([
     { path: "/user/patient/dashboard", element: <PatientDashboard /> },
     { path: "/user/patient/profile", element: <Profile />},
     { path: "/user/patient/login", element: <LogInPatient />},
+    { path: "/user/patient/dashboard/manage-appoinment", element: <ManageAppointmentForPatient />},
     
     { path: "/user/checkuser", element: <CheckUser /> },
     { path: "/user/commonarea", element: <CommonArea />},
