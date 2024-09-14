@@ -26,8 +26,8 @@ async function handlePatientLoginCredentials(username, email, password){
     return result;
 };
 
-async function handlePatientPersonalInformation(patientIdOfLogCred, martialStatus, occupation, languagePreference){
-    const result = await patientPersonalInformation.create({patientIdOfLogCred, martialStatus, occupation, languagePreference});
+async function handlePatientPersonalInformation(patientIdOfLogCred, martialStatus, occupation, languagePreference,emergencyContactPhone,emergenecyContactName){
+    const result = await patientPersonalInformation.create({patientIdOfLogCred, martialStatus, occupation, languagePreference,emergencyContactPhone,emergenecyContactName});
     return result;
 }
 
@@ -51,21 +51,28 @@ async function handleLoginPatientUser(data) {
 async function handleAllPatientProfileData(id) {
     try {
         console.log('id',id);
-        const result1 = await  patientBasic.findOne({patientIdOfLogCred:id})
-        const result2 = await  patientloginCredentials.findById(id)
-        const result3 = await  patientPersonalInformation.findOne({patientIdOfLogCred:id})
-        const result4 = await  patientMedicalInformation.findOne({patientIdOfLogCred:id})
-        const result5 = await  patientIdentification.findOne({patientIdOfLogCred:id})
-        console.log("result1 = ",result1)
-        console.log("result2 = ",result2)
-        console.log("result3 = ",result3)
-        console.log("result4 = ",result4)
-        console.log("result5 = ",result5)
+        const result1 = await  patientBasic.findOne({patientIdOfLogCred:id}).lean();
+        const result2 = await  patientloginCredentials.findById(id).lean();
+        const result3 = await  patientPersonalInformation.findOne({patientIdOfLogCred:id}).lean();
+        const result4 = await  patientMedicalInformation.findOne({patientIdOfLogCred:id}).lean();
+        const result5 = await  patientIdentification.findOne({patientIdOfLogCred:id}).lean();
+        // console.log("result1 = ",result1)
+        // console.log("result2 = ",result2)
+        // console.log("result3 = ",result3)
+        // console.log("result4 = ",result4)
+        // console.log("result5 = ",result5)
+        // console.log("Ehlllo terhe")
         const totalData = {...result1,...result2,...result3,...result4,...result5}
+        // console.log("All patient data= ",totalData)
+        return totalData;
         // console.log("totalData = ",totalData)
     } catch (error) {
         
     }
+}
+
+async function handleGetSinglePat(params) {
+    
 }
 
 module.exports = {
