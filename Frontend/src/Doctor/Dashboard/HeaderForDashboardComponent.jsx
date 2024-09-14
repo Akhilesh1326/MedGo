@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 const HeaderForDashboardComponent = () => {
   return (
     <div>
-      <header className='w-full border-2 border-black flex justify-between h-16'>
+      <header className='w-full border-b-2 border-[#174876] flex justify-between h-16 bg-[#96BADC]'>
         <span>Logo</span>
         <div>
         <span className='ml-10'>button1</span>
