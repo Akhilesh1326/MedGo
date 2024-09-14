@@ -1,4 +1,4 @@
-const {onlineAppointmentSchema} = require("../models/OnlineAppointment");
+const {onlineAppointmentSchema, onlineAppointmentBookedSchema} = require("../models/OnlineAppointment");
 
 async function handleOnlineAppointment(appointmentData) {
     try{
@@ -30,5 +30,84 @@ async function handleAllOnlineAppointment() {
     }
 }
 
+async function handleGetAppointmentById(id) {
+    try {
+        const result = await onlineAppointmentSchema.updateOne(
+            { _id: id },  // Assuming id is an ObjectId, no need for `${id}`
+            { $set: { appointmentStatus: "Booked" } }
+        ).exec();
 
-module.exports = {handleOnlineAppointment, handleAllDataOfOneDoctorOnlineAppointment, handleAllOnlineAppointment}
+        console.log("Result =", result);
+    } catch (error) {
+        console.error("Error occurred in controller for getting appointment by id:", error);
+    }
+}
+
+async function handleAppointmentBookingInfo(doctorId, patientId, appointmentId) {
+    try {
+        const result = await onlineAppointmentBookedSchema.create({doctorId,patientId, appointmentId});
+
+    } catch (error) {
+        console.log("Error occured while storing data of booked appointment = ",error);
+    }
+}
+
+async function handleGetAppointmentDetails(appointmentId) {
+    try {
+        const result = await onlineAppointmentBookedSchema.findOne({appointmentId:appointmentId});
+        // console.log("Result of Getting all info of appontmetn ids =  ",result)
+        return result
+    } catch (error) {
+        console.log("Error occured while storing data of booked appointment = ",error);
+    }
+}
+
+async function handleAppointmentDelete(appointmentId) {
+    try {
+        const result = await onlineAppointmentSchema.deleteOne({_id:appointmentId});
+        return result;
+    } catch (error) {
+        console.log("Error occured while deleting an appointment = ",error);
+    }
+}
+
+async function handleAllPatientIdOfSingleDoctor(doctorId) {
+    try {
+        const result = await onlineAppointmentBookedSchema.find({doctorId:doctorId});
+        // console.log("RRRRsult = ",result)
+        return result;
+    } catch (error) {
+        console.log("Error occured while getting all patient id for single doctor = ",error);
+    }
+}
+async function handleAllAppointmentForSinglePatient(pid) {
+    try {
+        const result = await onlineAppointmentBookedSchema.find({patientId:pid});
+        // console.log("RRRRsult = ",result)
+        return result;
+    } catch (error) {
+        console.log("Error occured while getting all patient id for single doctor = ",error);
+    }
+}
+
+async function handleGetAllDoctorIdsAppointment(dID) {
+    try {
+        const result = await onlineAppointmentSchema.find({doctorId:dID})
+        return result
+    } catch (error) {
+        console.log("Error while getting all appointmetn by doctor id",error);
+    }
+}
+
+
+module.exports = {handleOnlineAppointment, 
+    handleAllDataOfOneDoctorOnlineAppointment, 
+    handleAllOnlineAppointment, 
+    handleGetAppointmentById,
+    handleAppointmentBookingInfo, 
+    handleAppointmentDelete, 
+    handleGetAppointmentDetails,
+    handleAllPatientIdOfSingleDoctor,
+    handleAllAppointmentForSinglePatient,
+    handleGetAllDoctorIdsAppointment,
+}
