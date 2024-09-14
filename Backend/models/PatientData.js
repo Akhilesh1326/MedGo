@@ -39,6 +39,12 @@ const PatientPersonalInformation = new mongoose.Schema({
     languagePreference:{
         type:String,
     },
+    emergencyContactPhone:{
+        type:String
+    },
+    emergenecyContactName:{
+        type:String
+    },
 },{timestamps:true});
 
 const patientPersonalInformation = mongoose.model("patientUserPersonalInformation", PatientPersonalInformation);
@@ -86,13 +92,15 @@ const PatientIdentification = new mongoose.Schema({
 const patientIdentification = mongoose.model("patientUserIdentification", PatientIdentification);
 
 const PatientLoginCredentials = new mongoose.Schema({
-    username:{
+    username: {
         type: String,
         required: true,
+        unique: true,
     },
     email: {
         type: String,
         required: true,
+        unique: true,
     },
     password: {
         type: String,
