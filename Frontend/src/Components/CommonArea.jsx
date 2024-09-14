@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import axios from "axios";
 import bgOne from "../assets/upscale4.jpeg";
+// import { io } from "socket.io-client";
+
 
 const MyComponent = () => {
     const [appointmentData, setAppointmentData] = useState([]);
     const [socketMsg, setSocketMsg] = useState("");
     const [selectedAppointment, setSelectedAppointment] = useState(null);
-    const [bookAppointment, setBookAppointment] = useState(false);
 
     useEffect(() => {
         async function handleCardAppointmentData() {
@@ -37,6 +38,24 @@ const MyComponent = () => {
         };
     }, [socketMsg]);
 
+    async function handleBookingOfAppointment(appointmentId, doctorId) {
+        try {
+            const resp = await axios.post("/api/user/commonArea/book-appointment", {
+                appointmentId,
+                doctorId,
+            });
+            const msg = `Appointment Booked`
+            const socket = io("http://localhost:8000");
+
+            socket.emit('client-message', msg);
+            console.log("Message Sent");
+
+            console.log("AID = ", resp);
+        } catch (error) {
+            console.log("Error occured while send appointment id = ", error);
+        }
+    }
+
     const openModal = (appointment) => {
         setSelectedAppointment(appointment);
     };
@@ -45,7 +64,7 @@ const MyComponent = () => {
         setSelectedAppointment(null);
     };
 
-    
+
 
     return (
         <div>
@@ -64,12 +83,13 @@ const MyComponent = () => {
                 <div className="grid grid-cols-4 gap-7">
                     {appointmentData.map((item) => (
                         <div key={item._id} className='w-fit flex flex-col text-center border-2 border-blue-900 py-2 px-4 rounded-xl bg-white bg-opacity-80 shadow-md'>
+                            <label htmlFor="appointment status">{item.appointmentStatus}</label>
                             <img src="no" alt="img" className='bg-slate-700 rounded-full w-16 h-16 self-center mb-2' />
                             <label htmlFor="Doctor name" className="font-semibold">{item.doctorName}</label>
                             <label htmlFor="review">{item.timeOfAppointment}</label>
                             <label htmlFor="description">{item.dateOfAppointment}</label>
                             <label htmlFor="description">{item.locationOfAppointment}</label>
-                            <button className='border-2 border-black bg-slate-900 rounded-full text-white py-1 px-2 mt-2' onClick={() => openModal(item)} >
+                            <button className={`border-2 border-black bg-slate-900 rounded-full text-white py-1 px-2 mt-2 ${item.appointmentStatus == "Booked" ? "opacity-50" : ""}`} onClick={() => openModal(item)} disabled={item.appointmentStatus === "Booked"}>
                                 Book an appointment</button>
                         </div>
                     ))}
@@ -95,7 +115,8 @@ const MyComponent = () => {
                             <div className="mb-2"><strong>Location Of Appointment:</strong> {selectedAppointment.locationOfAppointment}</div>
                             <div className="mb-2"><strong>Duration for Appointment:</strong> {selectedAppointment.durationOfAppointment}</div>
                         </div>
-                        <button className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg" onClick={()=>{console.log("Appointment booked by doctor id ",selectedAppointment.doctorId)}} >Book Your Appointment</button>
+                        <button className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg" onClick={() => handleBookingOfAppointment(selectedAppointment._id, selectedAppointment.doctorId)}>Book Your Appointment</button>
+
                     </div>
                 </div>
             )}
