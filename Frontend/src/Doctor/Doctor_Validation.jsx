@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import bgOne from "../assets/upscale1.jpeg";
 
 // import React from 'react'
