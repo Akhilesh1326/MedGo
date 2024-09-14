@@ -1,23 +1,28 @@
 import { useState } from 'react';
-import { Link } from "react-router-dom";
 import axios from "axios";
 import bgOne from "../assets/upscale1.jpeg";
+import { useNavigate } from 'react-router-dom';
 
 const Doctor_SignIn = () => {
+  const navigate = useNavigate();
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [gender, setGender] = useState("");
+  const [error, setError] = useState("")
 
   function handleFullNameInput(e) {
     setFullName(e.target.value);
   }
+
   function handlePhoneInput(e) {
     setPhone(e.target.value);
   }
+
   function handleDateOfBirthInput(e) {
     setDateOfBirth(e.target.value);
   }
+
   function handleGenderInput(e) {
     setGender(e.target.value);
   }
@@ -30,9 +35,15 @@ const Doctor_SignIn = () => {
         dateOfBirth,
         gender,
       });
-      console.log(response.data);
+      
+      if (response.data.msg === "Stored Successfully") {
+        navigate("/user/doctor/personal-information");
+      } else {
+        setError("Error occurred. Please try again.");
+      }
     } catch (error) {
       console.error("Error submitting data:", error);
+      setError("Error occurred. Please try again.");
     }
   }
 
@@ -45,6 +56,7 @@ const Doctor_SignIn = () => {
           backgroundPosition: "center",
         }}>
         <h1 className='font-bold text-2xl text-[#034458] mt-10'>Sign Up</h1>
+        <h1 className='font-bold text-xl text-red-600 mt-10'>{error}</h1>
 
         <div className="flex lg:border-[#35b5dc] lg:border-4 rounded-xl mt-5 mb-20 md:w-[80%]">
           <div className="hidden flex-row lg:block  lg:w-[70%] text-center font-raleway">
@@ -74,7 +86,7 @@ const Doctor_SignIn = () => {
               <option className='text-white w-10' value="other">Other</option>
             </select>
             <button className="font-light text-lg text-white py-2 mt-7 rounded-lg bg-black w-[50%] self-center opacity-100 hover:shadow-lg hover:shadow-[#0688b0] hover:-translate-y-1 duration-500 mb-8 "  onClick={handleAllDataSubmit}>Submit</button>
-            <Link to="/user/doctor/personal-information"><button className="font-light text-lg text-white py-2 mt-5 rounded-lg bg-black w-[50%] self-center opacity-100 hover:shadow-md hover:shadow-[#0688b0] duration-500" >Submit</button></Link>
+            {/* <Link to=""><button className="font-light text-lg text-white py-2 mt-5 rounded-lg bg-black w-[50%] self-center opacity-100 hover:shadow-md hover:shadow-[#0688b0] duration-500" >Submit</button></Link> */}
             <div className='lg:hidden flex justify-center mb-2'>
               <label htmlFor="login question" className='self-center text-sm mt-4 font-semibold text-[#034458]'>Already have an account?</label>
               <label htmlFor="signup" className='self-center text-sm mt-4 font-bold text-black ml-2'>Sign In</label>
