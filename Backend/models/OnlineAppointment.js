@@ -40,6 +40,24 @@ const OnlineAppointmentSchema = new mongoose.Schema({
     }
 }, { timestamps: true })
 const onlineAppointmentSchema = mongoose.model("onlineAppointmentCollection", OnlineAppointmentSchema)
+
+const OnlineAppointmentBookedSchema = new mongoose.Schema({
+    doctorId:{
+        type:String,
+        required:true,
+    },
+    patientId:{
+        type:String,
+        required:true,
+    },
+    appointmentId:{
+        type:String,
+        required:true,
+    },
+},{timestamps:true})
+
+const onlineAppointmentBookedSchema = mongoose.model("onlineAppointmentBookedSchema", OnlineAppointmentBookedSchema);
 module.exports = {
     onlineAppointmentSchema,
+    onlineAppointmentBookedSchema,
 }
