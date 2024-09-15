@@ -28,7 +28,7 @@ const Patient_Dashboard = () => {
         </div>
         <Link to={"/user/patient/dashboard/manage-appoinment"}><div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:bg-[#d0e3ff]">Appointment Management</div></Link>
         <div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:bg-[#d0e3ff]">Personal Chat-bot</div>
-        <div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:bg-[#d0e3ff]">Medical Records and Notes</div>
+        <Link to={"/user/patient/dashboard/prescription-billing-history"}><div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:bg-[#d0e3ff]">Prescriptions, Billing, History</div></Link>
         <div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:bg-[#d0e3ff]">Messaging and Notifications</div>
         <div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:bg-[#d0e3ff]">Reports and Analytics</div>
         <div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:bg-[#d0e3ff]">Task and To-Do List</div>
