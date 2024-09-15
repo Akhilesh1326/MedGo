@@ -9,6 +9,7 @@ import PatientDashboard from "./Patient/Patient_Dashboard";
 import Profile from "./Patient/Dashboard/Profile";
 import LogInPatient from "./Patient/LogInPatient"
 import ManageAppointmentForPatient from "./Patient/Dashboard/ManageAppointment";
+import PrescriptionBillingHistory from "./Patient/Dashboard/PrescriptionBillingHistory";
 
 import DoctorSignIn from "./Doctor/Doctor_SignIn";
 import DoctorLoginCred from './Doctor/Doctor_Login_Cred';
@@ -19,6 +20,8 @@ import DoctorProfile from "./Doctor/Doctor_Profile";
 import ManageAppoinment from "./Doctor/Dashboard/ManageAppoinment";
 import PatientManagment from "./Doctor/Dashboard/PatientManagement";
 import PriscriptionManagement from "./Doctor/Dashboard/PriscriptionManagement";
+import DoctorBilling from "./Doctor/Dashboard/DoctorBilling";
+import PatientHistory from "./Doctor/Dashboard/PatientHistory";
 
 
 import CheckUser from './Components/CheckUser';
@@ -38,6 +41,8 @@ const router = createBrowserRouter([
     { path: "/user/doctor/dashboard/manage-appoinment", element: <ManageAppoinment />},
     { path: "/user/doctor/dashboard/manage-patients", element: <PatientManagment />},
     { path: "/user/doctor/dashboard/manage-prescription", element: <PriscriptionManagement />},
+    { path: "/user/doctor/dashboard/manage-billing", element: <DoctorBilling />},
+    { path: "/user/doctor/dashboard/history-patient", element: <PatientHistory />},
     
     { path: "/user/patient/signin", element: <PatientSignIn /> },
     { path: "/user/patient/login-credentials", element: <PatientLoginCred /> },
@@ -48,6 +53,7 @@ const router = createBrowserRouter([
     { path: "/user/patient/profile", element: <Profile />},
     { path: "/user/patient/login", element: <LogInPatient />},
     { path: "/user/patient/dashboard/manage-appoinment", element: <ManageAppointmentForPatient />},
+    { path: "/user/patient/dashboard/prescription-billing-history", element: <PrescriptionBillingHistory />},
     
     { path: "/user/checkuser", element: <CheckUser /> },
     { path: "/user/commonarea", element: <CommonArea />},
