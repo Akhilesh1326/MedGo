@@ -22,7 +22,7 @@ const ManageAppoinment = () => {
 
   const [editAppointment, setEditAppointment] = useState(null);
   const [veiwAppointmentDetails, setVeiwAppointmentDetails] = useState(false);
-  const [onlineAppointmentDetials, setOnlineAppointmentDetails] = useState(null);
+  const [onlineAppointmentDetials, setOnlineAppointmentDetails] = useState("");
 
 
   const [fullName, setFullName] = useState("")
@@ -114,6 +114,7 @@ const ManageAppoinment = () => {
         // console.log("resp = ", resp.data)
         // console.log("resp = ", resp)
         // console.log("resp = ", resp.data.data)
+        console.log("offline patient data ",resp.data.data)
         setOfflinePatientData(resp.data.data);
 
       } catch (err) {
@@ -177,7 +178,7 @@ const ManageAppoinment = () => {
   async function handlePatientInfoToDoctor(appointmentId) {
     try {
       const resp = await axios.get(`/api/user/doctor/patient-info${appointmentId}`)
-      console.log(appointmentId)
+      console.log("aid = ",appointmentId)
       // console.log("Resp = ", resp.data.msg[0].fullName)
       // console.log("Resp = ", resp.data.fullName)
       setOnlineAppointmentDetails(resp.data.msg);
@@ -301,18 +302,18 @@ const ManageAppoinment = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
             <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold">Appointment Details</h2>
+              <h2 className="text-xl font-semibold text-black">Appointment Details</h2>
               <button className="text-red-500 text-lg" onClick={()=>setVeiwAppointmentDetails(false)}>
                 X
               </button>
             </div>
-            <div className="mt-4">
+            <div className="mt-4 text-black">
               <div className="mb-2"><strong>Patient Name:</strong> {onlineAppointmentDetials.fullName}</div>
               <div className="mb-2"><strong>Patient Email:</strong> {onlineAppointmentDetials.email}</div>
               <div className="mb-2"><strong>Date of Birth:</strong> {onlineAppointmentDetials.dateOfBirth}</div>
               <div className="mb-2"><strong>Contact:</strong> {onlineAppointmentDetials.phone}</div>
               </div>
-            <button className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg" >Delete Appointment</button>
+            <button className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg" >NoWork Appointment</button>
 
           </div>
         </div>
@@ -328,12 +329,14 @@ const ManageAppoinment = () => {
             <div>{item.dob}</div>
             <button className={`bg-slate-800 text-white border-2 border-black rounded-full `} onClick={handlePatientHistoryPanel}>Check Patient</button>
             <div className={`bg-slate-700 absolute z-40 flex flex-col border-2 border-black rounded-lg ml-[400px] w-[450px] ${PatientHistoryPanel ? "" : "hidden"}`}>
-              <div>Full Name</div>
-              <div>Date of Birth (with Age calculation)</div>
-              <div>Gender</div>
-              <div>Contact Information (Phone, Email)</div>
-              <div>Address</div>
-              <div>Emergency Contact Information</div>
+            <div className="mb-2"><strong>Patient Name:</strong> {item.fullName}</div>
+              <div className="mb-2"><strong>Patient Email:</strong> {item.email}</div>
+              <div className="mb-2"><strong>Gender:</strong> {item.gender}</div>
+              <div className="mb-2"><strong>Date of Birth:</strong> {item.dob}</div>
+              <div className="mb-2"><strong>Contact:</strong> {item.contactNumber}</div>
+              <div className="mb-2"><strong>Address:</strong> {item.address}</div>
+              <div className="mb-2"><strong>Emergency Contact Name:</strong> {item.emergencyContactName}</div>
+              <div className="mb-2"><strong>Emergency Contact Phone:</strong> {item.emergencyContactNumber}</div>
               <button className="bg-slate-800 text-white border-2 border-black rounded-full w-fit" onClick={handlePatientHistoryPanel}>Exit Details</button>
               <button className="bg-slate-800 text-white border-2 border-black rounded-full w-fit">Edit Details</button>
 
