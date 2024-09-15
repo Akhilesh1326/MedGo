@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+Frontend/src/Patient/Dashboard/PrescriptionBillingHistory.jsximport { useEffect, useState } from 'react';
 import Header from './HeaderForDashboardComponent';
 import axios from 'axios';
 import jsPDF from 'jspdf';
