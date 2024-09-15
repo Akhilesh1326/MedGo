@@ -92,8 +92,19 @@ const { handleOnlineAppointment,
 const { handlePreciptionInfo,
     handleShowAllPrescriptionAppointmentId,
     handleShowAllPrescriptionByDoctorId,
+    handleStorePrescriptionOfflinePatient,
+    handleShowAllPrescriptionAppointmentIdOfflinePatient,
+    handleShowAllPrescriptionPatientId,
 } = require('./controllers/prescription');
 const { error } = require('console');
+
+
+const {
+    handleInitialBilling,
+    handleCompleteBilling,
+    handleInitialBillingGetAllDataByDoctorId,
+    handleInitialBillingGetAllDataByPatientId,
+} = require("./controllers/BillingData");
 
 // Middleware
 app.use(express.json());
@@ -550,8 +561,6 @@ app.get("/api/user/doctor/online-booking-show", async (req, res) => {
             result.appointmentId = appointmentIds[i]; // Add appointmentId to the patient data
             allPatients.push(result); // Add updated patient data to the array
         }
-
-
         // console.log("allll paitnet = ",allPatients); 
 
         res.json({ msg: allPatients })
@@ -619,6 +628,22 @@ app.post("/api/user/commonArea/book-appointment", async (req, res) => {
     }
 })
 
+// API call for getting all single doctor appointment for prescriptions
+app.get("/api/user/doctor/online-booking-info-show", async(req,res)=>{
+    try {
+        const data = req.body;
+        const token = req.cookies.userCookie;
+        let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        const uid = varifyData.UserId;
+        const result = await handleAllDataOfOneDoctorOnlineAppointment(uid);
+        console.log("Result = ",result)
+        res.json({appointmentData: result});
+        
+    } catch (error) {
+        console.log("Error occured while getting single doctor appointments info for patent management", error);
+    }
+})
+
 // Appointment Delete API call
 app.delete("/api/user/doctor/delete-appointment:id", async (req, res) => {
     try {
@@ -651,6 +676,7 @@ app.get("/api/user/doctor/patient-info:appointmentId", async (req, res) => {
             dateOfBirth: result2.dateOfBirth,
             phone: result2.phone
         }
+        console.log("All Data - ",patientNomralInfo)
         res.json({ msg: patientNomralInfo })
     } catch (error) {
 
@@ -674,7 +700,25 @@ app.post("/api/user/doctor/prescription", async (req, res) => {
     }
 })
 
-// API call for prescription storing
+// API call for prescription storing of offline patient
+app.post("/api/user/doctor/prescription-offline-patient", async (req, res) => {
+    try {
+        const allData = req.body;
+        console.log("All Prescription data for offline patient = ", allData);
+        const token = req.cookies.userCookie;
+        let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        const uid = varifyData.UserId;
+        // allData.doctorId = uid;
+
+        await handleStorePrescriptionOfflinePatient(allData)
+        res.json({ SentData: allData })
+
+    } catch (error) {
+        console.log("Error while getting prescription data = ", error);
+    }
+})
+
+// API call for prescription updating
 app.put("/api/user/doctor/prescription-update", async (req, res) => {
     try {
         const aid = req.body;
@@ -686,11 +730,24 @@ app.put("/api/user/doctor/prescription-update", async (req, res) => {
     }
 })
 
+//  API call for getting single offline patient data 
+
+
 app.get("/api/user/doctor/show-prescription:aid", async (req, res) => {
     try {
         const aid = req.params.aid;
         console.log("AID = ", aid);
         const result = await handleShowAllPrescriptionAppointmentId(aid)
+        res.json({ singlePrescription: result })
+    } catch (error) {
+        console.log("Error while getting all prescription data", error);
+    }
+})
+app.get("/api/user/doctor/offline-patient-show-prescription:aid", async (req, res) => {
+    try {
+        const aid = req.params.aid;
+        console.log("AID = ", aid);
+        const result = await handleShowAllPrescriptionAppointmentIdOfflinePatient(aid)
         res.json({ singlePrescription: result })
     } catch (error) {
         console.log("Error while getting all prescription data", error);
@@ -738,8 +795,171 @@ app.get("/api/user/doctor/prescriptions", async (req, res) => {
 
 })
 
+// API calls for Billing Purpose
+app.get("/api/user/doctor/billing/online-patient-data", async (req, res) => {
+    try {
+        const token = req.cookies.userCookie;
+        let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        const data = varifyData.UserId;
+        // console.log("Id = ", data);
+        const result1 = await handleAllPatientIdOfSingleDoctor(data)
+        // console.log(result1)
+        const patientIds = result1.map(record => record.patientId);
+        const appointmentIds = result1.map(record => record.appointmentId);
+
+        let allPatients = [];
+        for (let i = 0; i < patientIds.length; i++) {
+            const result = await handleAllPatientProfileData(patientIds[i]);
+            result.appointmentId = appointmentIds[i]; // Add appointmentId to the patient data
+            allPatients.push(result); // Add updated patient data to the array
+        }
+        // console.log("allll paitnet = ",allPatients); 
+
+        res.json({ msg: allPatients })
+
+    } catch (error) {
+
+    }
+})
+
+app.get("/api/user/doctor/billing/online-appointment-data", async (req, res) => {
+    try {
+        const token = req.cookies.userCookie;
+        let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        const uid = varifyData.UserId;
+        console.log("Patinet = ", uid);
+
+        const result = await handleGetAllDoctorIdsAppointment(uid);
+        res.json({msg:result})
+    } catch (error) {
+        console.log("Error occured while getting all prescription of single doctor = ",error)
+
+    }
+})
+
+app.get("/api/user/doctor/billing/online-prescription-data", async (req, res) => {
+    try {
+        const token = req.cookies.userCookie;
+        let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        const uid = varifyData.UserId;
+        console.log("Patinet = ", uid);
+
+        const result = await handleShowAllPrescriptionByDoctorId(uid);
+        res.json({msg:result})
+    } catch (error) {
+        console.log("Error occured while getting all prescription of single doctor = ",error)
+
+    }
+
+})
+
+// API call for storing billing info
+
+app.post("/api/user/doctor/billing/inital-billing",async(req,res)=>{
+    try {
+        const token = req.cookies.userCookie;
+        let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        const uid = varifyData.UserId;
+        console.log("doctor id for initial billing = ", uid);
+
+        const allData = req.body;
+        // console.log("All inital data = ",patientId, doctorId, appointmentId,serviceorTreatment, durationOfService,costOfService, discount,totalAmount, paymentMethod, billingNotes)
+
+        const result = await handleInitialBilling(allData)
+        console.log("Result store complete billing = ",result)
+        
+    } catch (error) {
+        console.log("Error getting inital biling = ",error);
+    }
+})
 
 
+app.get("/api/user/doctor/billing/initial-billing/get-info",async(req,res)=>{
+    try {
+        const token = req.cookies.userCookie;
+        let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        const uid = varifyData.UserId;
+        console.log("doctor id for complete billing = ", uid);
+        const result = await handleInitialBillingGetAllDataByDoctorId(uid)
+
+        console.log("Result initial biling for doctor = ",result)
+        res.json({msg:result})
+    } catch (error) {
+        console.log("Error getting complete biling = ",error);
+    }
+})
+
+
+
+// API calls for patinet's history, billing, prescritpion
+app.get("/api/user/patient/all-billing-info",async(req,res)=>{
+    try {
+        const token = req.cookies.userCookie;
+        let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        const uid = varifyData.UserId;
+        console.log("patient id for complete billing = ", uid);
+        const result = await handleInitialBillingGetAllDataByPatientId(uid)
+
+        console.log("Result inital biling for patient = ",result)
+        res.json({msg:result});
+    } catch (error) {
+        console.log("Error getting complete biling = ",error);
+    }
+})
+
+app.get("/api/user/patient/all-appointment-info",async(req,res)=>{
+    try {
+        const token = req.cookies.userCookie;
+        let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        const uid = varifyData.UserId;
+        console.log("Patinet = ", uid);
+
+        const result1 = await handleAllAppointmentForSinglePatient(uid);
+
+        const doctorIds = result1.map(record => record.doctorId);
+
+        let allAppointments = [];
+        for (let i = 0; i < doctorIds.length; i++) {
+            const result = await handleGetAllDoctorIdsAppointment(doctorIds[i]);
+            // result.appointmentId = appointmentIds[i]; // Add appointmentId to the patient data
+            allAppointments.push(result); // Add updated patient data to the array
+        }
+        console.log("All appointment = ", allAppointments);
+        res.json({ msg: allAppointments });
+    } catch (error) {
+        console.log("Error while getting single patient appointment data = ", error);
+    }
+})
+
+
+// app.get("/api/user/patient/all-doctor-info",async(req,res)=>{
+//     try {
+//         const token = req.cookies.userCookie;
+//         let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+//         const uid = varifyData.UserId;
+//         console.log("patient id for complete billing = ", uid);
+//         const result = await handleInitialBillingGetAllDataByPatientId(uid)
+
+//         console.log("Result inital biling for patient = ",result)
+//     } catch (error) {
+//         console.log("Error getting complete biling = ",error);
+//     }
+// })
+
+
+app.get("/api/user/patient/all-prescription-info",async(req,res)=>{
+    try {
+        const token = req.cookies.userCookie;
+        let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        const uid = varifyData.UserId;
+        console.log("patient id for complete presc = ", uid);
+        const result = await handleShowAllPrescriptionPatientId(uid)
+        res.json({msg:result});
+        console.log("Result inital Prescritpion for patient = ",result)
+    } catch (error) {
+        console.log("Error getting complete biling = ",error);
+    }
+})
 
 
 
