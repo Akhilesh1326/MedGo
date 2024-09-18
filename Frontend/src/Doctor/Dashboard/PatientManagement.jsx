@@ -265,7 +265,7 @@ const PatientManagement = () => {
                                 <input type="text" placeholder='instructions' className='border-2 border-black py-2 px-2 my-1 rounded-lg' value={instructions} onChange={(e) => setInstructions(e.target.value)} />
                                 <textarea rows={4} type="text" placeholder='diagnosis' className='border-2 border-black py-2 px-2 my-1 rounded-lg ' value={diagnosis} onChange={(e) => setDiagnosis(e.target.value)} />
                             </div>
-                            <button className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg" onClick={() => { handlePrescriptionDataSubmit(patientDataForPrescription.patientIdOfLogCred, patientDataForPrescription.appointmentId) }}>Submit Prescription</button>
+                            <button className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg" onClick={() => { handlePrescriptionDataOfflinePatientSubmit(patientDataForPrescription._id, patientDataForPrescription.doctorId) }}>Submit Prescription online</button>
 
                         </div>
                     </div>
@@ -284,7 +284,7 @@ const PatientManagement = () => {
                                 <input type="text" placeholder='instructions' className='border-2 border-black py-2 px-2 my-1 rounded-lg' value={instructions} onChange={(e) => setInstructions(e.target.value)} />
                                 <textarea rows={4} type="text" placeholder='diagnosis' className='border-2 border-black py-2 px-2 my-1 rounded-lg ' value={diagnosis} onChange={(e) => setDiagnosis(e.target.value)} />
                             </div>
-                            <button className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg" onClick={() => { handlePrescriptionDataOfflinePatientSubmit(patientDataForPrescription._id, patientDataForPrescription.doctorId) }}>Submit Prescription</button>
+                            <button className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg" onClick={() => { handlePrescriptionDataSubmit(patientDataForPrescription.patientIdOfLogCred, patientDataForPrescription.appointmentId) }}>Submit Prescription offline</button>
 
                         </div>
                     </div>
