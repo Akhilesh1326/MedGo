@@ -32,8 +32,12 @@ io.on("connection", (socket) => {
         // Ensure message is sent as an array or in the expected format
         // Here we're emitting the message as an array to ensure compatibility
         io.emit("message", message); // Wrap in an array if it's not one
-        io.emit("forBookedAppointment", "AppointmentBooked")
+        
     });
+    socket.on("common-area-message", (message) =>{
+        console.log("message from commoan area = ",message);
+        io.emit("forBookedAppointment", "AppointmentBooked")
+    })
 
     // Handle client disconnection
     socket.on("disconnect", () => {
@@ -691,7 +695,9 @@ app.post("/api/user/doctor/prescription", async (req, res) => {
         const token = req.cookies.userCookie;
         let varifyData = jwt.verify(token, process.env.JWT_SECRET);
         const uid = varifyData.UserId;
+        console.log("Doctor Id = ",uid);
         allData.doctorId = uid;
+
         await handlePreciptionInfo(allData)
         res.json({ SentData: allData })
 
