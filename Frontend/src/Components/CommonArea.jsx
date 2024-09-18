@@ -10,6 +10,8 @@ const MyComponent = () => {
     const [socketMsg, setSocketMsg] = useState("");
     const [selectedAppointment, setSelectedAppointment] = useState(null);
 
+    const [bookStateMessage, setBookStateMessage] = useState("Book An Appointment")
+
     useEffect(() => {
         async function handleCardAppointmentData() {
             try {
@@ -39,17 +41,18 @@ const MyComponent = () => {
     }, [socketMsg]);
 
     async function handleBookingOfAppointment(appointmentId, doctorId) {
+        const msg = `Appointment Booked In Common Area`
+        const socket = io("http://localhost:8000");
+
+        socket.emit('common-area-message', msg);
+        console.log("Message Sent");
+
+        console.log("appointment web-socket has sent")
         try {
             const resp = await axios.post("/api/user/commonArea/book-appointment", {
                 appointmentId,
                 doctorId,
             });
-            const msg = `Appointment Booked`
-            const socket = io("http://localhost:8000");
-
-            socket.emit('client-message', msg);
-            console.log("Message Sent");
-
             console.log("AID = ", resp);
         } catch (error) {
             console.log("Error occured while send appointment id = ", error);
@@ -89,8 +92,8 @@ const MyComponent = () => {
                             <label htmlFor="review">{item.timeOfAppointment}</label>
                             <label htmlFor="description">{item.dateOfAppointment}</label>
                             <label htmlFor="description">{item.locationOfAppointment}</label>
-                            <button className={`border-2 border-black bg-slate-900 rounded-full text-white py-1 px-2 mt-2 ${item.appointmentStatus == "Booked" ? "opacity-50" : ""}`} onClick={() => openModal(item)} disabled={item.appointmentStatus === "Booked"}>
-                                Book an appointment</button>
+                            <button className={`border-2 border-black bg-slate-900 rounded-full text-white py-1 px-2 mt-2 ${item.appointmentStatus == "Booked" ? "opacity-50" : ""}`} onClick={() => openModal(item)} disabled={item.appointmentStatus === "Booked"} >
+                                {bookStateMessage}</button>
                         </div>
                     ))}
                 </div>
