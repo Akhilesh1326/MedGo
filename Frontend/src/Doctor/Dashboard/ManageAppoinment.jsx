@@ -8,7 +8,7 @@ const ManageAppoinment = () => {
   const [PatientEditPanel, setPatientEditPanel] = useState(false);
   const [PatientHistoryPanel, setPatientHistoryPanel] = useState(false);
 
-  const [socketMsg, setSocketMsg] = useState(null)
+  const [socketMsg, setSocketMsg] = useState(false)
 
   const [appointmentCardData, setAppointmentCardData] = useState([]);
   const [appointmentPop, setAppoinmentPop] = useState(false);
@@ -101,11 +101,12 @@ const ManageAppoinment = () => {
         });
 
         socket.on("forBookedAppointment", (message) => {
-            setSocketMsg(message);
+            setSocketMsg(!socketMsg);
+            console.log("message from manageAppoinment for web socket = ",message);
         });
     }
     handleAppointmentData();
-  }, [appointmentPop, editAppointment,socketMsg])
+  }, [appointmentPop, editAppointment, socketMsg])
 
   useEffect(() => {
     const handleOfflinePatientCardInfo = async () => {
@@ -208,18 +209,18 @@ const ManageAppoinment = () => {
       <div className={`z-10 absolute  bg-blue-900 border-4 border-blue-800 rounded-xl w-fit ${appointmentPop ? "flex flex-col" : "hidden"} transition-all duration-300`}>
         <div className='text-lg font-light my-2 mx-2 text-slate-100 '>Appointment Details</div>
         <div className='text-lg font-light my-2 mx-2 text-slate-100 '>Date of Appointment</div>
-        <input className='w-[15rem] px-2 py-1 mx-2 my-2 rounded-lg' type="date" placeholder='Enter Date' value={dateOfAppointment} onChange={(e) => setDateOfAppointment(e.target.value)} />
+        <input className='w-[15rem] px-2 py-1 mx-2 my-2 rounded-lg text-slate-900' type="date" placeholder='Enter Date' value={dateOfAppointment} onChange={(e) => setDateOfAppointment(e.target.value)} />
         <div className='text-lg font-light my-2 mx-2 text-slate-100 '>Appointment Time</div>
-        <input className='w-[15rem] px-2 py-1 mx-2 my-2 rounded-lg' type="time" placeholder='Enter Time' value={timeOfAppointment} onChange={(e) => setTimeOfAppointment(e.target.value)} />
+        <input className='w-[15rem] px-2 py-1 mx-2 my-2 rounded-lg text-slate-900' type="time" placeholder='Enter Time' value={timeOfAppointment} onChange={(e) => setTimeOfAppointment(e.target.value)} />
         <div className='text-lg font-light my-2 mx-2 text-slate-100 '>Type of Appointment</div>
-        <input className='w-[15rem] px-2 py-1 mx-2 my-2 rounded-lg' type="text" placeholder='Appointment Type' value={typeOfAppointment} onChange={(e) => setTypeOfAppointment(e.target.value)} />
+        <input className='w-[15rem] px-2 py-1 mx-2 my-2 rounded-lg text-slate-900' type="text" placeholder='Appointment Type' value={typeOfAppointment} onChange={(e) => setTypeOfAppointment(e.target.value)} />
         <div className='text-lg font-light my-2 mx-2 text-slate-100 '>Reason for Appointment</div>
-        <input className='w-[15rem] px-2 py-1 mx-2 my-2 rounded-lg' type="text" placeholder='Description' value={reasonOfAppointment} onChange={(e) => setReasonOfAppointment(e.target.value)} />
+        <input className='w-[15rem] px-2 py-1 mx-2 my-2 rounded-lg text-slate-900' type="text" placeholder='Description' value={reasonOfAppointment} onChange={(e) => setReasonOfAppointment(e.target.value)} />
         <div className='text-lg font-light my-2 mx-2 text-slate-100 '>Location Of Appointment</div>
-        <input className='w-[15rem] px-2 py-1 mx-2 my-2 rounded-lg' type="text" placeholder='Specify Location of Appointment' value={locationOfAppointment} onChange={(e) => setLocationOfAppointment(e.target.value)} />
+        <input className='w-[15rem] px-2 py-1 mx-2 my-2 rounded-lg text-slate-900' type="text" placeholder='Specify Location of Appointment' value={locationOfAppointment} onChange={(e) => setLocationOfAppointment(e.target.value)} />
         <div className='text-lg font-light my-2 mx-2 text-slate-100 '>Duration</div>
-        <input className='w-[15rem] px-2 py-1 mx-2 my-2 rounded-lg' type="text" placeholder='What is duration of appointment' value={durationOfAppointment} onChange={(e) => setDurationOfAppointment(e.target.value)} />
-        <button className='w-fit px-4 py-2 my-2 font-light text-lg text-slate-100 bg-slate-900  self-center rounded-lg' onClick={handleAppointmentSubmit}>Create Appointment</button>
+        <input className='w-[15rem] px-2 py-1 mx-2 my-2 rounded-lg text-slate-900' type="text" placeholder='What is duration of appointment' value={durationOfAppointment} onChange={(e) => setDurationOfAppointment(e.target.value)} />
+        <button className='w-fit px-4 py-2 my-2 font-light text-lg text-slate-100 bg-slate-900  self-center rounded-lg' onClick={()=>{handleAppointmentSubmit(), setAppoinmentPop(!appointmentPop)}}>Create Appointment</button>
       </div>
       <button className="border-2 border-black rounded-xl py-2 px-4 " onClick={handlePatientEditPanel}>Add new Patient</button>
       <div className={`flex flex-col ml-10  border-2 border-black rounded-xl w-fit scrollbar scrollbar-thumb-gray-900 scrollbar-track-gray-100 z-50 absolute bg-white ${PatientEditPanel ? "" : "hidden"} `}>
@@ -278,12 +279,12 @@ const ManageAppoinment = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
             <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold">Appointment Details</h2>
+              <h2 className="text-xl font-semibold text-slate-900">Appointment Details</h2>
               <button className="text-red-500 text-lg" onClick={closeModal}>
                 X
               </button>
             </div>
-            <div className="mt-4">
+            <div className="mt-4 text-slate-900">
               <div className="mb-2"><strong>Doctor Name:</strong> {editAppointment.doctorName}</div>
               <div className="mb-2"><strong>Doctor Email:</strong> {editAppointment.doctorOtherInformation}</div>
               <div className="mb-2"><strong>Date for Appointment:</strong> {editAppointment.dateOfAppointment}</div>
@@ -293,7 +294,7 @@ const ManageAppoinment = () => {
               <div className="mb-2"><strong>Location Of Appointment:</strong> {editAppointment.locationOfAppointment}</div>
               <div className="mb-2"><strong>Duration for Appointment:</strong> {editAppointment.durationOfAppointment}</div>
             </div>
-            <button className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg" onClick={() => handleDeleteAppointment(editAppointment._id)}>Delete Appointment</button>
+            <button className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg" onClick={() => {handleDeleteAppointment(editAppointment._id), setEditAppointment(null)}}>Delete Appointment</button>
 
           </div>
         </div>
