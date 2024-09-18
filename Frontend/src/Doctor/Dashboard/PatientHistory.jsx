@@ -1,8 +1,8 @@
-Frontend/src/Patient/Dashboard/PrescriptionBillingHistory.jsximport { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from './HeaderForDashboardComponent';
 import axios from 'axios';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+// import jsPDF from 'jspdf';
+// import html2canvas from 'html2canvas';
 
 const PatientHistory = () => {
   const [patientDataForOnlinePatient, setPatientDataForOnlinePatient] = useState([]);
