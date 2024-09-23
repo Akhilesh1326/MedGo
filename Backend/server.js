@@ -553,9 +553,9 @@ app.get("/api/user/doctor/online-booking-show", async (req, res) => {
         const token = req.cookies.userCookie;
         let varifyData = jwt.verify(token, process.env.JWT_SECRET);
         const data = varifyData.UserId;
-        // console.log("Id = ", data);
+        console.log("Id = ", data);
         const result1 = await handleAllPatientIdOfSingleDoctor(data)
-        // console.log(result1)
+        console.log(result1)
         const patientIds = result1.map(record => record.patientId);
         const appointmentIds = result1.map(record => record.appointmentId);
 
@@ -565,7 +565,7 @@ app.get("/api/user/doctor/online-booking-show", async (req, res) => {
             result.appointmentId = appointmentIds[i]; // Add appointmentId to the patient data
             allPatients.push(result); // Add updated patient data to the array
         }
-        // console.log("allll paitnet = ",allPatients); 
+        console.log("allll paitnet = ",allPatients); 
 
         res.json({ msg: allPatients })
 
@@ -640,7 +640,7 @@ app.get("/api/user/doctor/online-booking-info-show", async(req,res)=>{
         let varifyData = jwt.verify(token, process.env.JWT_SECRET);
         const uid = varifyData.UserId;
         const result = await handleAllDataOfOneDoctorOnlineAppointment(uid);
-        console.log("Result = ",result)
+        // console.log("Result = ",result)
         res.json({appointmentData: result});
         
     } catch (error) {
@@ -778,7 +778,8 @@ app.get("/api/user/patient/all-patient-appointment", async (req, res) => {
             // result.appointmentId = appointmentIds[i]; // Add appointmentId to the patient data
             allAppointments.push(result); // Add updated patient data to the array
         }
-        console.log("All appointment = ", allAppointments);
+        
+        console.log("All Online appointment booked by single Patinet = ", allAppointments);
         res.json({ allAppointments: allAppointments });
     } catch (error) {
         console.log("Error while getting single patient appointment data = ", error);
