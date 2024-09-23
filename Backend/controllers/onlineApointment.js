@@ -74,7 +74,7 @@ async function handleAppointmentDelete(appointmentId) {
 async function handleAllPatientIdOfSingleDoctor(doctorId) {
     try {
         const result = await onlineAppointmentBookedSchema.find({doctorId:doctorId});
-        // console.log("RRRRsult = ",result)
+        console.log("RRRRsult = ",result)
         return result;
     } catch (error) {
         console.log("Error occured while getting all patient id for single doctor = ",error);
@@ -83,7 +83,7 @@ async function handleAllPatientIdOfSingleDoctor(doctorId) {
 async function handleAllAppointmentForSinglePatient(pid) {
     try {
         const result = await onlineAppointmentBookedSchema.find({patientId:pid});
-        // console.log("RRRRsult = ",result)
+        console.log("RRRRsult = ",result)
         return result;
     } catch (error) {
         console.log("Error occured while getting all patient id for single doctor = ",error);
