@@ -119,7 +119,6 @@ const MyComponent = () => {
                             <div className="mb-2"><strong>Duration for Appointment:</strong> {selectedAppointment.durationOfAppointment}</div>
                         </div>
                         <button className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg" onClick={() => handleBookingOfAppointment(selectedAppointment._id, selectedAppointment.doctorId)}>Book Your Appointment</button>
-
                     </div>
                 </div>
             )}
