@@ -81,49 +81,50 @@ const ManageAppoinment = () => {
 
   useEffect(() => {
     const handleAppointmentData = async () => {
-
+      console.log("Helllo There")
       try {
 
         const resp = await axios.get("/api/user/appointment-show/")
-        // console.log("resp = ", resp.data)
-        // console.log("resp = ", resp)
-        // console.log("resp = ", resp.data.data)
         setAppointmentCardData(resp.data.data)
-        console.log(resp.data.data)
+        // console.log(resp.data.data)
       } catch (err) {
         console.log("Error Occured = ", err);
       }
-
-      const socket = io("http://localhost:8000");
-
-        socket.on("connect", () => {
-            console.log("Socket is connected");
-        });
-
-        socket.on("forBookedAppointment", (message) => {
-            setSocketMsg(!socketMsg);
-            console.log("message from manageAppoinment for web socket = ",message);
-        });
     }
     handleAppointmentData();
-  }, [appointmentPop, editAppointment, socketMsg])
+  }, [appointmentPop , editAppointment])
+
+  useEffect(() => {
+    const socket = io("http://localhost:8000");
+  
+    socket.on("connect", () => {
+      console.log("Socket is connected");
+    });
+  
+    socket.on("forBookedAppointment", (message) => {
+      setSocketMsg(!socketMsg);
+      console.log("message from manageAppoinment for web socket = ", message);
+    });
+  
+    return () => socket.disconnect(); // Clean up the socket connection on unmount
+  }, [socketMsg]);
+  
 
   useEffect(() => {
     const handleOfflinePatientCardInfo = async () => {
       try {
-        const resp = await axios.get("/api/user/patient-show/")
-        // console.log("resp = ", resp.data)
-        // console.log("resp = ", resp)
-        // console.log("resp = ", resp.data.data)
-        console.log("offline patient data ",resp.data.data)
+        const resp = await axios.get("/api/user/patient-show/");
         setOfflinePatientData(resp.data.data);
-
       } catch (err) {
-        console.log(err)
+        console.log(err);
       }
+    };
+  
+    if (PatientEditPanel) {
+      handleOfflinePatientCardInfo();
     }
-    handleOfflinePatientCardInfo();
-  }, [PatientEditPanel])
+  }, [PatientEditPanel]); // Only trigger when PatientEditPanel is opened
+  
 
   const handleOfflinePatientFormSubmit = async () => {
     const patientType = "offlineEntry";
@@ -201,9 +202,9 @@ const ManageAppoinment = () => {
 
 
   return (
-    <div className='bg-[#0d3254] text-[#dbe5ef]'>
+    <div className='bg-[#0d3254] text-[#dbe5ef] h-[100%]'>
       <HeaderForDashboardComponent />
-      <button className='border-2 border-blue-700 rounded-xl my-4 mx-4 py-2 px-2 ' onClick={handleAppointmentPop}>
+      <button className='border-2 border-blue-700 rounded-xl my-4 mx-4 py-2 px-2 hover:shadow-md hover:shadow-blue-500 duration-300 hover:-translate-y-1' onClick={handleAppointmentPop}>
         {appointmentPop ? "Exit Edit" : "Make Appoinment"}</button>
 
       <div className={`z-10 absolute  bg-blue-900 border-4 border-blue-800 rounded-xl w-fit ${appointmentPop ? "flex flex-col" : "hidden"} transition-all duration-300`}>
@@ -213,7 +214,11 @@ const ManageAppoinment = () => {
         <div className='text-lg font-light my-2 mx-2 text-slate-100 '>Appointment Time</div>
         <input className='w-[15rem] px-2 py-1 mx-2 my-2 rounded-lg text-slate-900' type="time" placeholder='Enter Time' value={timeOfAppointment} onChange={(e) => setTimeOfAppointment(e.target.value)} />
         <div className='text-lg font-light my-2 mx-2 text-slate-100 '>Type of Appointment</div>
-        <input className='w-[15rem] px-2 py-1 mx-2 my-2 rounded-lg text-slate-900' type="text" placeholder='Appointment Type' value={typeOfAppointment} onChange={(e) => setTypeOfAppointment(e.target.value)} />
+        <select className='w-[15rem] px-2 py-1 mx-2 my-2 rounded-lg text-slate-900' type="text" placeholder='Appointment Type' value={typeOfAppointment} onChange={(e) => setTypeOfAppointment(e.target.value)}>            {/* 557781 */}
+              <option className='text-black w-10' value="Select Appointment Type">Select Type</option>
+              <option className='text-black w-10' value="Online">Online</option>
+              <option className='text-black w-10' value="Offline">Offline</option>
+            </select>
         <div className='text-lg font-light my-2 mx-2 text-slate-100 '>Reason for Appointment</div>
         <input className='w-[15rem] px-2 py-1 mx-2 my-2 rounded-lg text-slate-900' type="text" placeholder='Description' value={reasonOfAppointment} onChange={(e) => setReasonOfAppointment(e.target.value)} />
         <div className='text-lg font-light my-2 mx-2 text-slate-100 '>Location Of Appointment</div>
@@ -222,14 +227,18 @@ const ManageAppoinment = () => {
         <input className='w-[15rem] px-2 py-1 mx-2 my-2 rounded-lg text-slate-900' type="text" placeholder='What is duration of appointment' value={durationOfAppointment} onChange={(e) => setDurationOfAppointment(e.target.value)} />
         <button className='w-fit px-4 py-2 my-2 font-light text-lg text-slate-100 bg-slate-900  self-center rounded-lg' onClick={()=>{handleAppointmentSubmit(), setAppoinmentPop(!appointmentPop)}}>Create Appointment</button>
       </div>
-      <button className="border-2 border-black rounded-xl py-2 px-4 " onClick={handlePatientEditPanel}>Add new Patient</button>
+      <button className="border-2 border-blue-700 rounded-xl my-4 mx-4 py-2 px-2 hover:shadow-md hover:shadow-blue-500 duration-300 hover:-translate-y-1" onClick={handlePatientEditPanel}>{PatientEditPanel ? "Exit Patient Form" : "Add new Patient"}</button>
       <div className={`flex flex-col ml-10  border-2 border-black rounded-xl w-fit scrollbar scrollbar-thumb-gray-900 scrollbar-track-gray-100 z-50 absolute bg-white ${PatientEditPanel ? "" : "hidden"} `}>
         <div className="text-lg font-light my-2 mx-2 text-slate-900 ">Personal Information
-          <button onClick={handleOfflinePatientFormSubmit}>Submit Form</button>
         </div>
         <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="Full name" value={fullName} onChange={(e) => setFullName(e.target.value)} />
         <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="DOB" value={dob} onChange={(e) => setDob(e.target.value)} />
-        <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="Gender" value={gender} onChange={(e) => setGender(e.target.value)} />
+        <select className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="Gender" value={gender} onChange={(e) => setGender(e.target.value)} >
+              <option className='text-black w-10' value="Select Gender">Select Gender</option>
+              <option className='text-black w-10' value="male">Male</option>
+              <option className='text-black w-10' value="female">Female</option>
+              <option className='text-black w-10' value="other">Other</option>
+            </select>
         <div className="text-lg font-light my-2 mx-2 text-slate-900 ">Contact Information:</div>
         <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="Contact Number" value={contactNumber} onChange={(e) => setContactNumber(e.target.value)} />
         <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="Email if Available" value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -261,6 +270,7 @@ const ManageAppoinment = () => {
         <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="Occupation" />
         <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="Marital Status" />
         <input className="border-2 border-black rounded-lg text-slate-900 font-light mx-5 my-1 py-2 px-4 " type="text" placeholder="Preferred Pharmacy" />
+        <button onClick={handleOfflinePatientFormSubmit} className='text-slate-100 font-light my-2 py-2 px-2 border-2 w-fit self-center rounded-md border-slate-600 bg-slate-900'>Submit Form</button>
       </div>
 
       <div className='grid grid-cols-5'>
@@ -319,18 +329,18 @@ const ManageAppoinment = () => {
           </div>
         </div>
       )}
-      <div>Offline Appointment Entries </div>
-      <div className="grid grid-cols-4 gap-4 mx-10 place-items-center">
+      <div className='font-bold my-5 mx-10 '>Offline Appointment Entries </div>
+      <div className="grid grid-cols-5  place-items-center">
         {OfflinePatientData.map((item) => (
-          <div key={item._id} className="flex flex-col border-2 border-black rounded-lg w-fit items-center py-0 px-4">
-            <div className="text-sm">{item.patientType}</div>
+          <div key={item._id} className="mx-5 my-5 flex flex-col text-center border-2 border-blue-900 py-2 px-4 rounded-xl h-fit items-center">
+            <div className="text-sm capitalize">{item.patientType}</div>
             <img src="" alt="img" className="h-16 w-16 border-2 border-black rounded-full mt-2" />
             <div>{item.fullName}</div>
             <div>{item.contactNumber}</div>
             <div>{item.dob}</div>
-            <button className={`bg-slate-800 text-white border-2 border-black rounded-full `} onClick={handlePatientHistoryPanel}>Check Patient</button>
+            <button className={`bg-slate-900 text-white border-2 border-black rounded-full py-2 px-2 my-2 mx-2`} onClick={handlePatientHistoryPanel}>Check Patient</button>
             <div className={`bg-slate-700 absolute z-40 flex flex-col border-2 border-black rounded-lg ml-[400px] w-[450px] ${PatientHistoryPanel ? "" : "hidden"}`}>
-            <div className="mb-2"><strong>Patient Name:</strong> {item.fullName}</div>
+            <div className="mb-2 mt-5"><strong>Patient Name:</strong> {item.fullName}</div>
               <div className="mb-2"><strong>Patient Email:</strong> {item.email}</div>
               <div className="mb-2"><strong>Gender:</strong> {item.gender}</div>
               <div className="mb-2"><strong>Date of Birth:</strong> {item.dob}</div>
@@ -338,9 +348,10 @@ const ManageAppoinment = () => {
               <div className="mb-2"><strong>Address:</strong> {item.address}</div>
               <div className="mb-2"><strong>Emergency Contact Name:</strong> {item.emergencyContactName}</div>
               <div className="mb-2"><strong>Emergency Contact Phone:</strong> {item.emergencyContactNumber}</div>
-              <button className="bg-slate-800 text-white border-2 border-black rounded-full w-fit" onClick={handlePatientHistoryPanel}>Exit Details</button>
-              <button className="bg-slate-800 text-white border-2 border-black rounded-full w-fit">Edit Details</button>
-
+              <div className='items-center'>
+              <button className="bg-slate-900 text-white border-2 border-black rounded-full w-fit py-2 px-2 mx-2 my-4 hover:shadow-md hover:shadow-blue-500 duration-300 hover:-translate-y-1">Edit Details</button>
+              <button className="bg-slate-900 text-white border-2 border-black rounded-full w-fit py-2 px-2 mx-2 my-4 hover:shadow-md hover:shadow-blue-500 duration-300 hover:-translate-y-1" onClick={handlePatientHistoryPanel}>Exit Details</button>
+              </div>
             </div>
           </div>
         ))}
