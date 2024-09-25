@@ -16,7 +16,9 @@ const MyComponent = () => {
         async function handleCardAppointmentData() {
             try {
                 const resp = await axios.get("/api/user/all-appointment-data");
-                setAppointmentData(resp.data.result);
+                const UnbookedAppointmentCard = resp.data.result.filter(appointment => appointment.appointmentStatus != 'Booked');
+
+                setAppointmentData(UnbookedAppointmentCard);
                 console.log(resp.data.result);
             } catch (err) {
                 console.log("Error = ", err);
