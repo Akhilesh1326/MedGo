@@ -31,7 +31,7 @@ const PatientManagement = () => {
         const handleOnlinePatientCardInfo = async () => {
             try {
                 const response = await axios.get("/api/user/doctor/online-booking-show");
-                console.log(response.data.msg)
+                console.log("Online Patient Data = ",response.data.msg)
                 setOnlinePatientData(response.data.msg);
 
             } catch (error) {
