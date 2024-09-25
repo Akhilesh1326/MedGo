@@ -75,7 +75,7 @@ const Doctor_Dashboard = () => {
         <input type="text" className="border-2 border-blue-400 sm:px-4 sm:py-2 px-2 py-1 w-40 sm:w-auto  rounded-lg" placeholder="Search here..."/>
         
         <div className="flex space-x-4">
-          <Link to="/user/doctor/profile"><div className="border-2 border-blue-400 px-4 py-2 rounded-lg bg-[#EDE9E3]" >prof</div></Link>
+          <Link to="/user/doctor/profile"><div className="border-2 border-blue-400 px-4 py-2 rounded-lg bg-[#EDE9E3]" >Profile</div></Link>
           <div className="md:hidden  ">
           <button
             className="border-2 border-blue-400 px-4 py-2 rounded-lg cursor-pointer bg-[#EDE9E3]"
