@@ -13,15 +13,19 @@ const ManageAppointment = () => {
   useEffect(() => {
     const handleGetAllApointment = async () => {
       try {
-        const response = await axios.get("/api/user/patient/all-patient-appointment")
-        console.log("Respose for patient appointment = ", response.data.allAppointments[0])
-        setAppointmentData(response.data.allAppointments[0]);
+        const response = await axios.get("/api/user/patient/all-patient-appointment");
+        console.log("Response for patient appointment = ", response.data.allAppointments);
+        
+        // Filter out appointments where the status is 'Unbooked'
+        const filteredAppointments = response.data.allAppointments[0].filter(appointment => appointment.appointmentStatus != 'Unbooked');
+        console.log("filtered reulst   ",filteredAppointments  )
+        setAppointmentData(filteredAppointments);
       } catch (error) {
         console.log("Error while getting all appointment = ", error);
       }
     }
     handleGetAllApointment();
-  }, [])
+  }, []);
 
   function opneModel(item) {
     console.log("Model opned")
@@ -36,40 +40,49 @@ const ManageAppointment = () => {
     console.log("Appointment id = ", appointmentId)
     try {
 
-        const response = await axios.get(`/api/user/doctor/show-prescription${appointmentId}`)
-        console.log("Response of singl prescription = ", response.data.singlePrescription);
+      const response = await axios.get(`/api/user/doctor/show-prescription${appointmentId}`)
+      console.log("Response of singl prescription = ", response.data.singlePrescription);
 
-        if (response.data.singlePrescription.length != 0) {
-            setSinglePrescriptionData(response.data.singlePrescription[0])
-            console.log(response.data.singlePrescription[0])
-        } else {
-            // console.log("Udefind occure.??????????????????????/")
-            setSinglePrescriptionData({
-                medication: "No Data Available",
-                instructions: "No Data Available",
-                diagnosis: "No Data Available",
-                createdAt: "No Data Available"
-            })
-        }
+      if (response.data.singlePrescription.length != 0) {
+        setSinglePrescriptionData(response.data.singlePrescription[0])
+        console.log(response.data.singlePrescription[0])
+      } else {
+        // console.log("Udefind occure.??????????????????????/")
+        setSinglePrescriptionData({
+          medication: "No Data Available",
+          instructions: "No Data Available",
+          diagnosis: "No Data Available",
+          createdAt: "No Data Available"
+        })
+      }
 
     } catch (error) {
-        console.log("Error while getting all presc data = ", error);
+      console.log("Error while getting all presc data = ", error);
     }
-}
+  }
 
   return (
     <div>
       <Header />
       <div>
-        <div className='grid grid-cols-4 bg-slate-800 text-white'>
-          {appointmentData.map((item) => (
-            <div key={item._id} className='mx-5 my-5 flex flex-col text-center border-2 border-blue-900 py-2  rounded-xl h-fit p'>
-              <label className='' htmlFor="">{item.reasonOfAppointment}</label>
-              <label htmlFor="review">{item.dateOfAppointment}</label>
-              <label className='' htmlFor="description">{item.timeOfAppointment}</label>
-              <label className='' htmlFor="description">{item.locationOfAppointment}</label>
-              <button className={`border-2 border-black  rounded-full text-white py-1 px-2 m-1`} onClick={() => { opneModel(item) }}>Check Details</button>
-            </div>))}
+        <div className='grid grid-cols-5 bg-slate-800 text-white min-h-screen'>
+          {appointmentData ? (
+            <>
+              {appointmentData.map((item) => (
+                <div key={item._id} className='mx-5 my-5 flex flex-col text-center border-2 border-blue-900 py-2  bg-[#081724] rounded-xl h-fit p hover:border-blue-600 hover:shadow-md hover:shadow-blue-600 duration-300 hover:-translate-y-1 delay-75'>
+                  <label className='text-lg font-bold' htmlFor="">{item.reasonOfAppointment}</label>
+                  <label className='text-lg font-bold' htmlFor="review">{item.dateOfAppointment}</label>
+                  <label className='text-lg font-bold' htmlFor="description">{item.timeOfAppointment}</label>
+                  <label className='text-lg font-bold' htmlFor="description">{item.locationOfAppointment}</label>
+                  <button className={`border-2 border-black  rounded-full text-white py-2 px-4 m-4 w-fit self-center bg-[#103353] hover:shadow-md hover:shadow-blue-600 duration-300 hover:-translate-y-1 hover:border-blue-100`} onClick={() => { opneModel(item) }}>Check Details</button>
+                </div>))}
+            </>
+          ) : (
+            <>
+            <div>No Information is Available</div>
+            </>
+          )}
+
 
           {allAppointmentData && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 text-black">
@@ -87,8 +100,8 @@ const ManageAppointment = () => {
                   <div className="mb-2"><strong>Location Of Appointment:</strong> {allAppointmentData.locationOfAppointment}</div>
                   <div className="mb-2"><strong>Duration for Appointment:</strong> {allAppointmentData.durationOfAppointment}</div>
                 </div>
-                <button className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg" onClick={() => closeModel(null)}>Close Details</button>
-                <button className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg" onClick={() => { setOpenViewPrescription(true), handleGetAllPrescription(allAppointmentData._id) }}>View Prescripton</button>
+                <button className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg mx-2 hover:shadow-md hover:shadow-black duration-200 hover:-translate-y-1" onClick={() => closeModel(null)}>Close Details</button>
+                <button className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg mx-2 hover:shadow-md hover:shadow-black duration-200 hover:-translate-y-1" onClick={() => { setOpenViewPrescription(true), handleGetAllPrescription(allAppointmentData._id) }}>View Prescripton</button>
 
               </div>
             </div>
