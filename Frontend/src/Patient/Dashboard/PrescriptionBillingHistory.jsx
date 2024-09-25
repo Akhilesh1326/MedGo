@@ -1,5 +1,6 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import Header from './HeaderForDashboardComponent'
 
 const PrescriptionBillingHistory = () => {
     const [appointments, setAppointments] = useState([]);
@@ -11,8 +12,10 @@ const PrescriptionBillingHistory = () => {
         async function handleAllAppointmentInfo() {
             try {
                 const resp1 = await axios.get("/api/user/patient/all-appointment-info");
-                setAppointments(resp1.data.msg); // Assuming `msg` is where the data is stored
+                setAppointments(resp1.data.msg[0]); // Assuming `msg` is where the data is stored
+
                 console.log("All appointment info = ", resp1.data.msg);
+                // console.log("lengt = ",appointments.length)
             } catch (error) {
                 console.log("Error while getting data of appointment = ", error);
             }
@@ -47,7 +50,8 @@ const PrescriptionBillingHistory = () => {
     // Find the associated prescription and billing data for each appointment
     const findRelatedData = (appointmentId, type) => {
         if (type === 'prescription') {
-            return prescriptions.find(prescription => prescription.appointmentId === appointmentId) || {};
+            // console.log("appointmentid = ",appointmentId, " pres appointmetn id = ",prescriptions.appointmentId)
+            return prescriptions.find(prescription => prescription.appointmentId == appointmentId) || {};
         } else if (type === 'billing') {
             return billings.find(billing => billing.appointmentId === appointmentId) || {};
         }
@@ -55,14 +59,19 @@ const PrescriptionBillingHistory = () => {
     };
 
     return (
+        <div>
+        <div>
+            <Header/>
+        </div>
+        
         <div className="p-6">
             <h2 className="text-2xl font-bold mb-4">Prescription and Billing History</h2>
 
             {/* Iterate through appointments and display related data */}
             {appointments.length > 0 ? (
                 appointments.map((appointment) => {
-                    const relatedPrescription = findRelatedData(appointment.doctorId, 'prescription');
-                    const relatedBilling = findRelatedData(appointment.appointmentId, 'billing');
+                    const relatedPrescription = findRelatedData(appointment._id, 'prescription');
+                    const relatedBilling = findRelatedData(appointment._id, 'billing');
 
                     return (
                         <div key={appointment._id} className="border p-4 mb-6 rounded-lg shadow-sm">
@@ -70,7 +79,7 @@ const PrescriptionBillingHistory = () => {
                             <h3 className="text-xl font-semibold mb-2">Appointment Information</h3>
                             <p><strong>Date of Appointment:</strong> {appointment.dateOfAppointment}</p>
                             <p><strong>Time:</strong> {appointment.timeOfAppointment}</p>
-                            <p><strong>Doctor Name:</strong> {appointment.doctorName}</p>
+                            <p><strong>Doctor Name:</strong> {appointment.doctorName}</p>   
                             <p><strong>Location:</strong> {appointment.locationOfAppointment}</p>
                             <p><strong>Reason:</strong> {appointment.reasonOfAppointment}</p>
                             <p><strong>Appointment Status:</strong> {appointment.appointmentStatus}</p>
@@ -111,6 +120,7 @@ const PrescriptionBillingHistory = () => {
             ) : (
                 <p>No appointment information available.</p>
             )}
+        </div>
         </div>
     );
 };
