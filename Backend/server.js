@@ -625,6 +625,9 @@ app.post("/api/user/commonArea/book-appointment", async (req, res) => {
         // console.log("Patient Id = ", uid)
         const resultOfAppointment = await handleGetAppointmentById(data.appointmentId)
         const resultOfSavingBookedAppointment = await handleAppointmentBookingInfo(data.doctorId, uid, data.appointmentId)
+        console.log("resultOfAppointment", resultOfAppointment)
+        console.log("resultOfSavingBookedAppointment", resultOfSavingBookedAppointment)
+        res.json({msg:"Booked"})
 
     } catch (err) {
         console.log("Error Occured While getting the appoinment id and doctor id from comman area", err);
@@ -969,8 +972,8 @@ app.get("/api/user/patient/all-prescription-info",async(req,res)=>{
 })
 
 
+const port = process.env.PORT || 8000;
 
-
-server.listen(8000, () => {
+server.listen(port, () => {
     console.log('Server is running on http://localhost:8000');
 });
