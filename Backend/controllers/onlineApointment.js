@@ -37,7 +37,7 @@ async function handleGetAppointmentById(id) {
             { $set: { appointmentStatus: "Booked" } }
         ).exec();
 
-        console.log("Result =", result);
+        return "Booked";
     } catch (error) {
         console.error("Error occurred in controller for getting appointment by id:", error);
     }
@@ -46,6 +46,7 @@ async function handleGetAppointmentById(id) {
 async function handleAppointmentBookingInfo(doctorId, patientId, appointmentId) {
     try {
         const result = await onlineAppointmentBookedSchema.create({doctorId,patientId, appointmentId});
+        return result;
 
     } catch (error) {
         console.log("Error occured while storing data of booked appointment = ",error);
