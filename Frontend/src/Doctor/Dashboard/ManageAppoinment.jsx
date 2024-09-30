@@ -92,7 +92,7 @@ const ManageAppoinment = () => {
       }
     }
     handleAppointmentData();
-  }, [appointmentPop , editAppointment])
+  }, [appointmentPop , editAppointment, socketMsg])
 
   useEffect(() => {
     const socket = io("http://localhost:8000");
