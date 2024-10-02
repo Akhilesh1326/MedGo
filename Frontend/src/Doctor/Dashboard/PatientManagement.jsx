@@ -31,7 +31,7 @@ const PatientManagement = () => {
         const handleOnlinePatientCardInfo = async () => {
             try {
                 const response = await axios.get("/api/user/doctor/online-booking-show");
-                console.log("Online Patient Data = ",response.data.msg)
+                console.log("Online Patient Data = ", response.data.msg)
                 setOnlinePatientData(response.data.msg);
 
             } catch (error) {
@@ -78,7 +78,7 @@ const PatientManagement = () => {
         }
     }
 
-    
+
     const handleGetAllPrescriptionOfflinePatient = async (appointmentId) => {
         console.log("Appointment id = ", appointmentId)
         try {
@@ -121,9 +121,9 @@ const PatientManagement = () => {
             console.log("Error occured while putting presc data to backend = ", error);
         }
     }
-    async function handlePrescriptionDataOfflinePatientSubmit(appointmentId,doctorId) {
+    async function handlePrescriptionDataOfflinePatientSubmit(appointmentId, doctorId) {
         try {
-            console.log("dcotor id = , appointmetn id = ",doctorId, appointmentId)
+            console.log("dcotor id = , appointmetn id = ", doctorId, appointmentId)
             const resp = await axios.post("/api/user/doctor/prescription-offline-patient", {
                 doctorId,
                 appointmentId,
@@ -135,7 +135,7 @@ const PatientManagement = () => {
             setDiagnosis("")
             setInstructions("")
             setMedication("")
-            
+
         } catch (error) {
             console.log("Error occured while putting presc data to backend = ", error);
         }
@@ -158,7 +158,7 @@ const PatientManagement = () => {
     };
 
     const openNewPrescriptionFormOfflinePatient = (patientData) => {
-        console.log("hello",patientData)
+        console.log("hello", patientData)
         setPatientDataForPrescriptioin(patientData)
     };
     const closeNewPrescriptionFormOfflinePatient = () => {
@@ -175,11 +175,12 @@ const PatientManagement = () => {
                 {/* Offline Patients */}
                 {OfflinePatientData.map((item) => (
                     <div key={item.appointmentId} className="flex flex-col border-2 border-[#4292dc] rounded-lg w-fit items-center py-0 px-4 my-5 duration-300 hover:shadow-md hover:shadow-[#4292dc] hover:-translate-y-1" >
-                        <div className="text-sm">{item.patientType}</div>
+                        <div className="text-sm capitalize">{item.patientType}</div>
                         <img src="" alt="img" className="h-16 w-16 border-2 border-[#2370b8] rounded-full mt-2" />
-                        <div>{item.fullName}</div>
-                        <div>{item.contactNumber}</div>
-                        <div>{item.dob}</div>
+                        <div className="mb-2"><strong>Patient Name:</strong> {item.fullName}</div>
+                        <div className="mb-2"><strong>Patient Contact:</strong> {item.contactNumber}</div>
+                        <div className="mb-2"><strong>DOB:</strong> {item.dob}</div>
+
                         <button className="bg-slate-800 text-white border-2 border-[#1f6eb8] rounded-full my-5 py-2 px-4 duration-300 hover:shadow-md hover:shadow-[#4292dc] hover:-translate-y-1" onClick={() => toggleOfflinePatientDetails(item._id)}>
                             Check Patient
                         </button>
@@ -241,7 +242,7 @@ const PatientManagement = () => {
                                         <button className="bg-slate-800  text-white border-2 border-[#1f6eb8] rounded-full w-fit py-2 px-4 my-1 mb-4 mx-2 duration-300 hover:shadow-md hover:shadow-[#4292dc] hover:-translate-y-1" onClick={() => openNewPrescriptionForm(item)}>
                                             Add Prescription
                                         </button>
-                                        <button className="bg-slate-800  text-white border-2 border-[#1f6eb8] rounded-full w-fit py-2 px-4 my-1 mb-4 mx-2 duration-300 hover:shadow-md hover:shadow-[#4292dc] hover:-translate-y-1" onClick={() => {setOpenViewPrescription(true), handleGetAllPrescription(item.appointmentId) }}>
+                                        <button className="bg-slate-800  text-white border-2 border-[#1f6eb8] rounded-full w-fit py-2 px-4 my-1 mb-4 mx-2 duration-300 hover:shadow-md hover:shadow-[#4292dc] hover:-translate-y-1" onClick={() => { setOpenViewPrescription(true), handleGetAllPrescription(item.appointmentId) }}>
                                             View Prescription
                                         </button>
                                     </div>
