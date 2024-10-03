@@ -41,8 +41,8 @@ const Patient_Dashboard = () => {
         <input type="text" className="border-2 border-blue-400 sm:px-4 sm:py-2 px-2 py-1 w-40 sm:w-auto  rounded-lg" placeholder="Search here..."/>
         
         <div className="flex space-x-4">
-          <Link to="/user/patient/profile"><button className="border-2 border-blue-400 px-4 py-2 rounded-lg bg-[#EDE9E3]" >prof</button></Link>
-          <Link to="/user/commonarea"><button className="border-2 border-blue-400 px-4 py-2 rounded-lg bg-[#EDE9E3]" >common Area</button></Link>
+          <Link to="/user/patient/profile"><button className="border-2 border-blue-400 px-4 py-2 rounded-lg bg-[#EDE9E3]" >Profile</button></Link>
+          <Link to="/user/commonarea"><button className="border-2 border-blue-400 px-4 py-2 rounded-lg bg-[#EDE9E3]" >Common Area</button></Link>
           <div className="md:hidden  ">
           <button
             className="border-2 border-blue-400 px-4 py-2 rounded-lg cursor-pointer bg-[#EDE9E3]"
