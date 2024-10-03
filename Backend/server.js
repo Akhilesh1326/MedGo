@@ -739,8 +739,6 @@ app.put("/api/user/doctor/prescription-update", async (req, res) => {
     }
 })
 
-//  API call for getting single offline patient data 
-
 
 app.get("/api/user/doctor/show-prescription:aid", async (req, res) => {
     try {
