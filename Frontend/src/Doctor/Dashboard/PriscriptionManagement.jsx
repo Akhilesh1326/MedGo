@@ -246,7 +246,7 @@ const PriscriptionManagement = () => {
             {selectedOnlinePatient === item.appointmentId && (
               <>
 
-                <div className="bg-slate-800 absolute z-40 flex flex-col border-2 border-[black] rounded-lg ml-[400px] w-[450px]">
+                <div className="bg-slate-800 absolute z-50 flex flex-col border-2 border-[black] rounded-lg ">
                   <button className='ml-[90%] text-red-600 text-xl mt-1' onClick={() => toggleOnlinePatientDetails(item._id)}>X</button>
 
 
