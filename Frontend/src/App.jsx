@@ -29,6 +29,7 @@ import Home from './Components/Home';
 import CommonArea from "./Components/CommonArea";
 import CommonLogin from "./Components/CommonLogin";
 import CheckLoginUser from "./Components/CheckLoginUser";
+import AboutUs from "./Components/AboutUs";
 
 const router = createBrowserRouter([
     { path: "/", element: <Home /> },
@@ -59,6 +60,7 @@ const router = createBrowserRouter([
     { path: "/user/commonarea", element: <CommonArea />},
     { path: "/user/login", element: <CommonLogin />},
     { path: "/user/check/login", element: <CheckLoginUser />},
+    { path: "/user/aboutUs", element: <AboutUs />},
 ]);
 
 function App() {
