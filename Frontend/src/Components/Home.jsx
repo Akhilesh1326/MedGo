@@ -15,9 +15,9 @@ const Home = () => {
   return (
     <div className='font-raleway'>
       <div className='flex justify-between py-8 px-4  bg-[#1c5081] font-light text-lg text-white'>
-        <span>Logo</span>
+        <span className='font-raleway text-2xl text-[#9dc3e9] font-bold'>Medlinea</span>
         <div>
-          <Link to="/user/checkuser"><button className='mx-2 bg-[#96BADC] py-1 px-3 rounded-lg duration-300 hover:shadow-[#3794eb] hover:shadow-md hover:-translate-y-1'>About Us</button></Link>
+          <Link to="/user/aboutUs"><button className='mx-2 bg-[#96BADC] py-1 px-3 rounded-lg duration-300 hover:shadow-[#3794eb] hover:shadow-md hover:-translate-y-1'>About Us</button></Link>
           <button onClick={toggleSignUpModal} className='mx-2 bg-[#96BADC] py-1 px-3 rounded-lg duration-300 hover:shadow-[#3794eb] hover:shadow-md hover:-translate-y-1'>SignUp</button>
           <button onClick={() => setSignInModalOpen(!isSignInModalOpen)} className='mx-2 bg-[#96BADC] py-1 px-3 rounded-lg duration-300 hover:shadow-[#3794eb] hover:shadow-md hover:-translate-y-1' >SignIn</button>
         </div>
