@@ -64,7 +64,7 @@ const Doctor_Dashboard = () => {
         <Link to="/user/doctor/dashboard/manage-prescription"><div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:bg-[#d0e3ff]">Prescription Management</div></Link>
         <Link to="/user/doctor/dashboard/manage-billing"><div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:bg-[#d0e3ff]">Billing</div></Link>
         <Link to="/user/doctor/dashboard/history-patient"><div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:bg-[#d0e3ff]">History Of Patients </div></Link>
-        <div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:bg-[#d0e3ff]">Reports and Analytics</div>
+        <Link to="/user/doctor/dashboard/lab-report-management"><div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:bg-[#d0e3ff]">Lab Reports Management</div></Link>
         <div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:bg-[#d0e3ff]">Task and To-Do List</div>
         <div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:bg-[#d0e3ff]">Settings and Preferences</div>
         <div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:bg-[#d0e3ff]">Feedback and Support</div>
