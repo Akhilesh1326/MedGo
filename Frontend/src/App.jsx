@@ -22,6 +22,7 @@ import PatientManagment from "./Doctor/Dashboard/PatientManagement";
 import PriscriptionManagement from "./Doctor/Dashboard/PriscriptionManagement";
 import DoctorBilling from "./Doctor/Dashboard/DoctorBilling";
 import PatientHistory from "./Doctor/Dashboard/PatientHistory";
+import LabReportManagement from "./Doctor/Dashboard/LabReportManagement";
 
 
 import CheckUser from './Components/CheckUser';
@@ -44,6 +45,7 @@ const router = createBrowserRouter([
     { path: "/user/doctor/dashboard/manage-prescription", element: <PriscriptionManagement />},
     { path: "/user/doctor/dashboard/manage-billing", element: <DoctorBilling />},
     { path: "/user/doctor/dashboard/history-patient", element: <PatientHistory />},
+    { path: "/user/doctor/dashboard/lab-report-management", element: <LabReportManagement />},
     
     { path: "/user/patient/signin", element: <PatientSignIn /> },
     { path: "/user/patient/login-credentials", element: <PatientLoginCred /> },
