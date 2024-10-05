@@ -11,6 +11,8 @@ const LabReportManagement = () => {
     const [allAppointmentInfo, setAllAppointmentInfo] = useState("");
     const [selectLabReport, setSelectLabReport] = useState(null);
 
+    const [openLabReportWindow, setOpenLabReportWindow] = useState(false);
+
     useEffect(() => {
         const handleOfflinePatientCardInfo = async () => {
             try {
@@ -52,6 +54,17 @@ const LabReportManagement = () => {
         setSelectedOnlinePatient(selectedOnlinePatient === patientId ? null : patientId);
     };
 
+    const handleLabReportWindow = () => {
+        setOpenLabReportWindow(!openLabReportWindow);
+        console.log("clicked  = ", openLabReportWindow)
+    }
+
+    const handleLabReportChange = (e) => {
+        setSelectLabReport(e.target.files[0]);
+    }
+
+
+
     const handleSubmitLabReport = async (e) => {
         e.preventDefault();
         if (!selectLabReport) {
@@ -91,9 +104,14 @@ const LabReportManagement = () => {
                         <div className="mb-2"><strong>DOB:</strong> {item.dob}</div>
                         <div className="mb-2"><strong>Created At:</strong> {item.createdAt}</div>
 
-                        <button className="bg-slate-800 text-white border-2 border-[#1f6eb8] rounded-full my-5 py-2 px-4 duration-300 hover:shadow-md hover:shadow-[#4292dc] hover:-translate-y-1" onClick={() => toggleOfflinePatientDetails(item._id)}>
-                            Check Patient
-                        </button>
+                        <div className='flex-col my-2 justify-center text-center'>
+                            <button className="bg-slate-800 text-white border-2 border-[#1f6eb8] rounded-full mb-1 py-2 px-4 duration-300 hover:shadow-md hover:shadow-[#4292dc] hover:-translate-y-1" onClick={() => toggleOfflinePatientDetails(item._id)}>
+                                Check Patient
+                            </button>
+                            <button className="bg-slate-800 text-white border-2 border-[#1f6eb8] rounded-full mt-1 py-2 px-4 duration-300 hover:shadow-md hover:shadow-[#4292dc] hover:-translate-y-1" onClick={() => toggleOfflinePatientDetails(item._id)}>
+                                Lab Report Details
+                            </button>
+                        </div>
                         {selectedOfflinePatient === item._id && (
                             <div className={`bg-slate-700 absolute z-40 flex flex-col border-2 border-black rounded-lg ml-[400px] w-[450px]`}>
                                 <div className="mb-2"><strong>Patient Name:</strong> {item.fullName}</div>
@@ -112,19 +130,27 @@ const LabReportManagement = () => {
 
                 {/* Online Patients */}
                 {onlinePatientData.map((item) => (
+
                     <div key={item._id} className="flex flex-col border-2 border-[#4292dc] rounded-lg w-fit items-center py-0 px-4 my-5 duration-300 hover:shadow-md hover:shadow-[#4292dc] hover:-translate-y-1">
-                        <div className="text-sm">{item.patientType}</div>
+
                         <img src="" alt="img" className="h-16 w-16 border-2 border-[#2370b8] rounded-full mt-2" />
 
                         <div className="mb-2"><strong>Full Name:</strong> {item.fullName}</div>
                         <div className="mb-2"><strong>Contact:</strong> {item.phone}</div>
-                        <div className="mb-2"><strong>DOB:</strong> {item.dateOfBirth}</div>
                         <div className="mb-2"><strong>Appointment Time:</strong> {allAppointmentInfo.find(appointment => appointment._id === item.appointmentId)?.timeOfAppointment}</div>
                         <div className="mb-2"><strong>Appointment Date:</strong> {allAppointmentInfo.find(appointment => appointment._id === item.appointmentId)?.dateOfAppointment}</div>
-                        <button className="bg-slate-800 text-white border-2 border-[#1f6eb8] rounded-full my-5 py-2 px-4 duration-300 hover:shadow-md hover:shadow-[#4292dc] hover:-translate-y-1" onClick={() => toggleOnlinePatientDetails(item.appointmentId)}>
-                            Check Patient
-                        </button>
+                        <div className='flex-col my-2 justify-center text-center'>
+
+                            <button className="bg-slate-800 text-white border-2 border-[#1f6eb8] rounded-full mb-1 py-2 px-4 duration-300 hover:shadow-md hover:shadow-[#4292dc] hover:-translate-y-1" onClick={() => toggleOnlinePatientDetails(item.appointmentId)}>
+                                Check Patient
+                            </button>
+                            <button className="bg-slate-800 text-white border-2 border-[#1f6eb8] rounded-full mt-1 py-2 px-4 duration-300 hover:shadow-md hover:shadow-[#4292dc] hover:-translate-y-1" onClick={() => handleLabReportWindow()}>
+                                Lab Report Details
+                            </button>
+                        </div>
+
                         {selectedOnlinePatient === item.appointmentId && (
+
                             <div className="bg-slate-800 absolute z-40 flex flex-col border-2 border-[black] rounded-lg ml-[400px] w-[450px]">
                                 <button className='ml-[90%] text-red-600 text-xl mt-1' onClick={() => toggleOnlinePatientDetails(item._id)}>X</button>
                                 <div className='py-2 px-2 mx-10 mb-5'>
@@ -138,6 +164,29 @@ const LabReportManagement = () => {
                         )}
                     </div>
                 ))}
+                <div>
+                    {openLabReportWindow && (
+                        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                            <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
+                                <div className="flex justify-between items-center">
+                                    <h2 className="text-xl font-semibold text-black">Lab Report Details</h2>
+                                    <button className="text-red-500 text-lg" onClick={() => handleLabReportWindow()}>
+                                        X
+                                    </button>
+                                </div>
+                                <form onSubmit={handleSubmitLabReport}>
+                                    <input type="file" onChange={handleLabReportChange} accept="application/pdf" />
+                                    <button type="submit">Upload PDF</button>
+                                <button className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg" type="submit">Upload Lab Report PDF</button>
+                                </form>
+
+
+                            </div>
+                        </div>
+                    )
+
+                    }
+                </div>
             </div>
         </div>
     );
