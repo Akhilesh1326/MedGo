@@ -91,7 +91,8 @@ const { handleOnlineAppointment,
     handleGetAppointmentDetails,
     handleAllPatientIdOfSingleDoctor,
     handleAllAppointmentForSinglePatient,
-    handleGetAllDoctorIdsAppointment, } = require("./controllers/onlineApointment");
+    handleGetAllDoctorIdsAppointment,
+    handleGetAllDoctorIdsAppointmentForPatient, } = require("./controllers/onlineApointment");
 
 const { handlePreciptionInfo,
     handleShowAllPrescriptionAppointmentId,
@@ -772,10 +773,13 @@ app.get("/api/user/patient/all-patient-appointment", async (req, res) => {
         const result1 = await handleAllAppointmentForSinglePatient(uid);
 
         const doctorIds = result1.map(record => record.doctorId);
+        const appointmentIds = result1.map(record => record.appointmentId);
+        // console.log("Appointment IDs = ",appointmentIds);
+        // console.log("Doctor IDs = ",doctorIds);
 
         let allAppointments = [];
         for (let i = 0; i < doctorIds.length; i++) {
-            const result = await handleGetAllDoctorIdsAppointment(doctorIds[i]);
+            const result = await handleGetAllDoctorIdsAppointmentForPatient(doctorIds[i],appointmentIds[i]);
             // result.appointmentId = appointmentIds[i]; // Add appointmentId to the patient data
             allAppointments.push(result); // Add updated patient data to the array
         }
@@ -835,9 +839,10 @@ app.get("/api/user/doctor/billing/online-appointment-data", async (req, res) => 
         const token = req.cookies.userCookie;
         let varifyData = jwt.verify(token, process.env.JWT_SECRET);
         const uid = varifyData.UserId;
-        console.log("Patinet = ", uid);
+        console.log("Doctor for Billing = ", uid);
 
         const result = await handleGetAllDoctorIdsAppointment(uid);
+        console.log("All Appointment of Given Id doctor = ",result)
         res.json({msg:result})
     } catch (error) {
         console.log("Error occured while getting all prescription of single doctor = ",error)
@@ -925,13 +930,17 @@ app.get("/api/user/patient/all-appointment-info",async(req,res)=>{
         const result1 = await handleAllAppointmentForSinglePatient(uid);
 
         const doctorIds = result1.map(record => record.doctorId);
+        const appointmentIds = result1.map(record => record.appointmentId);
+        // console.log("Appointment IDs = ",appointmentIds);
+        // console.log("Doctor IDs = ",doctorIds);
 
         let allAppointments = [];
         for (let i = 0; i < doctorIds.length; i++) {
-            const result = await handleGetAllDoctorIdsAppointment(doctorIds[i]);
+            const result = await handleGetAllDoctorIdsAppointmentForPatient(doctorIds[i],appointmentIds[i]);
             // result.appointmentId = appointmentIds[i]; // Add appointmentId to the patient data
             allAppointments.push(result); // Add updated patient data to the array
         }
+        
         console.log("All appointment = ", allAppointments);
         res.json({ msg: allAppointments });
     } catch (error) {
