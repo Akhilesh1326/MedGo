@@ -15,10 +15,17 @@ const ManageAppointment = () => {
       try {
         const response = await axios.get("/api/user/patient/all-patient-appointment");
         console.log("Response for patient appointment = ", response.data.allAppointments);
-        
+        console.log("Response Lenght = ", response.data.allAppointments.length)
+        console.log("Response Corrected = ", response.data.allAppointments[0])
         // Filter out appointments where the status is 'Unbooked'
-        const filteredAppointments = response.data.allAppointments[0].filter(appointment => appointment.appointmentStatus != 'Unbooked');
-        console.log("filtered reulst   ",filteredAppointments  )
+        let filteredAppointments = []; // Initialize as an array to store all filtered results
+        const appointmentsArray = Object.values(response.data.allAppointments);
+
+        // Filter the array based on appointment status
+        filteredAppointments = appointmentsArray.filter(appointment => appointment.appointmentStatus != 'Unbooked');
+
+        console.log("Filtered result:", filteredAppointments);
+
         setAppointmentData(filteredAppointments);
       } catch (error) {
         console.log("Error while getting all appointment = ", error);
@@ -79,7 +86,7 @@ const ManageAppointment = () => {
             </>
           ) : (
             <>
-            <div>No Information is Available</div>
+              <div>No Information is Available</div>
             </>
           )}
 
