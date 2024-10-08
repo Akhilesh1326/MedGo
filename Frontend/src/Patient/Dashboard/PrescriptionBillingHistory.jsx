@@ -12,9 +12,11 @@ const PrescriptionBillingHistory = () => {
         async function handleAllAppointmentInfo() {
             try {
                 const resp1 = await axios.get("/api/user/patient/all-appointment-info");
-                setAppointments(resp1.data.msg[0]); // Assuming `msg` is where the data is stored
-
-                console.log("All appointment info = ", resp1.data.msg);
+                
+                const appointmentArray = Object.values(resp1.data.msg)
+                setAppointments(appointmentArray); // Assuming `msg` is where the data is stored
+                
+                console.log("All appointment info = ", appointmentArray);
                 // console.log("lengt = ",appointments.length)
             } catch (error) {
                 console.log("Error while getting data of appointment = ", error);
