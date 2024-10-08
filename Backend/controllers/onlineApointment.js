@@ -75,7 +75,7 @@ async function handleAppointmentDelete(appointmentId) {
 async function handleAllPatientIdOfSingleDoctor(doctorId) {
     try {
         const result = await onlineAppointmentBookedSchema.find({doctorId:doctorId});
-        console.log("RRRRsult = ",result)
+        console.log("RRRRsult handleAllPatientIdOfSingleDoctor= ",result)
         return result;
     } catch (error) {
         console.log("Error occured while getting all patient id for single doctor = ",error);
@@ -84,7 +84,7 @@ async function handleAllPatientIdOfSingleDoctor(doctorId) {
 async function handleAllAppointmentForSinglePatient(pid) {
     try {
         const result = await onlineAppointmentBookedSchema.find({patientId:pid});
-        console.log("RRRRsult = ",result)
+        console.log("RRRRsult handleAllAppointmentForSinglePatient= ",result)
         return result;
     } catch (error) {
         console.log("Error occured while getting all patient id for single doctor = ",error);
@@ -93,7 +93,18 @@ async function handleAllAppointmentForSinglePatient(pid) {
 
 async function handleGetAllDoctorIdsAppointment(dID) {
     try {
-        const result = await onlineAppointmentSchema.find({doctorId:dID})
+        const result = await onlineAppointmentSchema.find({doctorId: dID,});
+        return result
+    } catch (error) {
+        console.log("Error while getting all appointmetn by doctor id",error);
+    }
+}
+async function handleGetAllDoctorIdsAppointmentForPatient(dID,aId) {
+    try {
+        const result = await onlineAppointmentSchema.findOne({
+            doctorId: dID,
+            _id: aId
+        });
         return result
     } catch (error) {
         console.log("Error while getting all appointmetn by doctor id",error);
@@ -111,4 +122,5 @@ module.exports = {handleOnlineAppointment,
     handleAllPatientIdOfSingleDoctor,
     handleAllAppointmentForSinglePatient,
     handleGetAllDoctorIdsAppointment,
+    handleGetAllDoctorIdsAppointmentForPatient,
 }
