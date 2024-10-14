@@ -979,6 +979,23 @@ app.get("/api/user/patient/all-prescription-info",async(req,res)=>{
 })
 
 
+app.get("/api/doctor/dashboard/appointment-count",async(req,res)=>{
+    try {
+        const token = req.cookies.userCookie;
+        let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        const uid = varifyData.UserId;
+        console.log("Doctor Id for count of appointment = ",uid);
+        const result1 = await handleAllDataOfOneDoctorOnlineAppointment(varifyData.UserId);
+        const result2 = await handleAllDataOfOneDoctorOfOfflinePatient(varifyData.UserId);
+        const OnlineAppointmentCount = result1.length;     
+        const OfflineAppointmentCount = result2.length;
+        res.json({OnlineAppointmentCount:OnlineAppointmentCount, OfflineAppointmentCount:OfflineAppointmentCount})      
+    } catch (error) {
+        console.log("Error Occured while getting total count of appointments of doctor= ",error);
+        res.json({data:"Error"})
+    }
+})
+
 const port = process.env.PORT || 8000;
 
 server.listen(port, () => {
