@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import {io} from "socket.io-client";
 // import { v4 as uuid } from 'uuid';
 import { Link } from "react-router-dom";
+import axios from 'axios'
 // 96BADC
 
 const Doctor_Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [offlineAppointmentCount, setOfflineAppointmentCount] = useState(0);
+  const [onlineAppointmentCount, setOnlineAppointmentCount] = useState(0);
 
   // const [sendMsg, setSendMsg] = useState("");
 
@@ -22,6 +25,19 @@ const Doctor_Dashboard = () => {
   };
 
   }, [])
+
+  useEffect(() => {
+    async function getTotalAppointments() {
+      const response = await axios.get("/api/doctor/dashboard/appointment-count");
+      console.log("Total appointment of doctor = ",response)
+      console.log(response.data.OnlineAppointmentCount)
+      console.log(response.data.OfflineAppointmentCount)
+      setOfflineAppointmentCount(response.data.OfflineAppointmentCount);
+      setOnlineAppointmentCount(response.data.OnlineAppointmentCount);
+    }
+    getTotalAppointments();
+  }, [])
+  
 
 
   // send message to server (web-socket)
@@ -90,17 +106,17 @@ const Doctor_Dashboard = () => {
   {/* Card 1 */}
   <div className="flex flex-col items-center justify-between border-2 border-[#6bb1f2] bg-[#236db3] p-6 rounded-lg  h-full shadow-[0px_0px_5px_1px_#206ef6] hover:shadow-[0px_0px_15px_4px_#206ef6] duration-300">
     <div className="bg-[#bad6eb] text-3xl font-semibold text-black rounded-full h-16 w-16 flex items-center justify-center mb-4">
-      0
+      {onlineAppointmentCount}
     </div>
-    <div className="text-lg font-bold text-center">Total Appointments</div>
+    <div className="text-lg font-bold text-center">Total Online Appointments</div>
   </div>
 
   {/* Card 2 */}
   <div className="flex flex-col items-center justify-between border-2 border-[#6bb1f2] bg-[#236db3] p-6 rounded-lg h-full shadow-[0px_0px_5px_1px_#206ef6] hover:shadow-[0px_0px_15px_4px_#206ef6] duration-300">
     <div className="bg-[#bad6eb] text-3xl font-semibold text-black rounded-full h-16 w-16 flex items-center justify-center mb-4">
-      0
+      {offlineAppointmentCount}
     </div>
-    <div className="text-lg font-bold text-center">Total Patients</div>
+    <div className="text-lg font-bold text-center">Total Offline Appointments</div>
   </div>
 
   {/* Card 3 */}
@@ -108,7 +124,7 @@ const Doctor_Dashboard = () => {
     <div className="bg-[#bad6eb] text-3xl font-semibold text-black rounded-full h-16 w-16 flex items-center justify-center mb-4">
       0
     </div>
-    <div className="text-lg font-bold text-center">Other Stats</div>
+    <div className="text-lg font-bold text-center">Process Completed Patients</div>
   </div>
 
   {/* Card 4 */}
