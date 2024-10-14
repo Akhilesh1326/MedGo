@@ -55,24 +55,39 @@ const Patient_Dashboard = () => {
       </div>
 
       {/* Main Content */}
-      <div className="grid grid-cols-2  sm:grid-cols-3 gap-3 bg-[#7096d1] text-white p-4 rounded-xl h-fit">
-        <div className="flex flex-col  w-full text-center border-4 border-blue-400 bg-[#334eac] rounded-xl h-full">
-          <div className="bg-[#bad6eb] rounded-lg py-4">0</div>
-          <div className="font-bold px-1 py-6 w-40 h self-center">Taken Appoinments</div>
-        </div> 
-        <div className="flex flex-col w-full text-center border-4 border-blue-400 bg-[#334eac] rounded-xl h-fit">
-          <div className="bg-[#bad6eb] rounded-lg py-4">0</div>
-          <div className="font-bold px-2 py-6 w-40 h self-center">Live Appointment</div>
-        </div>
-        <div className="flex flex-col w-full text-center border-4 border-blue-400 bg-[#334eac] rounded-xl h-fit">
-          <div className="bg-[#bad6eb] rounded-lg py-4">0</div>
-          <div className="font-bold px-2 py-6 w-40 h self-center">Total other stats</div>
-        </div>
-        <div className="flex flex-col w-full text-center border-4 border-blue-400 bg-[#334eac] rounded-xl h-fit">
-          <div className="bg-[#bad6eb] rounded-lg py-4">0</div>
-          <div className="font-bold px-2 py-6 w-40 h self-center">Total other stats</div>
-        </div>
-      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-6 bg-[#0a2035] text-white rounded-xl">
+  {/* Card 1 */}
+  <div className="flex flex-col items-center justify-between border-2 border-[#6bb1f2] bg-[#236db3] p-6 rounded-lg  h-full shadow-[0px_0px_5px_1px_#206ef6] hover:shadow-[0px_0px_15px_4px_#206ef6] duration-300">
+    <div className="bg-[#bad6eb] text-3xl font-semibold text-black rounded-full h-16 w-16 flex items-center justify-center mb-4">
+      0
+    </div>
+    <div className="text-lg font-bold text-center">Total Appointments</div>
+  </div>
+
+  {/* Card 2 */}
+  <div className="flex flex-col items-center justify-between border-2 border-[#6bb1f2] bg-[#236db3] p-6 rounded-lg h-full shadow-[0px_0px_5px_1px_#206ef6] hover:shadow-[0px_0px_15px_4px_#206ef6] duration-300">
+    <div className="bg-[#bad6eb] text-3xl font-semibold text-black rounded-full h-16 w-16 flex items-center justify-center mb-4">
+      0
+    </div>
+    <div className="text-lg font-bold text-center">Total Patients</div>
+  </div>
+
+  {/* Card 3 */}
+  <div className="flex flex-col items-center justify-between border-2 border-[#6bb1f2] bg-[#236db3] p-6 rounded-lg h-full shadow-[0px_0px_5px_1px_#206ef6] hover:shadow-[0px_0px_15px_4px_#206ef6] duration-300">
+    <div className="bg-[#bad6eb] text-3xl font-semibold text-black rounded-full h-16 w-16 flex items-center justify-center mb-4">
+      0
+    </div>
+    <div className="text-lg font-bold text-center">Other Stats</div>
+  </div>
+
+  {/* Card 4 */}
+  <div className="flex flex-col items-center justify-between border-2 border-[#6bb1f2] bg-[#236db3] p-6 rounded-lg h-full shadow-[0px_0px_5px_1px_#206ef6] hover:shadow-[0px_0px_15px_4px_#206ef6] duration-300">
+    <div className="bg-[#bad6eb] text-3xl font-semibold text-black rounded-full h-16 w-16 flex items-center justify-center mb-4">
+      0
+    </div>
+    <div className="text-lg font-bold text-center">Other Stats</div>
+  </div>
+</div>
     </div>
   );
 };
