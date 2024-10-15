@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import bgOne from "../assets/upscale4.jpeg";
 // import { io } from "socket.io-client";
 
@@ -58,7 +59,7 @@ const MyComponent = () => {
                 doctorId,
             });
             console.log("Hello = ", resp);
-            if(resp.data.msg == "Booked"){
+            if (resp.data.msg == "Booked") {
                 setLoadAppointmentBook(false)
                 setAppointmentPostResp("Booked");
 
@@ -85,9 +86,9 @@ const MyComponent = () => {
                     <div className="py-2 px-4 mx-1 my-2 border-slate-600 border-2 rounded-lg font-raleway">Medlinea</div>
                     <input type="text" placeholder="Search appointments" className="py-2 px-2 mx-1 my-2 border-slate-600 border-2 rounded-lg" />
                 </div>
-                <div className="flex">
-                    <div className="py-2 px-4 mx-1 my-2 border-slate-600 border-2 rounded-lg">Profile</div>
-                    <div className="py-2 px-4 mx-1 my-2 border-slate-600 border-2 rounded-lg">Dashboard</div>
+                <div className="flex text-black">
+                    <Link to="/user/patient/profile"><button className="border-2 mx-1 border-[#0b1d2e] px-4 py-2 rounded-lg bg-[#EDE9E3] hover:-translate-y-1 shadow-[0px_0px_0px_1px_#206ef6] hover:shadow-[0px_0px_5px_2px_#206ef6] duration-300" >Profile</button></Link>
+                    <Link to="/user/patient/dashboard"><button className="border-2 mx-1 border-[#0b1d2e] px-4 py-2 rounded-lg bg-[#EDE9E3] hover:-translate-y-1 shadow-[0px_0px_0px_1px_#206ef6] hover:shadow-[0px_0px_5px_2px_#206ef6] duration-300" >Dashboard</button></Link>
                 </div>
             </div>
             <div className="flex flex-col justify-center items-center z-0 h-screen bg-slate-900">
@@ -127,22 +128,22 @@ const MyComponent = () => {
                             <div className="mb-2"><strong>Location Of Appointment:</strong> {selectedAppointment.locationOfAppointment}</div>
                             <div className="mb-2"><strong>Duration for Appointment:</strong> {selectedAppointment.durationOfAppointment}</div>
                         </div>
-                        <button 
-  className={`mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg ${loadAppointmentBook ? "animate-spin" : "animate-none"} ${appointmentPostResp === "Booked" ? "bg-green-500" : ""} `} 
-  onClick={() => {
-    handleBookingOfAppointment(selectedAppointment._id, selectedAppointment.doctorId);
-    setLoadAppointmentBook(true);
-  }} 
-  disabled={appointmentPostResp === "Booked"}
->
-  { 
-    appointmentPostResp === "Booked" 
-      ? "Booking Done" 
-      : loadAppointmentBook 
-        ? "/" 
-        : "Book Your Appointment" 
-  }
-</button>
+                        <button
+                            className={`mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg ${loadAppointmentBook ? "animate-spin" : "animate-none"} ${appointmentPostResp === "Booked" ? "bg-green-500" : ""} `}
+                            onClick={() => {
+                                handleBookingOfAppointment(selectedAppointment._id, selectedAppointment.doctorId);
+                                setLoadAppointmentBook(true);
+                            }}
+                            disabled={appointmentPostResp === "Booked"}
+                        >
+                            {
+                                appointmentPostResp === "Booked"
+                                    ? "Booking Done"
+                                    : loadAppointmentBook
+                                        ? "/"
+                                        : "Book Your Appointment"
+                            }
+                        </button>
 
                     </div>
                 </div>
