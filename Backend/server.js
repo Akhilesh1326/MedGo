@@ -783,9 +783,36 @@ app.get("/api/user/patient/all-patient-appointment", async (req, res) => {
             // result.appointmentId = appointmentIds[i]; // Add appointmentId to the patient data
             allAppointments.push(result); // Add updated patient data to the array
         }
+
         
         console.log("All Online appointment booked by single Patinet = ", allAppointments);
         res.json({ allAppointments: allAppointments });
+    } catch (error) {
+        console.log("Error while getting single patient appointment data = ", error);
+    }
+})
+app.get("/api/user/patient/all-patient-appointment-count", async (req, res) => {
+    try {
+        const token = req.cookies.userCookie;
+        let varifyData = jwt.verify(token, process.env.JWT_SECRET);
+        const uid = varifyData.UserId;
+        console.log("Patinet = ", uid);
+
+        const result1 = await handleAllAppointmentForSinglePatient(uid);
+
+        const doctorIds = result1.map(record => record.doctorId);
+        const appointmentIds = result1.map(record => record.appointmentId);
+        // console.log("Appointment IDs = ",appointmentIds);
+        // console.log("Doctor IDs = ",doctorIds);
+
+        let allAppointments = [];
+        for (let i = 0; i < doctorIds.length; i++) {
+            const result = await handleGetAllDoctorIdsAppointmentForPatient(doctorIds[i],appointmentIds[i]);
+            // result.appointmentId = appointmentIds[i]; // Add appointmentId to the patient data
+            allAppointments.push(result); // Add updated patient data to the array
+        }
+        const count = allAppointments.length;
+        res.json({ allAppointmentsCount: count });
     } catch (error) {
         console.log("Error while getting single patient appointment data = ", error);
     }
