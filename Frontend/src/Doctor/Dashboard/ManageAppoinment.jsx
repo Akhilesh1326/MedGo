@@ -114,7 +114,7 @@ const ManageAppoinment = () => {
     const handleOfflinePatientCardInfo = async () => {
       try {
         const resp = await axios.get("/api/user/patient-show/");
-        setOfflinePatientData(resp.data.data);
+        setOfflinePatientData(resp.data.data)
       } catch (err) {
         console.log(err);
       }
