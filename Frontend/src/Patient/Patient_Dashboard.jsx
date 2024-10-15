@@ -1,11 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // import {io} from "socket.io-client";
 // import { v4 as uuid } from 'uuid';
 import { Link } from "react-router-dom";
+import axios from "axios";
 // import bg from "../assets/upscale4.jpeg"
 
 const Patient_Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [appointmentCount, setAppointmentCount] = useState(0);
+
+  useEffect(() => {
+    async function getCountAppointment() {
+      const resp = await axios.get("/api/user/patient/all-patient-appointment-count");
+      setAppointmentCount(resp.data.allAppointmentsCount);
+      console.log("Count of appointment = ",resp);
+    }
+  
+    getCountAppointment();
+  },[])
+  
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -20,7 +33,7 @@ const Patient_Dashboard = () => {
         // style={{ width: "300px" }}
       >
         <div className="mb-4 flex justify-between items-center">
-          <div className="border-2 border-black my-2 mx-4 px-4 py-2">Logo</div>
+        <div className=" mx-4 px-4 font-raleway text-2xl font-think">MedLinea</div>
           {/* Close button for mobile */}
           <button className="md:hidden text-white" onClick={toggleSidebar}>
             &times; {/* Close Icon */}
@@ -59,7 +72,7 @@ const Patient_Dashboard = () => {
   {/* Card 1 */}
   <div className="flex flex-col items-center justify-between border-2 border-[#6bb1f2] bg-[#236db3] p-6 rounded-lg  h-full shadow-[0px_0px_5px_1px_#206ef6] hover:shadow-[0px_0px_15px_4px_#206ef6] duration-300">
     <div className="bg-[#bad6eb] text-3xl font-semibold text-black rounded-full h-16 w-16 flex items-center justify-center mb-4">
-      0
+      {appointmentCount}
     </div>
     <div className="text-lg font-bold text-center">Total Appointments</div>
   </div>
@@ -69,24 +82,24 @@ const Patient_Dashboard = () => {
     <div className="bg-[#bad6eb] text-3xl font-semibold text-black rounded-full h-16 w-16 flex items-center justify-center mb-4">
       0
     </div>
-    <div className="text-lg font-bold text-center">Total Patients</div>
+    <div className="text-lg font-bold text-center">Ongoing Appointments</div>
   </div>
 
   {/* Card 3 */}
-  <div className="flex flex-col items-center justify-between border-2 border-[#6bb1f2] bg-[#236db3] p-6 rounded-lg h-full shadow-[0px_0px_5px_1px_#206ef6] hover:shadow-[0px_0px_15px_4px_#206ef6] duration-300">
+  {/* <div className="flex flex-col items-center justify-between border-2 border-[#6bb1f2] bg-[#236db3] p-6 rounded-lg h-full shadow-[0px_0px_5px_1px_#206ef6] hover:shadow-[0px_0px_15px_4px_#206ef6] duration-300">
     <div className="bg-[#bad6eb] text-3xl font-semibold text-black rounded-full h-16 w-16 flex items-center justify-center mb-4">
       0
     </div>
     <div className="text-lg font-bold text-center">Other Stats</div>
-  </div>
+  </div> */}
 
   {/* Card 4 */}
-  <div className="flex flex-col items-center justify-between border-2 border-[#6bb1f2] bg-[#236db3] p-6 rounded-lg h-full shadow-[0px_0px_5px_1px_#206ef6] hover:shadow-[0px_0px_15px_4px_#206ef6] duration-300">
+  {/* <div className="flex flex-col items-center justify-between border-2 border-[#6bb1f2] bg-[#236db3] p-6 rounded-lg h-full shadow-[0px_0px_5px_1px_#206ef6] hover:shadow-[0px_0px_15px_4px_#206ef6] duration-300">
     <div className="bg-[#bad6eb] text-3xl font-semibold text-black rounded-full h-16 w-16 flex items-center justify-center mb-4">
       0
     </div>
     <div className="text-lg font-bold text-center">Other Stats</div>
-  </div>
+  </div> */}
 </div>
     </div>
   );
