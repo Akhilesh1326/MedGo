@@ -164,7 +164,7 @@ const PriscriptionManagement = () => {
   return (
     <div className="bg-slate-800 text-white">
       <HeaderForDashboardComponent />
-      <div>Patient History</div>
+      <div className='font-bold'>Prescription Management</div>
       <div className="grid grid-cols-2 mx-10 place-items-center">
         {/* Offline Patients */}
         {OfflinePatientData.map((item) => (
