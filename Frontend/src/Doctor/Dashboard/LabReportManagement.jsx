@@ -92,7 +92,8 @@ const LabReportManagement = () => {
     return (
         <div className="bg-slate-800 text-white">
             <Header />
-            <div>Patient History</div>
+            <div className='font-bold'>Lab Report Management</div>
+
             <div className="grid grid-cols-4 gap-4 mx-10 place-items-center">
                 {/* Offline Patients */}
                 {OfflinePatientData.map((item) => (
