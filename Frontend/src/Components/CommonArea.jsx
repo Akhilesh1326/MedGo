@@ -12,21 +12,23 @@ const MyComponent = () => {
     const [selectedAppointment, setSelectedAppointment] = useState(null);
     const [appointmentPostResp, setAppointmentPostResp] = useState("")
     const [loadAppointmentBook, setLoadAppointmentBook] = useState(false);
+    const [searchLocation, setSearchLocation] = useState("");
+
 
     const [bookStateMessage, setBookStateMessage] = useState("Book An Appointment")
 
-    useEffect(() => {
-        async function handleCardAppointmentData() {
-            try {
-                const resp = await axios.get("/api/user/all-appointment-data");
-                const UnbookedAppointmentCard = resp.data.result.filter(appointment => appointment.appointmentStatus != 'Booked');
+    async function handleCardAppointmentData() {
+        try {
+            const resp = await axios.get("/api/user/all-appointment-data");
+            const UnbookedAppointmentCard = resp.data.result.filter(appointment => appointment.appointmentStatus != 'Booked');
 
-                setAppointmentData(UnbookedAppointmentCard);
-                console.log(resp.data.result);
-            } catch (err) {
-                console.log("Error = ", err);
-            }
+            setAppointmentData(UnbookedAppointmentCard);
+            console.log(resp.data.result);
+        } catch (err) {
+            console.log("Error = ", err);
         }
+    }
+    useEffect(() => {
 
         const socket = io("http://localhost:8000");
 
@@ -76,15 +78,22 @@ const MyComponent = () => {
     const closeModal = () => {
         setSelectedAppointment(null);
     };
-
+    const filteredAppointments = ()=>{
+        if(searchLocation===""){
+            handleCardAppointmentData();
+        }
+        setAppointmentData(appointmentData.filter(item =>
+            item.locationOfAppointment.toLowerCase().includes(searchLocation.toLowerCase())))
+    } 
 
 
     return (
         <div>
             <div className="flex justify-between py-4 px-2 bg-slate-700 text-white">
-                <div className="flex">
+                <div className="flex items-center">
                     <div className="py-2 px-4 mx-1 my-2 border-slate-600 border-2 rounded-lg font-raleway">Medlinea</div>
-                    <input type="text" placeholder="Search appointments" className="py-2 px-2 mx-1 my-2 border-slate-600 border-2 rounded-lg" />
+                    <input type="text" placeholder="Search Location" className="py-2 px-2 mx-1 my-2 border-slate-600 border-2 rounded-lg text-black" value={searchLocation} onChange={(e)=>{setSearchLocation(e.target.value)}}/>
+                    <button className="border-2 mx-1 border-[#0b1d2e] px-4 text-black rounded-lg bg-[#EDE9E3] hover:-translate-y-1 shadow-[0px_0px_0px_1px_#206ef6] hover:shadow-[0px_0px_5px_2px_#206ef6] duration-300 h-12" onClick={()=>{filteredAppointments()}}>Search</button>
                 </div>
                 <div className="flex text-black">
                     <Link to="/user/patient/profile"><button className="border-2 mx-1 border-[#0b1d2e] px-4 py-2 rounded-lg bg-[#EDE9E3] hover:-translate-y-1 shadow-[0px_0px_0px_1px_#206ef6] hover:shadow-[0px_0px_5px_2px_#206ef6] duration-300" >Profile</button></Link>
