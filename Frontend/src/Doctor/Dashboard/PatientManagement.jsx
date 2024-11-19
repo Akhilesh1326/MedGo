@@ -53,7 +53,9 @@ const PatientManagement = () => {
     return (
         <div className="bg-slate-800 text-white">
             <HeaderForDashboardComponent />
-            <div>Patient History</div>
+            <div className='flex justify-center'>
+            <div className='text-2xl font-bold mb-4 px-5 py-2 mt-2'>Patient History</div>
+            </div>
             <div className="grid grid-cols-4 gap-4 mx-10 place-items-center">
                 {/* Offline Patients */}
                 {OfflinePatientData.map((item) => (
