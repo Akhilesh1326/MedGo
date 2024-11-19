@@ -115,19 +115,19 @@ const ManageAppoinment = () => {
       try {
         const resp = await axios.get("/api/user/patient-show/");
         setOfflinePatientData(resp.data.data)
+        console.log("All Offline appoinemtn = ",OfflinePatientData);
       } catch (err) {
         console.log(err);
       }
     };
   
-    if (PatientEditPanel) {
-      handleOfflinePatientCardInfo();
-    }
-  }, [PatientEditPanel]); // Only trigger when PatientEditPanel is opened
+    handleOfflinePatientCardInfo();
+  
+  }, [PatientEditPanel]);
   
 
   const handleOfflinePatientFormSubmit = async () => {
-    const patientType = "offlineEntry";
+    const patientType =  "offlineEntry";
     try {
       const resp = await axios.post("/api/user/doctor/offline-registeration-form", {
         patientType,
