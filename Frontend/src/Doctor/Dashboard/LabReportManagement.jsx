@@ -92,7 +92,9 @@ const LabReportManagement = () => {
     return (
         <div className="bg-slate-800 text-white">
             <Header />
-            <div className='font-bold'>Lab Report Management</div>
+            <div className='flex justify-center'>
+            <div className='text-2xl font-bold mb-4 px-5 py-2 mt-2'>Lab Report Management</div>
+            </div>
 
             <div className="grid grid-cols-4 gap-4 mx-10 place-items-center">
                 {/* Offline Patients */}
