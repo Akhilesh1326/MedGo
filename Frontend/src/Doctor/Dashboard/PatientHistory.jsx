@@ -70,9 +70,9 @@ const PatientHistory = () => {
 
   return (
       <div>
-          <Header />
+          <Header />    
           <div className="p-6">
-              <h2 className="text-2xl font-bold mb-4">Billing Information for Online Patients</h2>
+              <h2 className="text-2xl font-bold mb-4">History Of Online Patients</h2>
 
               {appointmentDataForOnlinePatient.length > 0 ? (
                   appointmentDataForOnlinePatient.map((appointment) => {
