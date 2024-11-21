@@ -22,7 +22,35 @@ const Doctor_Login_Cred = () => {
     setPassword(e.target.value);
   }
 
+  function validatInput(userName, email, password){
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if(userName=="" && email=="" && password==""){
+      setError("Fill all the fields before continuing")
+      return false
+    }
+    else if(userName==""){
+      setError("Fill Username field")
+      return false
+    }
+    else if(email==""){
+        setError("Fill email field")
+      return false
+    }
+    else if(password==""){
+      setError("Fill password field")
+      return false
+    }
+    if(!emailRegex.test(email)){
+      setError("Email Adress format is incorrect")
+      return false;
+    }
+    return true
+  }
+
   const handleAllDataSubmit = async () => {
+    if(!validatInput(userName, email, password)){
+      return
+    }
     try {
       const response = await axios.post("/api/user/doctor/loginInfo", {
         userName,
@@ -36,7 +64,7 @@ const Doctor_Login_Cred = () => {
         console.log("navigating");
         navigate("/user/doctor/signin");
       } else {
-        setError("Username and email must be unique");
+        setError(msg);
       }
 
     } catch (err) {
@@ -63,7 +91,8 @@ const Doctor_Login_Cred = () => {
         </div>
         <div className="flex lg:border-[#35b5dc] lg:border-4 rounded-xl mt-5 mb-20 md:w-[80%]">
           <div className="hidden flex-row lg:block lg:w-[70%] text-center font-raleway">
-            <div className="bg-green-300 mb-20">logo</div>
+          <div className=" my-2 mx-4 px-4 py-2 font-raleway text-2xl font-think">MedLinea</div>
+
             <div className="text-3xl font-extrabold text-[#181f20] mb-10">
               Welcome To MedLinea
             </div>
@@ -98,7 +127,7 @@ const Doctor_Login_Cred = () => {
             </label>
             <input
               className="lg:w-[70%] lg:self-center lg:m-0 ml-4 sm:ml-8 md:ml-12 rounded-lg py-1 px-1 lg:border-[#35b5dc] lg:border-b-2 lg:border-0 border-2 lg:outline-none lg:rounded-lg text-[#034458] lg:hover:shadow-[#0688b0] lg:hover:shadow-[0px_10px_10px_0px] lg:focus:hover:shadow-[#0688b0] lg:focus:hover:shadow-[0px_10px_10px_0px] lg:focus-within:pl-5 lg:text-white shadow-lg font-semibold w-[90%] h-12 lg:bg-[#034458] focus-within:-translate-y-1 hover:-translate-y-1 duration-300 opacity-100"
-              type="text"
+              type="email"
               placeholder="Enter Unique Email"
               value={email}
               onChange={handleEmailInput}
