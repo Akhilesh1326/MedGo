@@ -45,7 +45,7 @@ const MyComponent = () => {
         return () => {
             socket.disconnect();
         };
-    }, [socketMsg]);
+    }, [socketMsg,selectedAppointment]);
 
     async function handleBookingOfAppointment(appointmentId, doctorId) {
         const msg = `Appointment Booked In Common Area`
@@ -78,10 +78,13 @@ const MyComponent = () => {
     const closeModal = () => {
         setSelectedAppointment(null);
     };
-    const filteredAppointments = ()=>{
+ 
+     const filteredAppointments = ()=>{
+        console.log("Searched Locaition = ",searchLocation  )
         if(searchLocation===""){
             handleCardAppointmentData();
         }
+
         setAppointmentData(appointmentData.filter(item =>
             item.locationOfAppointment.toLowerCase().includes(searchLocation.toLowerCase())))
     } 
