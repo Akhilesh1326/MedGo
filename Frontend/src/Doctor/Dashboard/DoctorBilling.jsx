@@ -36,6 +36,7 @@ const DoctorBilling = () => {
             try {
                 const resp1 = await axios.get('/api/user/doctor/billing/online-patient-data');
                 setPatientDataForOnlinePatient(resp1.data.msg);
+                console.log("patient data ",resp1.data.msg)
             } catch (error) {
                 console.log('Error occurred while getting all patient data = ', error);
             }
@@ -93,10 +94,14 @@ const DoctorBilling = () => {
         const patientId = allinfo.patient.patientIdOfLogCred;
         const appointmentId = allinfo.patient.appointmentId;
         const doctorId = allinfo.appointment.doctorId;
+        // console.log(patientId)   
+        // console.log(appointmentId)
+        // console.log(doctorId)
+        console.log(allinfo)
 
         const billingData = {
             patientId,
-            doctorId,
+            doctorId,   
             appointmentId,
             serviceorTreatment,
             durationOfService,
