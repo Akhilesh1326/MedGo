@@ -7,6 +7,8 @@ const { Server } = require("socket.io");
 const http = require("http");
 const jwt = require('jsonwebtoken');
 require('dotenv').config()
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+
 
 const app = express();
 // HTTP server 
@@ -110,6 +112,12 @@ const {
     handleInitialBillingGetAllDataByDoctorId,
     handleInitialBillingGetAllDataByPatientId,
 } = require("./controllers/BillingData");
+
+const {
+    handleFormFillingByPatient,
+    handleGetFormFillingByPatient,
+} = require("./controllers/directPatientForm");
+
 
 // Middleware
 app.use(express.json());
@@ -401,7 +409,7 @@ app.post('/api/user/patient/loginInfo', async (req, res) => {
         if (error.message == 'E11000 duplicate key error collection: MedicalAppDataBase.patientuserlogincredentials index: username_1 collation: { locale: "en", caseLevel: false, caseFirst: "off", strength: 2, numericOrdering: false, alternate: "non-ignorable", maxVariable: "punct", normalization: false, backwards: false, version: "57.1" } dup key: { username: "CollationKey(0x293d37390108)" }' || 'E11000 duplicate key error collection: MedicalAppDataBase.patientuserlogincredentials index: email_1 collation: { locale: "en", caseLevel: false, caseFirst: "off", strength: 2, numericOrdering: false, alternate: "non-ignorable", maxVariable: "punct", normalization: false, backwards: false, version: "57.1" } dup key: { email: "CollationKey(0x293d37390a7a354129393f082d45410112)" }') {
 
             console.error("data repeate");
-            res.json({ msg: "User Data Repeate" });
+            res.json({ msg: "User Data Repeat" });
         }
         else {
             console.error("Error sending Login Info: ", error.message);
@@ -590,7 +598,7 @@ app.get("/api/user/appointment-show/", async (req, res) => {
         const today = new Date();
         const todayISO = today.toISOString().split('T')[0];
         const filterData = result.filter(appointment =>
-            new Date(appointment.dateOfAppointment)>=new Date(todayISO)
+            new Date(appointment.dateOfAppointment) >= new Date(todayISO)
         )
         console.log("Online apppoinemnt result og= ", filterData);
 
@@ -1028,6 +1036,64 @@ app.get("/api/doctor/dashboard/appointment-count", async (req, res) => {
         res.json({ OnlineAppointmentCount: OnlineAppointmentCount, OfflineAppointmentCount: OfflineAppointmentCount })
     } catch (error) {
         console.log("Error Occured while getting total count of appointments of doctor= ", error);
+        res.json({ data: "Error" })
+    }
+})
+
+// Gemini api and other stuff relatied medical comapre
+app.post("/api/patient/medicine-compare", async (req, res) => {
+    try {
+        let data = req.body.input;
+        console.log(data)
+        const genAI = new GoogleGenerativeAI(process.env.GEMINI_APIKEY);
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+        const prompt = `Compare the medicine ${data} with other related medicines available in the market. The comparison should include:
+
+Efficacy: Effectiveness of the medicines in treating the intended condition.
+Side Effects: Common and serious side effects reported.
+Dosage and Administration: Typical dosages and methods of use.
+Cost: Approximate price range of the medicines.
+Availability: Availability of generic or brand-name versions.
+Use validated and reliable medical information only. Base your response on trusted medical databases, peer-reviewed studies, or pharmaceutical guidelines. If certain details are unclear or unavailable, state that explicitly. Avoid speculation or unverified information. provide all informating with least amount of data`;
+
+        const result = await model.generateContent(prompt);
+        console.log(result.response.text());
+        const AIresponse = result.response.text();
+
+        res.json({ response: AIresponse })
+
+    } catch (error) {
+        console.log("Error Occured while getting generating the google gemini responce = ", error);
+        res.json({ data: "Error" })
+    }
+})
+
+// API calls related to the by patient form filling
+app.post("/api/patient/form-by-patient",async(req,res)=>{
+    try {
+        const allFormData = req.body;
+        console.log("by patient form data = ", allFormData);
+        const result = await handleFormFillingByPatient(allFormData);
+        res.json({response:"successs"});
+
+
+    } catch (error) {
+        console.log("Error Occured while storing by patient form= ", error);
+        res.json({ data: "Error" })
+    }
+})
+app.get("/api/get-by-patient-form",async(req,res)=>{
+    try {
+        const allFormData = req.body;
+        
+        console.log("by patient form data = ", allFormData);
+        const result = await handleGetFormFillingByPatient();
+        res.json({response:result});
+
+
+    } catch (error) {
+        console.log("Error Occured while storing by patient form= ", error);
         res.json({ data: "Error" })
     }
 })
