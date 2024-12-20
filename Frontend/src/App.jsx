@@ -10,6 +10,7 @@ import Profile from "./Patient/Dashboard/Profile";
 import LogInPatient from "./Patient/LogInPatient"
 import ManageAppointmentForPatient from "./Patient/Dashboard/ManageAppointment";
 import PrescriptionBillingHistory from "./Patient/Dashboard/PrescriptionBillingHistory";
+import MedicineCompare from "./Patient/Dashboard/MedicineCompare";
 
 import DoctorSignIn from "./Doctor/Doctor_SignIn";
 import DoctorLoginCred from './Doctor/Doctor_Login_Cred';
@@ -23,6 +24,7 @@ import PriscriptionManagement from "./Doctor/Dashboard/PriscriptionManagement";
 import DoctorBilling from "./Doctor/Dashboard/DoctorBilling";
 import PatientHistory from "./Doctor/Dashboard/PatientHistory";
 import LabReportManagement from "./Doctor/Dashboard/LabReportManagement";
+import ByPatientFormFill from "./Doctor/Dashboard/ByPatientFormFill";
 
 
 import CheckUser from './Components/CheckUser';
@@ -31,6 +33,7 @@ import CommonArea from "./Components/CommonArea";
 import CommonLogin from "./Components/CommonLogin";
 import CheckLoginUser from "./Components/CheckLoginUser";
 import AboutUs from "./Components/AboutUs";
+import ByPatientForm from "./Components/ByPatientForm";
 
 const router = createBrowserRouter([
     { path: "/", element: <Home /> },
@@ -46,6 +49,8 @@ const router = createBrowserRouter([
     { path: "/user/doctor/dashboard/manage-billing", element: <DoctorBilling />},
     { path: "/user/doctor/dashboard/history-patient", element: <PatientHistory />},
     { path: "/user/doctor/dashboard/lab-report-management", element: <LabReportManagement />},
+    { path: "/user/doctor/dashboard/form-fill-by-patient", element: <ByPatientFormFill />},
+
     
     { path: "/user/patient/signin", element: <PatientSignIn /> },
     { path: "/user/patient/login-credentials", element: <PatientLoginCred /> },
@@ -57,12 +62,14 @@ const router = createBrowserRouter([
     { path: "/user/patient/login", element: <LogInPatient />},
     { path: "/user/patient/dashboard/manage-appoinment", element: <ManageAppointmentForPatient />},
     { path: "/user/patient/dashboard/prescription-billing-history", element: <PrescriptionBillingHistory />},
+    { path: "/user/patient/dashboard/medicine-compare", element: <MedicineCompare />},
     
     { path: "/user/checkuser", element: <CheckUser /> },
     { path: "/user/commonarea", element: <CommonArea />},
     { path: "/user/login", element: <CommonLogin />},
     { path: "/user/check/login", element: <CheckLoginUser />},
     { path: "/user/aboutUs", element: <AboutUs />},
+    { path: "/user/by-patient-form-fill", element: <ByPatientForm />},
 ]);
 
 function App() {
