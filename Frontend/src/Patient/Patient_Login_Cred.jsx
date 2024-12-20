@@ -11,7 +11,37 @@ const Paitent_Login_Cred = () => {
   const [userFound, setUserFound] = useState("");
   const [error, setError] = useState("");
 
+  
+  function validatInput(userName, email, password){
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if(userName=="" && email=="" && password==""){
+      setError("Fill all the fields before continuing")
+      return false
+    }
+    else if(userName==""){
+      setError("Fill Username field")
+      return false
+    }
+    else if(email==""){
+        setError("Fill email field")
+      return false
+    }
+    else if(password==""){
+      setError("Fill password field")
+      return false
+    }
+    if(!emailRegex.test(email)){
+      setError("Email Adress format is incorrect")
+      return false;
+    }
+    return true
+  }
+
+
   const handleLoginCredFormSubmit = async () => {
+    if(!validatInput(username, email, password)){
+      return
+    }
     try {
       const response = await axios.post("/api/user/patient/loginInfo", {
         username,
@@ -46,9 +76,8 @@ const Paitent_Login_Cred = () => {
 
       <div className="flex lg:border-[#4eacff] lg:border-4 rounded-xl mt-5 mb-20 md:w-[80%]">
         <div className="hidden flex-row lg:block  lg:w-[70%] text-center font-raleway">
-          <div className=" bg-green-300 mb-20">
-            logo
-          </div>
+        <div className=" my-2 mx-4 px-4 py-2 font-raleway text-2xl font-think">MedLinea</div>
+
           <div className='text-3xl font-extrabold text-[#38a2ff] mb-10'>Welcom To MedLinea</div>
           <div className='text-xl font-light m-1 mb-20 text-[#1d5789]'>
           Empower your healthcare experience! Join us to manage appointments effortlessly and access personalized care. <span className='text-[#319afc] '>Know More</span>
