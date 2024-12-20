@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
-// import {io} from "socket.io-client";
-// import { v4 as uuid } from 'uuid';
 import { Link } from "react-router-dom";
 import axios from "axios";
-// import bg from "../assets/upscale4.jpeg"
+import i18n from "../i18nDoctorDash";
+import { useTranslation } from "react-i18next";
 
 const Patient_Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [appointmentCount, setAppointmentCount] = useState(0);
+  const { t } = useTranslation(); 
 
   useEffect(() => {
     async function getCountAppointment() {
@@ -39,23 +39,26 @@ const Patient_Dashboard = () => {
             &times; {/* Close Icon */}
           </button>
         </div>
-        <Link to={"/user/patient/dashboard/manage-appoinment"}><div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:-translate-y-1 shadow-[0px_0px_0px_1px_#206ef6] hover:shadow-[0px_0px_10px_2px_#206ef6] duration-300">Appointment Management</div></Link>
-        <a href="http://localhost:5174/bloodreport"><div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:-translate-y-1 shadow-[0px_0px_0px_1px_#206ef6] hover:shadow-[0px_0px_10px_2px_#206ef6] duration-300">Personal Chat-bot</div></a>
-        <Link to={"/user/patient/dashboard/prescription-billing-history"}><div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:-translate-y-1 shadow-[0px_0px_0px_1px_#206ef6] hover:shadow-[0px_0px_10px_2px_#206ef6] duration-300">Prescriptions, Billing, History</div></Link>
-        <div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:-translate-y-1 shadow-[0px_0px_0px_1px_#206ef6] hover:shadow-[0px_0px_10px_2px_#206ef6] duration-300">Messaging and Notifications</div>
-        <div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:-translate-y-1 shadow-[0px_0px_0px_1px_#206ef6] hover:shadow-[0px_0px_10px_2px_#206ef6] duration-300">Reports and Analytics</div>
-        <div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:-translate-y-1 shadow-[0px_0px_0px_1px_#206ef6] hover:shadow-[0px_0px_10px_2px_#206ef6] duration-300">Task and To-Do List</div>
-        <div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:-translate-y-1 shadow-[0px_0px_0px_1px_#206ef6] hover:shadow-[0px_0px_10px_2px_#206ef6] duration-300">Settings and Preferences</div>
-        <div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:-translate-y-1 shadow-[0px_0px_0px_1px_#206ef6] hover:shadow-[0px_0px_10px_2px_#206ef6] duration-300">Feedback and Support</div>
+        <Link to={"/user/patient/dashboard/manage-appoinment"}><div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:-translate-y-1 shadow-[0px_0px_0px_1px_#206ef6] hover:shadow-[0px_0px_10px_2px_#206ef6] duration-300">{t("appointmentManagement")}</div></Link>
+        <a href="http://localhost:5174/bloodreport"><div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:-translate-y-1 shadow-[0px_0px_0px_1px_#206ef6] hover:shadow-[0px_0px_10px_2px_#206ef6] duration-300"> {t("personalChatBot")}</div></a>
+        <Link to={"/user/patient/dashboard/prescription-billing-history"}><div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:-translate-y-1 shadow-[0px_0px_0px_1px_#206ef6] hover:shadow-[0px_0px_10px_2px_#206ef6] duration-300">{t("prescriptionsBillingHistory")}</div></Link>
+        <Link to={"/user/patient/dashboard/medicine-compare"}><div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:-translate-y-1 shadow-[0px_0px_0px_1px_#206ef6] hover:shadow-[0px_0px_10px_2px_#206ef6] duration-300">{t("medicineCompare")}</div></Link>
+        <div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:-translate-y-1 shadow-[0px_0px_0px_1px_#206ef6] hover:shadow-[0px_0px_10px_2px_#206ef6] duration-300">{t("messagingNotifications")}</div>
+        <div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:-translate-y-1 shadow-[0px_0px_0px_1px_#206ef6] hover:shadow-[0px_0px_10px_2px_#206ef6] duration-300">{t("reportsAnalytics")}</div>
+        <div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:-translate-y-1 shadow-[0px_0px_0px_1px_#206ef6] hover:shadow-[0px_0px_10px_2px_#206ef6] duration-300">{t("settingsPreferences")}</div>
+        <div className="border-2 border-black my-2 mx-4 py-2 px-5 rounded-lg font-bold bg-[#EDE9E3] text-slate-800 hover:-translate-y-1 shadow-[0px_0px_0px_1px_#206ef6] hover:shadow-[0px_0px_10px_2px_#206ef6] duration-300">{t("feedbackSupport")}</div>
       </div>
 
       {/* Header */}
       <div className="bg-[#0a2035] p-4 rounded-xl flex justify-between items-center ">
+      <button onClick={() => i18n.changeLanguage("hi")}>हिंदी</button>
+<button onClick={() => i18n.changeLanguage("en")}>English</button>
+
         <input type="text" className="border-2 border-[#6bb1f2] sm:px-4 sm:py-2 px-2 py-1 w-40 sm:w-auto  rounded-lg" placeholder="Search here..."/>
         
         <div className="flex space-x-4">
-          <Link to="/user/patient/profile"><button className="border-2 border-[#6bb1f2] px-4 py-2 rounded-lg bg-[#EDE9E3] hover:-translate-y-1 shadow-[0px_0px_0px_1px_#206ef6] hover:shadow-[0px_0px_10px_2px_#206ef6] duration-300" >Profile</button></Link>
-          <Link to="/user/commonarea"><button className="border-2 border-[#6bb1f2] px-4 py-2 rounded-lg bg-[#EDE9E3] hover:-translate-y-1 shadow-[0px_0px_0px_1px_#206ef6] hover:shadow-[0px_0px_10px_2px_#206ef6] duration-300" >Common Area</button></Link>
+          <Link to="/user/patient/profile"><button className="border-2 border-[#6bb1f2] px-4 py-2 rounded-lg bg-[#EDE9E3] hover:-translate-y-1 shadow-[0px_0px_0px_1px_#206ef6] hover:shadow-[0px_0px_10px_2px_#206ef6] duration-300" >{t("profile")}</button></Link>
+          <Link to="/user/commonarea"><button className="border-2 border-[#6bb1f2] px-4 py-2 rounded-lg bg-[#EDE9E3] hover:-translate-y-1 shadow-[0px_0px_0px_1px_#206ef6] hover:shadow-[0px_0px_10px_2px_#206ef6] duration-300" >{t("commonArea")}</button></Link>
           <div className="md:hidden  ">
           <button
             className="border-2 border-[#6bb1f2] px-4 py-2 rounded-lg cursor-pointer bg-[#EDE9E3]"
@@ -74,7 +77,7 @@ const Patient_Dashboard = () => {
     <div className="bg-[#bad6eb] text-3xl font-semibold text-black rounded-full h-16 w-16 flex items-center justify-center mb-4">
       {appointmentCount}
     </div>
-    <div className="text-lg font-bold text-center">Total Appointments</div>
+    <div className="text-lg font-bold text-center">{t("totalAppointments")}</div>
   </div>
 
   {/* Card 2 */}
@@ -82,7 +85,7 @@ const Patient_Dashboard = () => {
     <div className="bg-[#bad6eb] text-3xl font-semibold text-black rounded-full h-16 w-16 flex items-center justify-center mb-4">
       0
     </div>
-    <div className="text-lg font-bold text-center">Ongoing Appointments</div>
+    <div className="text-lg font-bold text-center">{t("ongoingAppointments")}</div>
   </div>
 
   {/* Card 3 */}
