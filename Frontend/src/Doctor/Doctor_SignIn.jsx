@@ -52,12 +52,12 @@ const Doctor_SignIn = () => {
       setError("Select appropriate gender")
       return false
     }
-    // const phoneRegex = /^\d{10}$/;
+    const phoneRegex = /^\d{10}$/;
 
-    // if(!phoneRegex.test(Number(phone))){
-    //   setError("Please enter the appropriate size of phone digits")
-    //   return false
-    // }
+    if(!phoneRegex.test(Number(phone))){
+      setError("Please enter the appropriate size of phone digits")
+      return false
+    }
     return true;
   }
   async function handleAllDataSubmit() {
