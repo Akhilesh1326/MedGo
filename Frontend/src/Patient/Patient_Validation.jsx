@@ -11,7 +11,34 @@ const Patient_Validation = () => {
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
 
+  function validatInput(governmentIssuedId, adharNumber) {
+    if (governmentIssuedId == "" && adharNumber == "") {
+      setError("Fill All the field before continuing")
+      return false
+    }
+    else if (governmentIssuedId == "") {
+      setError("Fill government Issued Id the field before continuing")
+      return false
+    }
+    else if (adharNumber == "") {
+      setError("Fill adhar number the field before continuing")
+      return false
+    }
+    const adharRegex = /^\d{14}$/;
+
+    if(!adharRegex.test(Number(adharNumber))){
+      setError("Please enter the appropriate size of adhar Id digits as 14 Digits")
+      return false
+    }
+
+    return true
+  }
+
   const handleValidation = async () => {
+    if(!validatInput(governmentIssuedId, adharNumber)){
+      return
+    }
+   
     try {
       const resp = await axios.post("/api/user/patient/Identification", {
         governmentIssuedId,
@@ -30,7 +57,7 @@ const Patient_Validation = () => {
       setError("Server error, please try again.");
     }
   }
-  
+
   return (
     <div>
       <div className="flex flex-col justify-center items-center z-0 h-screen"
@@ -45,9 +72,8 @@ const Patient_Validation = () => {
 
         <div className="flex lg:border-[#4eacff] lg:border-4 rounded-xl mt-5 mb-20 md:w-[80%]">
           <div className="hidden flex-row lg:block  lg:w-[70%] text-center font-raleway">
-            <div className=" bg-green-300 mb-20">
-              logo
-            </div>
+          <div className=" my-2 mx-4 px-4 py-2 font-raleway text-2xl font-think">MedLinea</div>
+
             <div className='text-3xl font-extrabold text-[#38a2ff] mb-10'>Welcom To MedLinea</div>
             <div className='text-xl font-light m-1 mb-20 text-[#1d5789]'>
               Empower your healthcare experience! Join us to manage appointments effortlessly and access personalized care. <span className='text-[#319afc] '>Know More</span>
